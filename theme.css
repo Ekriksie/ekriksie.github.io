@@ -1,0 +1,132 @@
+:root {
+     /* --- Logo Gradients (Strictly Preserved) --- */
+    --color_1: #8b5cf6;     /* First color */
+    --color_2: #c084fc;     /* Second color */
+    --gradient: linear-gradient(135deg, var(--color_1) 0%, var(--color_2) 100%);
+
+
+
+    /* --- Logo Gradients (Strictly Preserved) --- */
+    --logo_gradient_1: #8b5cf6;     /* First color of your logo icon/text */
+    --logo_gradient_2: #c084fc;     /* Second color of your logo icon/text */
+    --player_accent_gradient: linear-gradient(135deg, var(--logo_gradient_1) 0%, var(--logo_gradient_2) 100%);
+
+
+    /* --- Accent Hierarchy --- */
+    --accent_primary: #8b5cf6;
+    --accent_medium: #c084fc;
+    --accent_lite: #C54B8C;   /* not yet in use*/
+
+    /* Canvas Variations for your 4 Pages */
+    --bg_canvas_home:  #212121;    /* Page 1: Home default */
+    --bg_canvas_music: #0b0b0e;    /* Page 2: Music player (deeper/darker) */
+    --bg_canvas_art:   #212121;    /* Page 3: Art gallery (warm/rich tone) */
+    --bg_canvas_footer: #0f0f11;    /* Page 4: About / Other (subtle cool tone) */
+
+    /* Default active canvas */
+    --bg_canvas: #0f0f11;       /* The absolute back layer (body background) */
+
+    /* --- Background Layers & Components --- */
+    --bg_container: #161619;    /* Sections, wrappers, major layout blocks */
+    --bg_surface: #1e1e24;         /* Cards, interactive surfaces, player dashboard */
+    --bg_popup: #282830;        /* Modals, tooltips, volume dropdown panels */
+
+    /* --- Interactive States --- */
+    --interactive_default: #1e1e24; /* Default buttons, tabs, inputs */
+    --interactive_hover: #c084fc;   /* Hover state for clickable surfaces */
+    --interactive_downlowd
+    --interactive_active: #32323d;  /* Active, pressed, or selected state */
+
+
+    --int_default: #8b5cf6;       /* Default state for buttons, inputs, tabs */
+    --int_hover: #c084fc;      /* Hover state across all interactive elements */
+    --int_active: green;     /* Pressed or selected state */
+    --int_nav_active:#8b5cf6;
+    
+    --int_download:#42d142;
+    --int_download_hover:;
+
+
+
+
+    --icon_muted: #a1a1aa;
+
+    /* --- Text Hierarchy (Contrast-Driven) --- */
+    --text_main: #f4f4f5;       /* Primary titles, high-contrast headings */
+    --text_sup: #C9C9CF;        /* Section headers */
+    --text_muted: #a1a1aa;      /* Subtitles, descriptions, secondary notes */
+    --text_faint: #a1a1aa;      /* Disabled text, placeholders */
+    --text_accent:#c084fc;     /* Accent-colored text highlights */
+    --text_hover: #8b5cf6;
+
+    /* --- Borders & Dividers --- */
+    --border_subtle: #27272a;   /* Card outlines, subtle lines */
+    --border_strong: ;   /* Input borders, focus rings */
+    --border_btn_download:#42d142;
+    --border_accent:#c084fc;
+    --border_accent_faint:#582871;
+
+    /* --- Functional & Utility --- */
+    --slider_empty: #17171C;    /* Unfilled progress/volume slider tracks */
+    --slider_fill: #c084fc;     /* Filled progress/volume slider bars */
+    --slider_hover: #d8b4fe;    /* Slider track hover state */
+    
+    /* --- Universal Settings --- */
+    --transition_speed: 0.25s ease;
+
+    --red:#ff0000;
+
+
+    --shadow_subtle:  #0f0f11;
+    --shadow_card:    #C54B8C;
+    --shadow_glow:    #ffffff;
+}
+
+
+        html, body{
+
+            font-family: Arial, Helvetica, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+
+   
+
+/* --- SCROLLBAR CONFIGURATION --- */
+
+/* 1. DEFAULT: Slim scrollbar for all standalone pages (gallery, freebeats, etc.) */
+html {
+  
+    scrollbar-color: #241f47 #0a0914 !important;
+}
+
+::-webkit-scrollbar {
+    width: 6px !important;
+}
+
+::-webkit-scrollbar-track {
+    background: #0a0914 !important;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #241f47 !important;
+    border-radius: 3px;
+}
+
+/* 2. HOME PAGE OVERRIDE: Normal width scrollbar */
+.home-page {
+    scrollbar-width: auto !important;
+}
+
+.home-page::-webkit-scrollbar {
+    width: 14px !important;
+}
+
+.home-page::-webkit-scrollbar-track {
+    background: #0a0914 !important;
+}
+
+.home-page::-webkit-scrollbar-thumb {
+    background: #241f47 !important;
+    border-radius: 0px !important;
+}

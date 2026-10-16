@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ékriksie — Navigation</title>
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ==========================================================================
+           1. BASE RESETS & LAYOUT WRAPPERS
+           ========================================================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav_placeholder {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .nav_container {
+            width: 100%;
+            background-color: rgba(15, 17, 23, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav_container_inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+            position: relative;
+        }
+
+
+        /* ==========================================================================
+           2. LEFT SIDE MASTER GROUP (Logo + Mini-Nav)
+           ========================================================================== */
+        .nav_left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav_left_logos {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav_brand_logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .nav_brand_logo img {
+            height: 38px;
+            width: auto;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+            border-radius: 50%;
+        }
+
+        .nav_brand_logo:hover img {
+            transform: scale(1.05);
+        }
+
+        .brand_name {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--text_main, #ffffff);
+            font-size: 20px;
+            font-weight: 800;
+            margin-left: 10px;
+        }
+
+
+        /* ==========================================================================
+           3. DESKTOP MINI-NAV CAPSULES
+           ========================================================================== */
+        .mini_nav {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav_left_logos .mini_nav_home,
+        .nav_left_logos .mini_nav_music,
+        .nav_left_logos .mini_nav_art,
+        .nav_left_logos .mini_nav_about,
+        .mini_nav .mini_nav_home,
+        .mini_nav .mini_nav_music,
+        .mini_nav .mini_nav_art,
+        .mini_nav .mini_nav_about {
+            display: none;
+        }
+        .nav_expandable_group {
+            display: flex;
+            align-items: center;
+            background: var(--bg_surface, rgba(255, 255, 255, 0.08));
+            font-weight: 600;
+            border-radius: 20px;
+            padding: 6px 16px;
+            gap: 20px;
+        }
+
+
+        /* ==========================================================================
+           4. SUB-ITEMS & ACTIVE HIGHLIGHT STATES
+           ========================================================================== */
+        .sub_item {
+            font-size: 0.95rem;
+            color: #ffffff;
+            text-decoration: none;
+            opacity: 0.85;
+            white-space: nowrap;
+            transition: color 0.3s ease, opacity 0.3s ease;
+        }
+
+        .sub_item:hover {
+            color: var(--text_accent, #3b82f6);
+        }
+
+        .nav_expandable_group .sub_item.active,
+        .mobile_sub_links a.active {
+            color: var(--text_accent, #ff3333) !important;
+            opacity: 1 !important;
+            font-weight: 700 !important;
+        }
+
+        .sub_divider {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.85rem;
+            user-select: none;
+        }
+
+
+        /* ==========================================================================
+           5. RIGHT SIDE: GLOBAL MAIN NAVIGATION LINKS
+           ========================================================================== */
+        .nav_right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            list-style: none;
+        }
+
+        .nav_right a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1.05rem;
+            font-weight: 500;
+            position: relative;
+            padding: 4px 0;
+            transition: color 0.3s ease;
+        }
+
+        .nav_right a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #3b82f6, #9333ea);
+            transition: width 0.3s ease;
+        }
+
+        .nav_right a:hover {
+            color: #3b82f6;
+        }
+
+        .nav_right a:hover::after {
+            width: 100%;
+        }
+
+
+        /* ==========================================================================
+           6. MOBILE RESPONSIVE HAMBURGER MENU (< 768px)
+           ========================================================================== */
+        .mobile_toggle_btn {
+            display: none;
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .mobile_menu_overlay {
+            display: none;
+            position: absolute;
+            top: 70px;
+            left: 0;
+            width: 100%;
+            background: rgba(15, 17, 23, 0.98);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(16px);
+            padding: 20px 30px;
+            flex-direction: column;
+            gap: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .mobile_menu_overlay.open {
+            display: flex;
+        }
+
+        .mobile_nav_item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .mobile_main_link {
+            color: #ffffff;
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .mobile_sub_links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding-left: 15px;
+            border-left: 2px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .mobile_sub_links a {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .mini_nav {
+                display: none !important; /* Hide pill capsule on phones */
+            }
+
+            .nav_right {
+                display: none; /* Hide horizontal links on phones */
+            }
+
+            .mobile_toggle_btn {
+                display: block; /* Show hamburger button */
+            }
+
+            .nav_container_inner {
+                padding: 0 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- STICKY NAVBAR MAIN CONTAINER -->
+    <div class="nav_placeholder">
+        <div class="nav_container">
+            <div class="nav_container_inner">
+                
+                <!-- LEFT SIDE: LOGO + DESKTOP MINI-NAV -->
+                <div class="nav_left">
+                    <div class="nav_left_logos">
+                        <!-- Home Logo Group -->
+                        <a href="/index.html" class="nav_brand_logo mini_nav_home">
+                            <img src="/Images/e.jpg" alt="Home Logo">
+                            <span class="brand_name">Ékriksie</span>
+                        </a>
+                        <!-- Music Logo Group -->
+                        <a href="/gallery/freebeats.html" class="nav_brand_logo mini_nav_music">
+                            <img src="/Images/em.jpg" alt="Music Logo">
+                            <span class="brand_name">Ekriksie Music</span>
+                        </a>
+                        <!-- Art Logo Group -->
+                        <a href="/gallery/freebeats.html" class="nav_brand_logo mini_nav_art">
+                            <img src="/Images/ea.jpg" alt="Art Logo">
+                            <span class="brand_name">Ekriksie Art</span>
+                        </a>
+
+
+                                                <!-- Art Logo Group -->
+                        <a href="/gallery/freebeats.html" class="nav_brand_logo mini_nav_about">
+                            <img src="/Images/em.jpg" alt="about Logo">
+                            <span class="brand_name">Ekriksie Music</span>
+                        </a>
+
+
+
+
+
+                    </div>
+
+                    <!-- DESKTOP MINI-NAV CAPSULE -->
+                    <div    class="mini_nav">
+                        <!-- Home Capsule Group -->
+                        <div class="nav_expandable_group mini_nav_home">
+                            <a href="#section_1" class="nav_link sub_item sub_nav_link">Home</a>
+                            <a href="#section_2" class="nav_link sub_item sub_nav_link">Music</a>
+                            <a href="#section_3" class="nav_link sub_item sub_nav_link">Art</a>
+                        </div>
+
+                        <!-- Music Capsule Group -->
+                        <div class="nav_expandable_group mini_nav_music">
+                            <a href="/gallery/freebeats.html" class="sub_item">Free Beats</a>
+                            <a href="#beats" class="sub_item">Beats</a>
+                            <a href="#custom" class="sub_item">Custom Beat</a>
+                        </div>
+
+                        <!-- Art Capsule Group -->
+                        <div class="nav_expandable_group mini_nav_art">
+                            <a href="/gallery/freebeats.html" class="sub_item">Free Art</a>
+                            <a href="#beats" class="sub_item">Vector</a>
+                            <a href="#custom" class="sub_item">Custom Art</a>
+                        </div>
+
+                        <!-- about Capsule Group -->
+                        <div class="nav_expandable_group mini_nav_about">
+                            <a href="#section_1" class="nav_link sub_item sub_nav_link">Home</a>
+                            <a href="#section_2" class="nav_link sub_item sub_nav_link">About</a>
+                            <a href="#section_3" class="nav_link sub_item sub_nav_link">Contact</a>
+                        </div>
+
+
+
+
+
+                    </div>
+                </div>
+
+                <!-- RIGHT SIDE: DESKTOP GLOBAL MAIN LINKS -->
+                <ul class="nav_right">
+                    <li><a class="nav_home" href="/index.html">Home</a></li>
+                    <li><a class="nav_music" href="/gallery/freebeats.html">Music</a></li>
+                    <li><a class="nave_art" href="/gallery/freearts.html">Art</a></li>
+                    <li><a class="nav_about" href="/about.html">About</a></li>
+                    <li><a class="nav_contact" href="/contact.html">Contact</a></li>
+                </ul>
+
+                <!-- HAMBURGER BUTTON (MOBILE ONLY) -->
+                <button class="mobile_toggle_btn" id="mobileToggle" aria-label="Toggle Menu">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <!-- SLIDE-DOWN OVERLAY MENU (MOBILE ONLY) -->
+                <div class="mobile_menu_overlay" id="mobileMenu">
+                    
+                    <!-- HOME SECTION & SUB-LINKS -->
+                    <div class="mobile_nav_item">
+                        <a class="mobile_main_link" href="/index.html">Home</a>
+                        <div class="mobile_sub_links">
+                            <a href="#section_1" class="sub_nav_link">Home</a>
+                            <a href="#section_2" class="sub_nav_link">Music Section</a>
+                            <a href="#section_3" class="sub_nav_link">Art Section</a>
+                        </div>
+                    </div>
+
+                    <!-- MUSIC SECTION & SUB-LINKS -->
+                    <div class="mobile_nav_item">
+                        <a class="mobile_main_link" href="/gallery/freebeats.html">Music</a>
+                        <div class="mobile_sub_links">
+                            <a href="/gallery/freebeats.html">Free Beats</a>
+                            <a href="#beats">Beats Catalog</a>
+                            <a href="#custom">Custom Beat</a>
+                        </div>
+                    </div>
+
+                    <!-- ART SECTION & SUB-LINKS -->
+                    <div class="mobile_nav_item">
+                        <a class="mobile_main_link" href="/gallery/freearts.html">Art</a>
+                        <div class="mobile_sub_links">
+                            <a href="/gallery/freebeats.html">Free Art</a>
+                            <a href="#beats">Vector Art</a>
+                            <a href="#custom">Custom Art</a>
+                        </div>
+                    </div>
+
+                    <!-- ABOUT & CONTACT -->
+                    <div class="mobile_nav_item">
+                        <a class="mobile_main_link" href="/about.html">About</a>
+                    </div>
+                    <div class="mobile_nav_item">
+                        <a class="mobile_main_link" href="/contact.html">Contact</a>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- HAMBURGER TOGGLE & ACTIVE STATE SCRIPT -->
+    <script type="text/javascript">
+        // Mobile menu toggle
+        const mobileToggleBtn = document.getElementById('mobileToggle');
+        const mobileMenuOverlay = document.getElementById('mobileMenu');
+
+        if (mobileToggleBtn && mobileMenuOverlay) {
+            mobileToggleBtn.addEventListener('click', () => {
+                mobileMenuOverlay.classList.toggle('open');
+                const icon = mobileToggleBtn.querySelector('i');
+                if (icon) {
+                    icon.classList.toggle('fa-bars');
+                    icon.classList.toggle('fa-xmark');
+                }
+            });
+        }
+
+        // Active state sync
+        function updateActiveSubNav(currentSectionId) {
+            const subNavLinks = document.querySelectorAll('.sub_nav_link');
+
+            subNavLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + currentSectionId) {
+                    link.classList.add('active');
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>

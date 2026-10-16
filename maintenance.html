@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Y0D4WSLZGN"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Y0D4WSLZGN');
+</script>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ékriksie | Maintenance</title>
+    <!-- Link Global Theme Configuration -->
+    <link rel="stylesheet" href="theme.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text-base);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 600px;
+            padding: 2rem;
+            z-index: 2;
+        }
+
+        .glow-circle {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(138, 43, 226, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+            border-radius: 50%;
+            z-index: 1;
+            animation: pulse 4s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.6; }
+            100% { transform: scale(1.2); opacity: 1; }
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, var(--text-base) 0%, var(--color-accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        a {
+            color: var(--color-accent);
+            text-decoration: none;
+            transition: color var(--transition-speed) ease;
+        }
+
+        a:hover {
+            color: var(--color-accent-hover);
+            text-decoration: underline;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.5rem 1.2rem;
+            background: var(--color-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            color: var(--color-accent);
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+
+        .home-link {
+            display: inline-block;
+            margin-top: 1rem;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glow-circle"></div>
+
+    <div class="container">
+        <span class="badge">Ékriksie Music & Arts</span>
+        <h1>Coming Soon</h1>
+        <p>
+            This page is under maintenance, please come back soon.<br>
+            For any questions, send a message to <a href="mailto:Ekriksie@gmil.com">Ekriksie@gmil.com</a>
+        </p>
+        <div>
+            <a href="index.html" class="home-link">Get back to home page</a>
+        </div>
+    </div>
+
+</body>
+</html>

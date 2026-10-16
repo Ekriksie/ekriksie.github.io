@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Section 2</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            background-color: #0a0914;
+            color: #f3f4f6;
+            font-family: sans-serif;
+           
+
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding-top: 40px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-title h2 {
+            font-size: 1.8rem;
+            margin: 0 0 0.5rem 0;
+            color: #fff;
+        }
+
+        .section-title span {
+            color: #8b5cf6;
+        }
+
+        .section-title p {
+            color: #9ca3af;
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        /* 3 Steps Grid */
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .step-card {
+            background-color: #131127;
+            border: 1px solid #241f47;
+            border-radius: 1rem;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .num-badge {
+            width: 2.25rem;
+            height: 2.25rem;
+            border-radius: 0.5rem;
+            background: rgba(124, 58, 237, 0.2);
+            color: #8b5cf6;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .step-card h3 {
+            font-size: 1.1rem;
+            margin: 0;
+            color: #fff;
+        }
+
+        .step-card p {
+            font-size: 0.85rem;
+            color: #9ca3af;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .pricing {
+            margin-top: auto;
+            padding-top: 0.75rem;
+            border-top: 1px solid #241f47;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            background-color: #0a0914;
+            padding: 0.4rem 0.6rem;
+            border-radius: 0.4rem;
+            border: 1px solid #241f47;
+        }
+
+        .price-row span:last-child {
+            color: #8b5cf6;
+            font-weight: bold;
+        }
+
+        /* Guarantee Box */
+        .guarantee {
+            background: linear-gradient(to right, rgba(124, 58, 237, 0.2), #131127, rgba(124, 58, 237, 0.2));
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 1rem;
+            padding: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+        }
+
+        .guarantee i {
+            font-size: 2rem;
+            color: #8b5cf6;
+        }
+
+        .guarantee h3 {
+            font-size: 1rem;
+            margin: 0 0 0.25rem 0;
+            color: #fff;
+        }
+
+        .guarantee p {
+            font-size: 0.85rem;
+            color: #9ca3af;
+            margin: 0;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Section Header -->
+        <div class="section-title">
+            <h2>100% Free Vocal Test <span>(Zero Pressure)</span></h2>
+            <p>How we turn your raw audio into a finished release without risk.</p>
+        </div>
+
+        <!-- 3 Steps Grid -->
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="num-badge">1</div>
+                <h3>Send Your Vocal</h3>
+                <p>Send over your raw vocal recording or phone demo. I'll build a custom track around your voice completely for free so you can hear the full potential before spending anything.</p>
+            </div>
+
+            <div class="step-card">
+                <div class="num-badge">2</div>
+                <h3>No Pressure to Buy</h3>
+                <p>If you don't like the track I create, there is zero obligation and no hard feelings—you don't have to purchase a thing. You are completely free to walk away.</p>
+            </div>
+
+            <div class="step-card">
+                <div class="num-badge">3</div>
+                <h3>Own Exclusive Rights</h3>
+                <p>If you love what you hear and want full ownership to release it on streaming platforms, pick what fits your budget:</p>
+                <div class="pricing">
+                    <div class="price-row">
+                        <span>Patreon Subscription</span>
+                        <span>$30 / mo</span>
+                    </div>
+                    <div class="price-row">
+                        <span>Exclusive Buyout</span>
+                        <span>$300 flat</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Human Guarantee -->
+        <div class="guarantee">
+            <i class="fa-solid fa-shield-halved"></i>
+            <div>
+                <h3>100% Human-Crafted Guarantee</h3>
+                <p>No AI music generators or automated tools. Every beat, synth patch, mix element, and cover art design is crafted manually in the studio. You receive full multitrack WAV stems upon purchase.</p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

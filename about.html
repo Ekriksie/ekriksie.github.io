@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y0D4WSLZGN"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-Y0D4WSLZGN');
+    </script>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ékriksie</title>
+    
+    <!-- Link Global Theme Configuration -->
+    <link rel="stylesheet" href="theme.css">
+
+    <script src="../data/beats-data.js"></script>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
+    <style type="text/css">
+        .nav_about{
+            color: var(--int_nav_active) !important;
+        }
+
+        .nav_expandable_group.scrolled_expand .sub_item, 
+        .nav_expandable_group.scrolled_expand .sub_divider {
+            max-width: 150px !important;
+            opacity: 0.85 !important;
+            pointer-events: auto !important;
+        }
+
+
+        .mini_nav_about { display: flex !important; }
+
+
+
+
+    </style>
+
+
+
+
+
+    <style>
+
+
+
+
+
+
+
+
+
+        /* ==========================================
+            GLOBAL RESETS & VIEWPORT LOCK
+            ========================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* Locks outer window to prevent scroll conflicts */
+            font-family: Arial, Helvetica, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            background-color: var(--color_base);
+            color: var(--text_base);
+        }
+
+        img, video, picture, svg {
+            max-width: 100%;
+            display: block;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul, ol {
+            list-style: none;
+        }
+
+        /* ==========================================
+            SNAP CONTAINER & SECTIONS
+            ========================================== */
+        .index_page_container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .snap_container {
+            overflow-y: scroll;
+            overflow-x: hidden;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Strict height + overflow hidden forces exact section bounds for the scrollbar */
+        .section {
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Centers sections 1, 2, and 3 */
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Footer section: strict height, pushed to bottom */
+        .footer {
+            height: 100vh;
+            height: 100dvh;
+            width: 100vw;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body class="body_player page_home" data-page="home">
+    <div class="index_page_container">
+        <!-- NAVIGATION BAR CONTAINER -->
+        <div id="nav_container"></div>
+
+        <!-- SNAP SECTIONS FOR HOMEPAGES -->
+        <div class="snap_container" id="snapContainer">
+            <div class="nav_link section" id="section_1"></div>
+            <div class="nav_link section" id="section_2"></div>
+            <div class="nav_link section" id="section_3"></div>
+            <div class="footer" id="footer"></div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         SCRIPT 1: HOMEPAGE CONTENT LOADER
+         ========================================== -->
+    <script>
+        const pagesToLoad = [
+            { file: 'about/aboutpage1.html', targetId: 'section_1' },
+            { file: 'about/aboutpage2.html', targetId: 'section_2' },
+            { file: 'about/aboutpage3.html', targetId: 'section_3' },
+            { file: 'about/aboutpage4.html', targetId: 'footer' }
+        ];
+
+        async function loadWebsite() {
+            for (let page of pagesToLoad) {
+                let sectionDiv = document.getElementById(page.targetId);
+                if (!sectionDiv) continue;
+
+                try {
+                    let response = await fetch(page.file);
+                    let htmlText = await response.text();
+
+                    let parser = new DOMParser();
+                    let doc = parser.parseFromString(htmlText, 'text/html');
+
+                    doc.querySelectorAll('style').forEach(style => {
+                        document.head.appendChild(style);
+                    });
+
+                    sectionDiv.innerHTML = doc.body.innerHTML;
+
+                    doc.querySelectorAll('script').forEach(oldScript => {
+                        let newScript = document.createElement('script');
+                        newScript.text = oldScript.text;
+                        document.body.appendChild(newScript);
+                    });
+
+                } catch (error) {
+                    console.error('Error loading page:', page.file, error);
+                }
+            }
+        }
+
+        loadWebsite();
+    </script>
+
+
+<!-- ==========================================
+     NAVBAR FETCH, MOBILE MENU & SCROLL SPY SCRIPT
+     ========================================== -->
+<script>
+    async function loadNavbar() {
+        try {
+            let navRes = await fetch('nav.html');
+            let navText = await navRes.text();
+            document.getElementById('nav_container').innerHTML = navText;
+
+            // 1. Bind mobile hamburger toggle after nav is injected
+            initMobileMenu();
+
+            // 2. Bind desktop scroll-expansion interactions
+            initNavbarInteractions();
+
+            // 3. Bind scroll spy to highlight active sections/sub-items
+            initScrollSpy();
+        } catch (err) {
+            console.error('Error loading navigation:', err);
+        }
+    }
+
+    // Handles mobile hamburger menu opening/closing
+    function initMobileMenu() {
+        const mobileToggleBtn = document.getElementById('mobileToggle');
+        const mobileMenuOverlay = document.getElementById('mobileMenu');
+
+        if (mobileToggleBtn && mobileMenuOverlay) {
+            mobileToggleBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                mobileMenuOverlay.classList.toggle('open');
+                
+                const icon = mobileToggleBtn.querySelector('i');
+                if (icon) {
+                    icon.classList.toggle('fa-bars');
+                    icon.classList.toggle('fa-xmark');
+                }
+            });
+        }
+    }
+
+    function initNavbarInteractions() {
+        const snapContainerElement = document.getElementById('snapContainer');
+        const activeGroup = document.querySelector('.nav_expandable_group:not([style*="display: none"])');
+        const expandBtn = activeGroup ? activeGroup.querySelector('.expand_trigger') : null;
+
+        if (snapContainerElement && activeGroup) {
+            snapContainerElement.addEventListener('scroll', function() {
+                if (snapContainerElement.scrollTop > 50) {
+                    activeGroup.classList.add('scrolled_expand');
+                } else {
+                    activeGroup.classList.remove('scrolled_expand');
+                }
+            });
+        }
+
+        if (expandBtn && activeGroup) {
+            expandBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                activeGroup.classList.toggle('scrolled_expand');
+            });
+        }
+    }
+
+    function initScrollSpy() {
+        const snapContainer = document.getElementById('snapContainer');
+        const sections = snapContainer.querySelectorAll('.section');
+
+        function updateActiveLinks() {
+            let current = 'section_1'; // Default to first section on load
+            const scrollPos = snapContainer.scrollTop;
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 150;
+                const sectionHeight = section.clientHeight;
+                if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            // Target main nav, fetched mini-nav sub_items, and mobile menu links
+            const links = document.querySelectorAll('.nav_link, .sub_item, .sub_nav_link');
+            links.forEach(link => {
+                link.classList.remove('active');
+                const href = link.getAttribute('href') || '';
+                if (href === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        // Run immediately on page load so Section 1 starts active
+        updateActiveLinks();
+
+        // Run on every scroll event inside the container
+        snapContainer.addEventListener('scroll', updateActiveLinks);
+    }
+
+    loadNavbar();
+</script>
+
+
+
+
+        <!-- PAGE SECTIONS -->
+    <section id="section_1" class="section"></section>
+    <section id="section_2" class="section"></section>
+    <section id="section_3" class="section"></section>
+
+
+
+        <!-- SCRIPT TO AUTOMATICALLY UPDATE NAV COLOR ON SCROLL -->
+    <script>
+        const sections = document.querySelectorAll('.section');
+        const navLinks = document.querySelectorAll('.nav_link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.scrollY >= (sectionTop - sectionHeight / 3)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+
+
+
+
+</body>
+</html>

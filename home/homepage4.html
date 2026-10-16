@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ékriksie | Footer</title>
+    <!-- Link Global Theme Configuration -->
+    <link rel="stylesheet" href="../theme.css">
+
+    <style>
+    /* Cleaned base body reset */
+    .body_footer {
+        margin: 0;
+        padding: 0;
+        background-color: var(--bg_canvas);
+    }
+
+    .home_footer_container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        background-color: var(--bg_canvas);
+        color: var(--text_main);
+        padding: 40px;
+        box-sizing: border-box;
+        text-align: center;
+        font-family: Arial, sans-serif;
+        position: relative;
+        z-index: 10;
+        min-height: 100vh;
+    }
+
+    .home_footer_top {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        max-width: 750px;
+        width: 100%;
+        margin-bottom: 40px;
+    }
+
+    .home_footer_brand {
+        font-size: 44px;
+        font-weight: 900;
+        font-style: italic;
+        letter-spacing: -1px;
+        color: var(--text_main);
+    }
+
+    .home_footer_text {
+        font-size: 17px;
+        line-height: 1.6;
+        color: var(--text_sup);
+        margin: 0;
+    }
+
+    .home_footer_links_grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 35px;
+        max-width: 1100px;
+        width: 100%;
+        text-align: left;
+        margin-bottom: 50px;
+    }
+
+    .home_footer_column h4 {
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        color: var(--text_muted, #888888);
+        margin-bottom: 14px;
+    }
+
+    .home_footer_column ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .home_footer_column ul li a {
+        color: var(--text_sup);
+        text-decoration: none;
+        font-size: 14px;
+        transition: color var(--transition-speed) ease;
+    }
+
+    .home_footer_column ul li a:hover {
+        color: var(--accent_primary);
+        text-decoration: underline;
+    }
+
+    .home_footer_bottom {
+        border-top: 1px solid var(--border_subtle);
+        max-width: 1100px;
+        width: 100%;
+        padding-top: 25px;
+        font-size: 13px;
+        color: var(--text_muted, #888888);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    @media (max-width: 850px) {
+        .home_footer_links_grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+        .home_footer_bottom {
+            flex-direction: column;
+            gap: 10px;
+            text-align: center;
+        }
+    }
+    </style>
+</head>
+<body class="body_footer">
+
+    <section class="home_footer_container">
+        
+        <!-- Top Brand & Intro Text -->
+        <div class="home_footer_top">
+            <div class="home_footer_brand">Ékriksie</div>
+            <p class="home_footer_text">
+                The central hub for music production, atmospheric soundscapes, visual art, and creative exploration.
+            </p>
+        </div>
+
+        <!-- 4 Columns for your Content -->
+        <div class="home_footer_links_grid">
+            <!-- Column 1: Music Streams -->
+            <div class="home_footer_column">
+                <h4>Music</h4>
+                <ul>
+                    <li><a href="https://www.patreon.com/cw/EkriksieMusic" target="_blank">Patreon</a></li>
+                    <li><a href="https://pixabay.com/users/ekriksiemusic" target="_blank">Pixabay | Ékriksie Music</a></li>
+                    <li><a href="https://soundcloud.com/ekriksiemusic" target="_blank">SoundCloud | Ékriksie Music</a></li>
+                    <li><a href="https://www.youtube.com/@EkriksieMusic" target="_blank">YouTube | Ékriksie Music</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 2: Creative Works -->
+            <div class="home_footer_column">
+                <h4>Arts</h4>
+                <ul>
+                    <li><a href="https://pixabay.com/users/ekriksieart-4921897/" target="_blank">Pixabay | Ékriksie Art</a></li>
+                    <li><a href="https://unsplash.com/@ekriksieart" target="_blank">Unsplash | Ékriksie Art</a></li>
+                    <li><a href="https://www.instagram.com/IdentityOutfit/" target="_blank">Instagram | Identity Outfit</a></li>
+                    <li><a href="https://www.patreon.com/cw/EkriksieArt" target="_blank">Patreon | Ékriksie Art</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 3: Social Hubs -->
+            <div class="home_footer_column">
+                <h4>Connect</h4>
+                <ul>
+                    <li><a href="mailto:Ekriksie@gmail.com" target="_blank">Email</a></li>
+                    <li><a href="https://www.instagram.com/Ekriksie/" target="_blank">Instagram</a></li>
+                    <li><a href="https://x.com/Ekriksie" target="_blank">X | Ékriksie</a></li>
+                    <li><a href="https://x.com/Ekriksie" target="_blank">X | Ékriksie Music</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 4: Portfolios & Stock -->
+            <div class="home_footer_column">
+                <h4>Portfolios</h4>
+                <ul>
+                    <li><a href="https://www.instagram.com/Ekriksie" target="_blank">IN | Tracy Ékriksie</a></li>
+                    <li><a href="https://x.com/Ekriksie" target="_blank">X | Tracy Ékriksie</a></li>
+                    <li><a href="https://www.facebook.com/TracyEkriksie/" target="_blank">FB | Tracy Ékriksie</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Bottom Copyright Bar -->
+        <div class="home_footer_bottom">
+            <span>&copy; 2026 Ékriksie. All rights reserved.</span>
+            <span>Designed for the core universe.</span>
+        </div>
+
+    </section>
+
+</body>
+</html>

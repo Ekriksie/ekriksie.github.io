@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Producer Studio | Send Your Vocal</title>
+    <!-- Link Global Theme Configuration -->
+    <link rel="stylesheet" href="theme.css">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        fetch('nav.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('nav_container').innerHTML = data;
+            });
+    </script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body, html {
+            width: 100%;
+            min-height: 100vh;
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: var(--bg_canvas);
+            color: var(--text_main);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .page_wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: calc(100vh - 70px);
+            justify-content: space-between;
+        }
+
+        .main_content {
+            flex-grow: 1;
+            padding: 60px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .section_header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: rgba(139, 92, 246, 0.15);
+            color: var(--text_accent);
+            border: 1px solid var(--border_subtle);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        .section_title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--text_main);
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .section_subtitle {
+            color: var(--text_muted);
+            font-size: 1rem;
+            line-height: 1.5;
+            max-width: 550px;
+            margin: 0 auto;
+        }
+
+        /* Guidelines Card */
+        .guidelines_card {
+            background-color: var(--bg_surface);
+            border: 1px solid var(--border_subtle);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .guidelines_title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text_main);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .guidelines_grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .guideline_item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.85rem;
+            color: var(--text_muted);
+            line-height: 1.4;
+        }
+
+        .guideline_item i {
+            color: var(--accent_primary);
+            margin-top: 2px;
+        }
+
+        /* Form Card */
+        .form_card {
+            background-color: var(--bg_surface);
+            border: 1px solid var(--border_subtle);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form_row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form_group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form_label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text_muted);
+            letter-spacing: 0.5px;
+        }
+
+        .form_control {
+            width: 100%;
+            background-color: var(--bg_container);
+            border: 1px solid var(--border_subtle);
+            border-radius: 10px;
+            padding: 12px 15px;
+            color: var(--text_main);
+            font-size: 0.95rem;
+            font-family: inherit;
+            outline: none;
+            transition: border-color var(--transition_speed);
+        }
+
+        .form_control:focus {
+            border-color: var(--accent_primary);
+        }
+
+        textarea.form_control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .submit_btn {
+            background: var(--gradient);
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            padding: 14px 24px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+        }
+
+        .submit_btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.7);
+        }
+
+        .privacy_note {
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text_muted);
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .privacy_note i {
+            color: var(--accent_primary);
+        }
+
+        footer {
+            border-top: 1px solid var(--border_subtle);
+            padding: 25px 20px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text_muted);
+        }
+
+        @media (max-width: 768px) {
+            .form_row, .guidelines_grid {
+                grid-template-columns: 1fr;
+            }
+            .form_card {
+                padding: 25px 20px;
+            }
+            .section_title {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page_wrapper">
+        <!-- FETCHED NAVBAR CONTAINER -->
+        <div id="nav_container"></div>
+
+        <main class="main_content">
+            
+            <div class="section_header">
+                <span class="badge">Start Your Demo</span>
+                <h1 class="section_title">Send Your Vocal (100% Free Demo)</h1>
+                <p class="section_subtitle">Paste your audio link below. I will build a custom track around your voice—zero upfront cost, zero pressure to buy.</p>
+            </div>
+
+            <!-- Guidelines Card -->
+            <div class="guidelines_card">
+                <div class="guidelines_title">
+                    <i class="fa-solid fa-circle-info" style="color: var(--accent_primary);"></i> Audio Submission Guidelines
+                </div>
+                <div class="guidelines_grid">
+                    <div class="guideline_item">
+                        <i class="fa-solid fa-check"></i>
+                        <span><strong>Format:</strong> WAV or high-quality MP3 file via cloud link.</span>
+                    </div>
+                    <div class="guideline_item">
+                        <i class="fa-solid fa-check"></i>
+                        <span><strong>Recording:</strong> Send dry vocals (no heavy reverb/effects). Phone voice notes work great too!</span>
+                    </div>
+                    <div class="guideline_item">
+                        <i class="fa-solid fa-check"></i>
+                        <span><strong>BPM & Key:</strong> Include tempo or key if you know it (Optional).</span>
+                    </div>
+                    <div class="guideline_item">
+                        <i class="fa-solid fa-check"></i>
+                        <span><strong>References:</strong> Mention 1-2 songs/artists to guide the vibe.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Real FormSubmit Form -->
+            <form action="https://formsubmit.co/ekriksie@gmail.com" method="POST" class="form_card">
+                
+                <!-- FormSubmit Configuration Hidden Fields -->
+                <input type="hidden" name="_subject" value="New Vocal Demo Submission from Website!">
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_next" value="contact/thankyou.html">
+
+                <div class="form_row">
+                    <div class="form_group">
+                        <label class="form_label">Artist / Stage Name *</label>
+                        <input type="text" name="Artist_Name" required placeholder="e.g. Alex Star" class="form_control">
+                    </div>
+                    <div class="form_group">
+                        <label class="form_label">Email Address *</label>
+                        <input type="email" name="email" required placeholder="your.name@example.com" class="form_control">
+                    </div>
+                </div>
+
+                <div class="form_row">
+                    <div class="form_group">
+                        <label class="form_label">Preferred Genre / Vibe *</label>
+                        <select name="Genre" required class="form_control">
+                            <option value="">Select a Genre</option>
+                            <option value="hip-hop">Hip-Hop / Rap</option>
+                            <option value="edm">EDM / Melodic</option>
+                            <option value="techno">Techno / Club</option>
+                            <option value="rnb">R&B / Soul</option>
+                            <option value="pop">Pop / Commercial</option>
+                            <option value="other">Other Style</option>
+                        </select>
+                    </div>
+                    <div class="form_group">
+                        <label class="form_label">BPM & Key (Optional)</label>
+                        <input type="text" name="BPM_Key" placeholder="e.g. 128 BPM, F minor" class="form_control">
+                    </div>
+                </div>
+
+                <div class="form_group">
+                    <label class="form_label">Reference Songs or Artists</label>
+                    <input type="text" name="References" placeholder="e.g. The Weeknd, Charlotte de Witte, Drake" class="form_control">
+                </div>
+
+                <div class="form_group">
+                    <label class="form_label">Direct Audio Link (Google Drive, Dropbox, WeTransfer, SoundCloud) *</label>
+                    <input type="url" name="Audio_Link" required placeholder="Paste your file link here..." class="form_control">
+                </div>
+
+                <div class="form_group">
+                    <label class="form_label">Additional Notes or Ideas</label>
+                    <textarea name="Notes" rows="3" placeholder="Tell me a bit about your vision for this track..." class="form_control"></textarea>
+                </div>
+
+                <button type="submit" class="submit_btn">
+                    <i class="fa-solid fa-paper-plane" style="margin-right: 8px;"></i> Submit Your Vocal For Free
+                </button>
+            </form>
+
+            <p class="privacy_note">
+                <i class="fa-solid fa-lock"></i> Your audio links remain 100% private and confidential. No AI generators used.
+            </p>
+
+        </main>
+
+        <footer>
+            <p>© 2026 Producer Studio. All rights reserved. • Custom Beats • Professional Mixing & Mastering</p>
+        </footer>
+    </div>
+
+    <!-- Script: Navbar Loader -->
+    <script>
+        async function loadNavbar() {
+            try {
+                let navRes = await fetch('nav.html');
+                let navText = await navRes.text();
+                document.getElementById('nav_container').innerHTML = navText;
+
+                const mobileToggleBtn = document.getElementById('mobileToggle');
+                const mobileMenuOverlay = document.getElementById('mobileMenu');
+
+                if (mobileToggleBtn && mobileMenuOverlay) {
+                    mobileToggleBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        mobileMenuOverlay.classList.toggle('open');
+                        const icon = mobileToggleBtn.querySelector('i');
+                        if (icon) {
+                            icon.classList.toggle('fa-bars');
+                            icon.classList.toggle('fa-xmark');
+                        }
+                    });
+                }
+            } catch (err) {
+                console.error('Error loading navigation:', err);
+            }
+        }
+
+        loadNavbar();
+    </script>
+</body>
+</html>

@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Y0D4WSLZGN"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Y0D4WSLZGN');
+</script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ékriksie | Hub & Links</title>
+    <!-- Link Global Theme Configuration -->
+    <link rel="stylesheet" href="../theme.css">
+
+    <!-- JavaScript to fetch and insert the navigation -->
+    <script>
+        fetch('../nav.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('nav_placeholder').innerHTML = data;
+            });
+    </script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        .media_cont {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg_canvas);
+            color: var(--text_main);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px 60px 20px;
+            width: 100%;
+            flex: 1;
+        }
+
+        /* Full-Width Banner Section with Text Overlay */
+        .header_hub {
+            padding: 20px 0;
+            margin-bottom: 25px;
+        }
+
+        .banner_box {
+            position: relative;
+            width: 100vw;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+            height: 280px;
+            overflow: hidden;
+            border-top: 1px solid var(--border_subtle);
+            border-bottom: 1px solid var(--border_subtle);
+            background-color: var(--bg_surface);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .banner_img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        /* Dark overlay gradient so text pops over the banner image */
+        .banner_overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+
+        .banner_content {
+            position: relative;
+            z-index: 3;
+            padding: 0 20px;
+        }
+
+   
+
+        /* Major Section Container Blocks */
+        .content_block {
+            background-color: rgba(24, 27, 34, 0.4);
+            border: 1px solid var(--border_subtle);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 40px;
+        }
+
+        .block_heading {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text_main);
+            margin-bottom: 15px;
+        }
+
+        /* Filter Navigation Buttons */
+        .filter_nav {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter_btn {
+            background-color: var(--bg_surface);
+            color: var(--text_muted);
+            border: 1px solid var(--border_subtle);
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all var(--transition_speed) ease;
+        }
+
+        .filter_btn:hover {
+            color: var(--text_main);
+            border-color: var(--accent_primary);
+        }
+
+        .filter_btn.active {
+            background-color: var(--accent_primary);
+            color: var(--text_main);
+            border-color: var(--accent_primary);
+        }
+
+        /* Locked Heights & Independent Scroll Containers */
+        .links_scroll_box {
+            height: 260px;
+            overflow-y: auto; 
+            padding-right: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border_subtle) transparent;
+        }
+
+        /* Custom Sleek Dark Scrollbar */
+        .links_scroll_box::-webkit-scrollbar {
+            width: 6px;
+        }
+        .links_scroll_box::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .links_scroll_box::-webkit-scrollbar-thumb {
+            background: var(--border_subtle);
+            border-radius: 10px;
+        }
+        .links_scroll_box::-webkit-scrollbar-thumb:hover {
+            background: var(--accent_primary);
+        }
+
+        /* Clean, Unified Minimalist Link Cards */
+
+        .link_card {
+            background-color: var(--bg_surface);
+            border-radius: 8px;
+            padding: 16px 20px;
+            border: 1px solid var(--border_subtle);
+            text-decoration: none;
+            color: var(--text_main);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: 500;
+            font-size: 0.95rem;
+            flex-shrink: 0;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color var(--transition_speed) ease, background-color var(--transition_speed) ease;
+        }
+
+        /* Simple, elegant hover state using your theme accent */
+        .link_card:hover {
+            transform: translateY(-2px);
+            background-color: var(--int_hover); /* <-- CHANGED TO NEW ROOT */
+            border-color: var(--int_hover);
+            box-shadow: 0 8px 20px var(--shadow_subtle);
+            color: var(--text_main);
+        }
+
+        .link_content_left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Icon Container */
+        .card_icon {
+            width: 22px;
+            height: 22px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        /* Crisp white/muted icon style that pops cleanly without multi-color clutter */
+        .card_icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            opacity: 0.75;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+           
+        }
+
+        .link_card:hover .card_icon img {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+
+        .link_card .category_badge {
+            font-size: 0.75rem;
+            color: var(--text_muted);
+            background: rgba(255, 255, 255, 0.03);
+            padding: 4px 10px;
+            border-radius: 4px;
+            border: 1px solid var(--border_subtle);
+            transition: color var(--transition_speed) ease, border-color var(--transition_speed) ease;
+        }
+
+        .link_card:hover .category_badge {
+            color: var(--text_main);
+            border-color: rgba(192, 132, 252, 0.4);
+        }
+
+        .link_card.hidden {
+            display: none;
+        }
+
+        .footer_hub {
+            text-align: center;
+            padding: 30px;
+            color: var(--text_muted);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border_subtle);
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="media_cont">
+        <!-- Navigation Placeholder -->
+        <div class="nav_placeholder" id="nav_placeholder"></div>
+
+        <!-- Full-Width Banner & Header with Text Inside -->
+        <header class="header_hub">
+            <div class="banner_box">
+                <img src="../images/backgornd-media.jpg" alt="Ékriksie Banner" class="banner_img">
+                <div class="banner_overlay"></div>
+    
+            </div>
+        </header>
+
+        <div class="container">
+            <!-- BLOCK 1: Ékriksie Universe -->
+            <div class="content_block">
+                <div class="block_heading">Ékriksie Universe</div>
+
+                <!-- Filter Navigation -->
+                <div class="filter_nav" id="filterNav1">
+                    <button class="filter_btn active" data-filter="all">All</button>
+                    <button class="filter_btn" data-filter="ekriksie">Ékriksie</button>
+                    <button class="filter_btn" data-filter="music">Music</button>
+                    <button class="filter_btn" data-filter="art">Art</button>
+                    <button class="filter_btn" data-filter="tracy">Tracy Ékriksie</button>
+                </div>
+
+                <div class="links_scroll_box" id="ekriksieLinks">
+                    <!-- Ékriksie Instagram -->
+                    <a href="https://instagram.com/ekriksie" target="_blank" class="link_card" data-category="ekriksie">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/instagram.png" alt="Instagram"></span>
+                            <span>Ékriksie on Instagram</span>
+                        </div>
+                        <span class="category_badge">Ékriksie</span>
+                    </a>
+                    <!-- Ékriksie X -->
+                    <a href="https://x.com/ekriksie" target="_blank" class="link_card" data-category="ekriksie">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/x.png" alt="X"></span>
+                            <span>Ékriksie on X</span>
+                        </div>
+                        <span class="category_badge">Ékriksie</span>
+                    </a>
+                    <!-- Ékriksie Threads -->
+                    <a href="https://threads.net/@ekriksie" target="_blank" class="link_card" data-category="ekriksie">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/threads.png" alt="Threads"></span>
+                            <span>Ékriksie on Threads</span>
+                        </div>
+                        <span class="category_badge">Ékriksie</span>
+                    </a>
+                    <!-- Ékriksie Facebook -->
+                    <a href="https://facebook.com/ekriksie" target="_blank" class="link_card" data-category="ekriksie">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/facebook.png" alt="Facebook"></span>
+                            <span>Ékriksie on Facebook</span>
+                        </div>
+                        <span class="category_badge">Ékriksie</span>
+                    </a>
+                    <!-- Ékriksie Patreon -->
+                    <a href="https://patreon.com/ekriksie" target="_blank" class="link_card" data-category="ekriksie">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/patreon.png" alt="Patreon"></span>
+                            <span>Ékriksie on Patreon</span>
+                        </div>
+                        <span class="category_badge">Ékriksie</span>
+                    </a>
+                    <!-- Ékriksie Bluesky -->
+                    <a href="https://bsky.app/profile/ekriksie.bsky.social" target="_blank" class="link_card" data-category="ekriksie">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/bluesky.png" alt="Bluesky"></span>
+                            <span>Ékriksie on Bluesky</span>
+                        </div>
+                        <span class="category_badge">Ékriksie</span>
+                    </a>
+
+                    <!-- Ékriksie Music Instagram -->
+                    <a href="https://instagram.com/ekriksiemusic" target="_blank" class="link_card" data-category="music">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/instagram.png" alt="Instagram"></span>
+                            <span>Ékriksie Music on Instagram</span>
+                        </div>
+                        <span class="category_badge">Music</span>
+                    </a>
+                    <!-- Ékriksie Music X -->
+                    <a href="https://x.com/ekriksiemusic" target="_blank" class="link_card" data-category="music">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/x.png" alt="X"></span>
+                            <span>Ékriksie Music on X</span>
+                        </div>
+                        <span class="category_badge">Music</span>
+                    </a>
+                    <!-- Ékriksie Music Threads -->
+                    <a href="https://threads.net/@ekriksiemusic" target="_blank" class="link_card" data-category="music">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/threads.png" alt="Threads"></span>
+                            <span>Ékriksie Music on Threads</span>
+                        </div>
+                        <span class="category_badge">Music</span>
+                    </a>
+                    <!-- Ékriksie Music YouTube -->
+                    <a href="https://youtube.com/@ekriksiemusic" target="_blank" class="link_card" data-category="music">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/youtube.png" alt="YouTube"></span>
+                            <span>Ékriksie Music on YouTube</span>
+                        </div>
+                        <span class="category_badge">Music</span>
+                    </a>
+                    <!-- Ékriksie Music Spotify -->
+                    <a href="https://spotify.com" target="_blank" class="link_card" data-category="music">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/spotify.png" alt="Spotify"></span>
+                            <span>Ékriksie Music on Spotify</span>
+                        </div>
+                        <span class="category_badge">Music</span>
+                    </a>
+                    <!-- Ékriksie Music TikTok -->
+                    <a href="https://tiktok.com/@ekriksiemusic" target="_blank" class="link_card" data-category="music">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/tiktok.png" alt="TikTok"></span>
+                            <span>Ékriksie Music on TikTok</span>
+                        </div>
+                        <span class="category_badge">Music</span>
+                    </a>
+                    <!-- Ékriksie Music Patreon -->
+                    <a href="https://patreon.com/ekriksiemusic" target="_blank" class="link_card" data-category="music">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/patreon.png" alt="Patreon"></span>
+                            <span>Ékriksie Music on Patreon</span>
+                        </div>
+                        <span class="category_badge">Music</span>
+                    </a>
+                    <!-- Ékriksie Music Discord -->
+                    <a href="https://discord.gg/ekriksie" target="_blank" class="link_card" data-category="music">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/discord.png" alt="Discord"></span>
+                            <span>Ékriksie Music Discord</span>
+                        </div>
+                        <span class="category_badge">Music</span>
+                    </a>
+                    <!-- Ékriksie Music Bluesky -->
+                    <a href="https://bsky.app/profile/ekriksiemusic.bsky.social" target="_blank" class="link_card" data-category="music">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/bluesky.png" alt="Bluesky"></span>
+                            <span>Ékriksie Music on Bluesky</span>
+                        </div>
+                        <span class="category_badge">Music</span>
+                    </a>
+
+                    <!-- Ékriksie Art Instagram -->
+                    <a href="https://instagram.com/ekriksieart" target="_blank" class="link_card" data-category="art">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/instagram.png" alt="Instagram"></span>
+                            <span>Ékriksie Art on Instagram</span>
+                        </div>
+                        <span class="category_badge">Art</span>
+                    </a>
+                    <!-- Ékriksie Art X -->
+                    <a href="https://x.com/ekriksieart" target="_blank" class="link_card" data-category="art">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/x.png" alt="X"></span>
+                            <span>Ékriksie Art on X</span>
+                        </div>
+                        <span class="category_badge">Art</span>
+                    </a>
+                    <!-- Ékriksie Art Threads -->
+                    <a href="https://threads.net/@ekriksieart" target="_blank" class="link_card" data-category="art">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/threads.png" alt="Threads"></span>
+                            <span>Ékriksie Art on Threads</span>
+                        </div>
+                        <span class="category_badge">Art</span>
+                    </a>
+                    <!-- Ékriksie Art Patreon -->
+                    <a href="https://patreon.com/ekriksieart" target="_blank" class="link_card" data-category="art">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/patreon.png" alt="Patreon"></span>
+                            <span>Ékriksie Art on Patreon</span>
+                        </div>
+                        <span class="category_badge">Art</span>
+                    </a>
+                    <!-- Ékriksie Art Pixabay -->
+                    <a href="https://pixabay.com/users/ekriksieart" target="_blank" class="link_card" data-category="art">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/pixabay.png" alt="Pixabay"></span>
+                            <span>Ékriksie Art on Pixabay</span>
+                        </div>
+                        <span class="category_badge">Art</span>
+                    </a>
+                    <!-- Ékriksie Art Unsplash -->
+                    <a href="https://unsplash.com/@ekriksieart" target="_blank" class="link_card" data-category="art">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/unsplash.png" alt="Unsplash"></span>
+                            <span>Ékriksie Art on Unsplash</span>
+                        </div>
+                        <span class="category_badge">Art</span>
+                    </a>
+                    <!-- Ékriksie Art Bluesky -->
+                    <a href="https://bsky.app/profile/ekriksieart.bsky.social" target="_blank" class="link_card" data-category="art">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/bluesky.png" alt="Bluesky"></span>
+                            <span>Ékriksie Art on Bluesky</span>
+                        </div>
+                        <span class="category_badge">Art</span>
+                    </a>
+
+                    <!-- Tracy Ékriksie Instagram -->
+                    <a href="https://instagram.com/tracyekriksie" target="_blank" class="link_card" data-category="tracy">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/instagram.png" alt="Instagram"></span>
+                            <span>Tracy Ékriksie on Instagram</span>
+                        </div>
+                        <span class="category_badge">Tracy Ékriksie</span>
+                    </a>
+                    <!-- Tracy Ékriksie X -->
+                    <a href="https://x.com/tracyekriksie" target="_blank" class="link_card" data-category="tracy">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/x.png" alt="X"></span>
+                            <span>Tracy Ékriksie on X</span>
+                        </div>
+                        <span class="category_badge">Tracy Ékriksie</span>
+                    </a>
+                    <!-- Tracy Ékriksie Threads -->
+                    <a href="https://threads.net/@tracyekriksie" target="_blank" class="link_card" data-category="tracy">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/threads.png" alt="Threads"></span>
+                            <span>Tracy Ékriksie on Threads</span>
+                        </div>
+                        <span class="category_badge">Tracy Ékriksie</span>
+                    </a>
+                    <!-- Tracy Ékriksie Substack -->
+                    <a href="https://substack.com/@tracyekriksie" target="_blank" class="link_card" data-category="tracy">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/substack.png" alt="Substack"></span>
+                            <span>Tracy Ékriksie Substack</span>
+                        </div>
+                        <span class="category_badge">Tracy Ékriksie</span>
+                    </a>
+                    <!-- Tracy Ékriksie Patreon -->
+                    <a href="https://patreon.com/tracyekriksie" target="_blank" class="link_card" data-category="tracy">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/patreon.png" alt="Patreon"></span>
+                            <span>Tracy Ékriksie Patreon</span>
+                        </div>
+                        <span class="category_badge">Tracy Ékriksie</span>
+                    </a>
+                    <!-- Tracy Ékriksie Reddit -->
+                    <a href="https://reddit.com/r/ekriksie" target="_blank" class="link_card" data-category="tracy">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/reddit.png" alt="Reddit"></span>
+                            <span>Tracy Ékriksie Reddit</span>
+                        </div>
+                        <span class="category_badge">Tracy Ékriksie</span>
+                    </a>
+                    <!-- Tracy Ékriksie GitHub -->
+                    <a href="https://github.com/ekriksie" target="_blank" class="link_card" data-category="tracy">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/github.png" alt="GitHub"></span>
+                            <span>Tracy Ékriksie on GitHub</span>
+                        </div>
+                        <span class="category_badge">Tracy Ékriksie</span>
+                    </a>
+                    <!-- Tracy Ékriksie Bluesky -->
+                    <a href="https://bsky.app/profile/tracyekriksie.bsky.social" target="_blank" class="link_card" data-category="tracy">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/bluesky.png" alt="Bluesky"></span>
+                            <span>Tracy Ékriksie on Bluesky</span>
+                        </div>
+                        <span class="category_badge">Tracy Ékriksie</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- BLOCK 2: Other Brands & Projects -->
+            <div class="content_block">
+                <div class="block_heading">Other Brands & Projects</div>
+
+                <div class="filter_nav" id="filterNav2">
+                    <button class="filter_btn active" data-filter="all">All</button>
+                    <button class="filter_btn" data-filter="identity">Identity Outfit</button>
+                    <button class="filter_btn" data-filter="pet">1MorePet</button>
+                </div>
+
+                <div class="links_scroll_box" id="brandLinks">
+                    <!-- Identity Outfit Spring Store -->
+                    <a href="https://identityoutfit.creator-spring.com" target="_blank" class="link_card" data-category="identity">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/globe.png" alt="Spring Store"></span>
+                            <span>Identity Outfit Spring Store</span>
+                        </div>
+                        <span class="category_badge">Identity Outfit</span>
+                    </a>
+
+                    <!-- Identity Outfit Instagram -->
+                    <a href="https://instagram.com/identityoutfit" target="_blank" class="link_card" data-category="identity">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/instagram.png" alt="Instagram"></span>
+                            <span>Identity Outfit on Instagram</span>
+                        </div>
+                        <span class="category_badge">Identity Outfit</span>
+                    </a>
+                    <!-- Identity Outfit X -->
+                    <a href="https://x.com/identityoutfit" target="_blank" class="link_card" data-category="identity">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/x.png" alt="X"></span>
+                            <span>Identity Outfit on X</span>
+                        </div>
+                        <span class="category_badge">Identity Outfit</span>
+                    </a>
+                    <!-- Identity Outfit YouTube -->
+                    <a href="https://youtube.com/@identityoutfit" target="_blank" class="link_card" data-category="identity">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/youtube.png" alt="YouTube"></span>
+                            <span>Identity Outfit on YouTube</span>
+                        </div>
+                        <span class="category_badge">Identity Outfit</span>
+                    </a>
+                    <!-- Identity Outfit Facebook -->
+                    <a href="https://facebook.com/identityoutfit" target="_blank" class="link_card" data-category="identity">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/facebook.png" alt="Facebook"></span>
+                            <span>Identity Outfit on Facebook</span>
+                        </div>
+                        <span class="category_badge">Identity Outfit</span>
+                    </a>
+                    <!-- Identity Outfit Threads -->
+                    <a href="https://threads.net/@identityoutfit" target="_blank" class="link_card" data-category="identity">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/threads.png" alt="Threads"></span>
+                            <span>Identity Outfit on Threads</span>
+                        </div>
+                        <span class="category_badge">Identity Outfit</span>
+                    </a>
+                    
+                    <!-- Identity Outfit Clothing Line Website -->
+                    <a href="#" target="_blank" class="link_card" data-category="identity">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/globe.png" alt="Website"></span>
+                            <span>Identity Outfit Clothing Line</span>
+                        </div>
+                        <span class="category_badge">Identity Outfit</span>
+                    </a>
+
+                    <!-- 1MorePet Spring Store -->
+                    <a href="https://1morepet.creator-spring.com" target="_blank" class="link_card" data-category="pet">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/globe.png" alt="Spring Store"></span>
+                            <span>1MorePet Spring Store</span>
+                        </div>
+                        <span class="category_badge">1MorePet</span>
+                    </a>
+        
+                    <!-- 1MorePet Instagram -->
+                    <a href="https://instagram.com/1morepet" target="_blank" class="link_card" data-category="pet">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/instagram.png" alt="Instagram"></span>
+                            <span>1MorePet on Instagram</span>
+                        </div>
+                        <span class="category_badge">1MorePet</span>
+                    </a>
+                    <!-- 1MorePet X -->
+                    <a href="https://x.com/1morepet" target="_blank" class="link_card" data-category="pet">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/x.png" alt="X"></span>
+                            <span>1MorePet on X</span>
+                        </div>
+                        <span class="category_badge">1MorePet</span>
+                    </a>
+                    <!-- 1MorePet YouTube -->
+                    <a href="https://youtube.com/@1morepet" target="_blank" class="link_card" data-category="pet">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/youtube.png" alt="YouTube"></span>
+                            <span>1MorePet on YouTube</span>
+                        </div>
+                        <span class="category_badge">1MorePet</span>
+                    </a>
+                    <!-- 1MorePet Facebook -->
+                    <a href="https://facebook.com/1morepet" target="_blank" class="link_card" data-category="pet">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/facebook.png" alt="Facebook"></span>
+                            <span>1MorePet on Facebook</span>
+                        </div>
+                        <span class="category_badge">1MorePet</span>
+                    </a>
+                    <!-- 1MorePet Threads -->
+                    <a href="https://threads.net/@1morepet" target="_blank" class="link_card" data-category="pet">
+                        <div class="link_content_left">
+                            <span class="card_icon"><img src="../images/icons/threads.png" alt="Threads"></span>
+                            <span>1MorePet on Threads</span>
+                        </div>
+                        <span class="category_badge">1MorePet</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer_hub">
+            &copy; 2026 Ékriksie. All rights reserved.
+        </footer>
+
+        <!-- Independent Filter Scripts for Both Blocks -->
+        <script>
+            const filterButtons1 = document.querySelectorAll('#filterNav1 .filter_btn');
+            const linkCards1 = document.querySelectorAll('#ekriksieLinks .link_card');
+
+            filterButtons1.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterButtons1.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    const selectedFilter = btn.getAttribute('data-filter');
+                    linkCards1.forEach(card => {
+                        const cardCategory = card.getAttribute('data-category');
+                        if (selectedFilter === 'all' || cardCategory === selectedFilter) {
+                            card.classList.remove('hidden');
+                        } else {
+                            card.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            const filterButtons2 = document.querySelectorAll('#filterNav2 .filter_btn');
+            const linkCards2 = document.querySelectorAll('#brandLinks .link_card');
+
+            filterButtons2.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterButtons2.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    const selectedFilter = btn.getAttribute('data-filter');
+                    linkCards2.forEach(card => {
+                        const cardCategory = card.getAttribute('data-category');
+                        if (selectedFilter === 'all' || cardCategory === selectedFilter) {
+                            card.classList.remove('hidden');
+                        } else {
+                            card.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+        </script>
+    </div>
+</body>
+</html>

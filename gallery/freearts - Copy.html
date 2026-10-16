@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Y0D4WSLZGN"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-Y0D4WSLZGN');
+
+</script>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ékriksie Art Gallery</title>
+    <!-- Link Global Theme Configuration -->
+    <link rel="stylesheet" href="../theme.css">
+
+    <!-- JavaScript to fetch and insert the navigation -->
+    <script>
+        fetch('../nav.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('nav_placeholder').innerHTML = data;
+            });
+    </script>
+
+
+    <!-- Navaction active-->
+    <style type="text/css">
+        .nav_art{
+            color: var(--int_nav_active) !important;  }
+            .mini_nav_art { display: flex !important; }
+    </style>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        .body_art_gallery {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg_canvas);
+            color: var(--text_main);
+            line-height: 1.6;
+        }
+
+        /* Full-Width Banner Section Styling */
+        .header_hub {
+            padding: 0;
+            margin-bottom: 35px;
+        }
+
+        .banner_box {
+            position: relative;
+            width: 100vw;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+            height: 280px;
+            overflow: hidden;
+            border-top: 1px solid var(--border_subtle);
+            border-bottom: 1px solid var(--border_subtle);
+            background-color: var(--bg_surface);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .banner_img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        .banner_overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+
+        .banner_content {
+            position: relative;
+            z-index: 3;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Filter Navigation Buttons */
+        .filter_nav {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .filter_btn {
+            background-color: var(--bg_surface);
+            color: var(--text_sup);
+            border: 1px solid var(--border_subtle);
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all var(--transition_speed) ease;
+        }
+
+        .filter_btn:hover {
+            color: var(--text_hover);
+            border-color: var(--border_suptle);
+        }
+
+        .filter_btn.active {
+            background-color: var(--accent_primary);
+            color: var(--text_main);
+            border-color: var(--border_subtle);
+        }
+
+        /* Gallery Grid Layout */
+        .gallery_grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+            padding-bottom: 60px;
+        }
+
+        .gallery_item {
+            background-color: var(--bg_container);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border_suptle);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color var(--transition-speed) ease;
+            cursor: pointer;
+            position: relative;
+            aspect-ratio: 1 / 1;
+        }
+
+        .gallery_item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+            border-color: var(--accent_primary);
+        }
+
+        .gallery_item img.artwork_img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+            border-radius: 0;
+        }
+
+        .gallery_item:hover img.artwork_img {
+            transform: scale(1.05);
+        }
+
+        /* Artist Overlay on Hover */
+        .artist_overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 16px;
+            background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery_item:hover .artist_overlay {
+            opacity: 1;
+        }
+
+        .artist_left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .artist_avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 4px;
+            object-fit: cover;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .artist_name {
+            color: var(--text_main);
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .artist_name:hover {
+            text-decoration: underline;
+        }
+
+        /* Direct View Button */
+        .view_btn {
+            background-color: var(--accent_primary);
+            color: var(--text_main);
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color var(--transition-speed);
+        }
+
+        .view_btn:hover {
+            background-color: var(--interactive_hover);
+        }
+
+        /* Loading & Error States */
+        .status_message {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px;
+            color: var(--text_main);
+            font-size: 1.2rem;
+        }
+
+        /* Lightbox Modal */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.92);
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 85vh;
+            border-radius: 8px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+        }
+
+        .lightbox_close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 40px;
+            color: var(--text_main);
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .footer_art_gallery {
+            text-align: center;
+            padding: 30px;
+            color: var(--text_sup);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border_suptle);
+            margin-top: 40px;
+        }
+    </style>
+</head>
+
+<body class="body_art_gallery body_player" data-page="art">
+
+    <div class="nav_placeholder" id="nav_placeholder"></div>
+
+    <div class="container">
+        <!-- Full-Width Banner Section with Text Overlay -->
+        <header class="header_hub">
+            <div class="banner_box">
+                <!-- Banner Background Image -->
+                <img src="../images/background-art.jpg" alt="Banner Background" class="banner_img">
+                
+                <!-- Dark overlay gradient so text pops over the banner image -->
+                <div class="banner_overlay"></div>
+
+                <!-- Your Art Gallery Header Placed Inside -->
+                <div class="banner_content">
+                    <!-- Banner text or content can go here -->
+                </div>
+            </div>
+        </header>
+
+        <!-- Collection Filter Buttons -->
+        <div class="filter_nav">
+            <button class="filter_btn active" data-collection="Ih381RWlHOo">All Collection</button>
+            <button class="filter_btn" data-collection="ZF4aM24M8Uc">Valentine's Day</button>
+            <button class="filter_btn" data-collection="OgXCtlMDcZI">Halloween</button>
+        </div>
+
+        <!-- Gallery Container where API photos load -->
+        <div id="unsplash-gallery" class="gallery_grid">
+            <div class="status_message">Loading gallery items...</div>
+        </div>
+    </div>
+
+    <!-- Lightbox Modal for previewing images -->
+    <div id="lightbox" class="lightbox">
+        <button class="lightbox_close" id="lightbox_close">&times;</button>
+        <img id="lightbox_img" src="" alt="Enlarged view">
+    </div>
+
+    <footer class="footer_art_gallery">
+        &copy; 2026 Ékriksie Art. All rights reserved.
+    </footer>
+
+    <script>
+        const accessKey = 'PnfTXY7OUDLbuN_x1hzqGt8WkN4KnGoyZHJp5rEe2n8';  
+        const galleryContainer = document.getElementById('unsplash-gallery');
+        const filterButtons = document.querySelectorAll('.filter_btn');
+        
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox_img');
+        const lightboxClose = document.getElementById('lightbox_close');
+
+        // Function to render photo items into the grid
+        function renderPhotos(photos) {
+            galleryContainer.innerHTML = '';
+
+            if (photos.length === 0) {
+                galleryContainer.innerHTML = '<div class="status_message">No photos found in this collection.</div>';
+                return;
+            }
+
+            photos.forEach(photo => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'gallery_item';
+
+                const img = document.createElement('img');
+                img.src = photo.urls.regular;
+                img.alt = photo.alt_description || 'Art Collection Image';
+                img.className = 'artwork_img';
+                img.loading = 'lazy';
+
+                // Click image to open lightbox preview
+                itemDiv.addEventListener('click', () => {
+                    lightboxImg.src = photo.urls.full || photo.urls.regular;
+                    lightbox.classList.add('active');
+                });
+
+                itemDiv.appendChild(img);
+
+                // Overlay with Artist info & Direct View Button
+                const overlayDiv = document.createElement('div');
+                overlayDiv.className = 'artist_overlay';
+
+                const leftDiv = document.createElement('div');
+                leftDiv.className = 'artist_left';
+
+                const avatarImg = document.createElement('img');
+                avatarImg.src = photo.user.profile_image.medium;
+                avatarImg.alt = photo.user.name;
+                avatarImg.className = 'artist_avatar';
+
+                const artistLink = document.createElement('a');
+                artistLink.href = photo.user.links.html;
+                artistLink.innerText = photo.user.name;
+                artistLink.className = 'artist_name';
+                artistLink.target = '_blank';
+                artistLink.addEventListener('click', (e) => e.stopPropagation());
+
+                leftDiv.appendChild(avatarImg);
+                leftDiv.appendChild(artistLink);
+
+                // Direct Unsplash link button
+                const viewBtn = document.createElement('a');
+                viewBtn.href = photo.links.html;
+                viewBtn.innerText = 'View';
+                viewBtn.className = 'view_btn';
+                viewBtn.target = '_blank';
+                viewBtn.addEventListener('click', (e) => e.stopPropagation());
+
+                overlayDiv.appendChild(leftDiv);
+                overlayDiv.appendChild(viewBtn);
+                itemDiv.appendChild(overlayDiv);
+
+                galleryContainer.appendChild(itemDiv);
+            });
+        }
+
+        // Function to fetch and render a specific Unsplash collection
+        function loadCollection(collectionId) {
+            galleryContainer.innerHTML = '<div class="status_message">Loading gallery items...</div>';
+            
+            const apiUrl = `https://api.unsplash.com/collections/${collectionId}/photos?client_id=${accessKey}&per_page=30`;
+
+            fetch(apiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to connect to Unsplash API');
+                    }
+                    return response.json();
+                })
+                .then(photos => {
+                    renderPhotos(photos);
+                })
+                .catch(error => {
+                    console.error('Error fetching Unsplash collection:', error);
+                    galleryContainer.innerHTML = '<div class="status_message">Could not load gallery items. Please check your collection ID or network connection.</div>';
+                });
+        }
+
+        // Load default active collection on startup
+        const activeBtn = document.querySelector('.filter_btn.active');
+        if (activeBtn) {
+            loadCollection(activeBtn.getAttribute('data-collection'));
+        }
+
+        // Handle filter button clicks
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                loadCollection(btn.getAttribute('data-collection'));
+            });
+        });
+
+        // Close Lightbox functionality
+        lightboxClose.addEventListener('click', () => {
+            lightbox.classList.remove('active');
+        });
+
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                lightbox.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>

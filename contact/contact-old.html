@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ÉKRIKSIE | Contact Hub</title>
+
+    <!-- JavaScript to fetch and insert the navigation -->
+    <script>
+        fetch('../nav.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('nav-placeholder').innerHTML = data;
+            });
+    </script>
+
+    <style>
+        /* ==========================================
+            DARK THEME CONFIGURATION (Matches your pages)
+            ========================================== */
+        :root {
+            --bg-page: #121212;
+            --bg-section: #121212;
+            --bg-card: #1E1E1E;
+            
+            --text-main: #FFFFFF;
+            --section-title-color: #FFFFFF;
+            --text-muted: #AAAAAA;
+            
+            --view-link-btn: #40826D;
+            --view-link-btn-hover: #50C878;
+            --view-link-text: #ffffff;
+            
+            --social-btn-bg: #2A2A2A;
+            --social-btn-hover: #40826D;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            font-family: Arial, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+        }
+
+        .page-wrapper {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        .contact-page-content {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            min-height: 100vh;
+            padding-top: 20px;
+        }
+
+        /* Contact Section Hub */
+        .contact-section {
+            width: 100%;
+            background-color: var(--bg-section);
+            padding: 50px 5% 80px 5%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 40px;
+            font-weight: 900;
+            letter-spacing: -1px;
+            margin-bottom: 10px;
+            color: var(--section-title-color);
+        }
+
+        .section-subtitle {
+            color: var(--text-muted);
+            font-size: 1rem;
+            letter-spacing: 1px;
+            max-width: 500px;
+            line-height: 1.5;
+        }
+
+        .contectnote
+        {        
+          color: white;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            max-width: 500px;
+            line-height: 1.5;
+            margin-top: 10px;
+            font-weight: 900;
+        }
+
+
+        /* Contact Card Box */
+        .contact-card {
+            width: 100%;
+            max-width: 600px;
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            padding: 40px 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+            text-align: center;
+        }
+
+        .contact-email-display {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--text-main);
+            background: #252525;
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            letter-spacing: 0.5px;
+            width: 100%;
+        }
+
+        .contact-btn {
+            background-color: var(--view-link-btn);
+            color: var(--view-link-text);
+            padding: 14px 32px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
+            text-decoration: none;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .contact-btn:hover {
+            background-color: var(--view-link-btn-hover);
+            transform: translateY(-2px);
+        }
+
+        /* Divider */
+        .divider {
+            width: 100%;
+            height: 1px;
+            background-color: #333;
+            margin: 10px 0;
+        }
+
+        /* Social Media Section inside Card */
+        .social-section-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--text-main);
+            letter-spacing: 0.5px;
+        }
+
+        .social-buttons-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .social-btn {
+            background-color: var(--social-btn-bg);
+            color: var(--text-main);
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            text-decoration: none;
+            border: 1px solid #333;
+            transition: background-color 0.2s, transform 0.2s, border-color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .social-btn:hover {
+            background-color: var(--social-btn-hover);
+            border-color: var(--social-btn-hover);
+            transform: translateY(-2px);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 600px) {
+            .contact-card {
+                padding: 30px 20px;
+            }
+            .social-buttons-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="nav-placeholder" id="nav-placeholder"></div>
+
+<div class="page-wrapper">
+    <div class="contact-page-content">
+        
+        <div class="contact-section">
+            
+            <div class="section-header">
+                <h1 class="section-title">Get in Touch</h1>
+                <p class="section-subtitle">Reach out for custom beat inquiries, art commissions, licensing, or collaborations.</p>
+
+                <p class="contectnote">Contact Via Email for fast reply</p>
+            </div>
+
+            <!-- Contact Box -->
+            <div class="contact-card">
+                
+                <div class="contact-email-display">
+                    ekriksie@gmail.com
+                </div>
+
+                <p style="color: var(--text-muted); font-size: 0.9rem;">
+                    Click below to open your email client and message directly.
+                </p>
+
+                <!-- Direct Mailto Button -->
+                <a href="mailto:ekriksie@gmail.com?subject=Website%20Inquiry" class="contact-btn">Contact</a>
+
+                <div class="divider"></div>
+
+                <!-- Social Media Section -->
+                <div class="social-section-title">Contact via Social Media</div>
+                
+                <div class="social-buttons-grid">
+                    <a href="https://pixabay.com/users/ekriksiemusic-27798937/" target="_blank" class="social-btn">Pixabay</a>
+
+                    <a href="https://x.com/EkriksieMusic" target="_blank" class="social-btn">X</a>
+
+                    <a href="https://www.instagram.com/EkriksieMusic" target="_blank" class="social-btn">Instagram</a>
+
+                    <a href="https://www.patreon.com/cw/EkriksieMusic" target="_blank" class="social-btn">Patreon</a>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

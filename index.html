@@ -47,79 +47,7 @@
         /* ==========================================
             GLOBAL RESETS & VIEWPORT LOCK
             ========================================== */
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
 
-        html, body {
-            width: 100%;
-            height: 100%;
-            overflow: hidden; /* Locks outer window to prevent scroll conflicts */
-            font-family: Arial, Helvetica, sans-serif;
-            -webkit-font-smoothing: antialiased;
-            background-color: var(--color_base);
-            color: var(--text_base);
-        }
-
-        img, video, picture, svg {
-            max-width: 100%;
-            display: block;
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        ul, ol {
-            list-style: none;
-        }
-
-        /* ==========================================
-            SNAP CONTAINER & SECTIONS
-            ========================================== */
-        .index_page_container {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .snap_container {
-            overflow-y: scroll;
-            overflow-x: hidden;
-            scroll-snap-type: y mandatory;
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        /* Strict height + overflow hidden forces exact section bounds for the scrollbar */
-        .section {
-            scroll-snap-align: start;
-            scroll-snap-stop: always;
-            display: flex;
-            flex-direction: column;
-            justify-content: center; /* Centers sections 1, 2, and 3 */
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Footer section: strict height, pushed to bottom */
-        .footer {
-            height: 100vh;
-            height: 100dvh;
-            width: 100vw;
-            scroll-snap-align: start;
-            scroll-snap-stop: always;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-        }
     </style>
 </head>
 

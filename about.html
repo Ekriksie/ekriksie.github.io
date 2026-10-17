@@ -131,7 +131,56 @@
     </div>
 
     <!-- SCRIPT 1: CONTENT LOADER -->
+<script>
+    const pagesToLoad = [
+        { file: 'about/aboutpage1.html', targetId: 'section_1' },
+        { file: 'about/aboutpage2.html', targetId: 'section_2' },
+        { file: 'about/aboutpage3.html', targetId: 'section_3' },
+        { file: 'about/aboutpage4.html', targetId: 'footer' }
+    ];
 
+    async function loadWebsite() {
+        for (let page of pagesToLoad) {
+            let sectionDiv = document.getElementById(page.targetId);
+            if (!sectionDiv) continue;
+
+            try {
+                let response = await fetch(page.file);
+                let htmlText = await response.text();
+
+                let parser = new DOMParser();
+                let doc = parser.parseFromString(htmlText, 'text/html');
+
+                // Extract and inject embedded styles without duplication
+                doc.querySelectorAll('style').forEach(style => {
+                    let newStyle = document.createElement('style');
+                    newStyle.textContent = style.textContent;
+                    document.head.appendChild(newStyle);
+                });
+
+                // Remove any accidental duplicate nav elements from fetched subpages before injecting
+                let duplicateNav = doc.body.querySelector('nav, #nav_container, .navbar');
+                if (duplicateNav) {
+                    duplicateNav.remove();
+                }
+
+                sectionDiv.innerHTML = doc.body.innerHTML;
+
+                // Re-execute scripts inside fetched pages
+                doc.querySelectorAll('script').forEach(oldScript => {
+                    let newScript = document.createElement('script');
+                    newScript.textContent = oldScript.textContent;
+                    document.body.appendChild(newScript);
+                });
+
+            } catch (error) {
+                console.error('Error loading page:', page.file, error);
+            }
+        }
+    }
+
+    loadWebsite();
+</script>
 
     <!-- SCRIPT 2: NAVBAR & SCROLL SPY -->
     <script>

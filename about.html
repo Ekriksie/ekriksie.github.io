@@ -56,7 +56,6 @@
             -webkit-font-smoothing: antialiased;
             background-color: var(--color_base);
             color: var(--text_base);
-            padding: 0;
         }
 
         img, video, picture, svg {
@@ -83,16 +82,25 @@
             flex-direction: column;
         }
 
+        /* Navbar container takes its natural flow height, snap container takes the rest */
+        #nav_container {
+            width: 100%;
+            flex-shrink: 0;
+        }
+
         .snap_container {
+            width: 100%;
+            flex-grow: 1;
             overflow-y: scroll;
             overflow-x: hidden;
             scroll-snap-type: y mandatory;
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
-            height: calc(100vh - 70px); /* Adjust based on navbar height if needed */
         }
 
-        .section {
+        .about_section {
+            width: 100%;
+            height: 100%;
             scroll-snap-align: start;
             scroll-snap-stop: always;
             display: flex;
@@ -101,13 +109,11 @@
             align-items: center;
             position: relative;
             overflow: hidden;
-            height: 100vh;
         }
 
-        .footer {
-            height: 100vh;
-            height: 100dvh;
-            width: 100vw;
+        .about_footer {
+            width: 100%;
+            height: 100%;
             scroll-snap-align: start;
             scroll-snap-stop: always;
             display: flex;
@@ -126,10 +132,10 @@
 
         <!-- SNAP SECTIONS FOR ABOUT PAGE -->
         <div class="snap_container" id="snapContainer">
-            <div class="section" id="section_1"></div>
-            <div class="section" id="section_2"></div>
-            <div class="section" id="section_3"></div>
-            <div class="footer" id="footer"></div>
+            <div class="about_section" id="about_section_1"></div>
+            <div class="about_section" id="about_section_2"></div>
+            <div class="about_section" id="about_section_3"></div>
+            <div class="about_footer" id="about_footer"></div>
         </div>
     </div>
 
@@ -138,10 +144,10 @@
          ========================================== -->
     <script>
         const pagesToLoad = [
-            { file: 'about/aboutpage1.html', targetId: 'section_1' },
-            { file: 'about/aboutpage2.html', targetId: 'section_2' },
-            { file: 'about/aboutpage3.html', targetId: 'section_3' },
-            { file: 'about/aboutpage4.html', targetId: 'footer' }
+            { file: 'about/aboutpage1.html', targetId: 'about_section_1' },
+            { file: 'about/aboutpage2.html', targetId: 'about_section_2' },
+            { file: 'about/aboutpage3.html', targetId: 'about_section_3' },
+            { file: 'about/aboutpage4.html', targetId: 'about_footer' }
         ];
 
         async function loadWebsite() {
@@ -240,10 +246,10 @@
 
         function initScrollSpy() {
             const snapContainer = document.getElementById('snapContainer');
-            const sections = snapContainer.querySelectorAll('.section, .footer');
+            const sections = snapContainer.querySelectorAll('.about_section, .about_footer');
 
             function updateActiveLinks() {
-                let current = 'section_1';
+                let current = 'about_section_1';
                 const scrollPos = snapContainer.scrollTop;
 
                 sections.forEach(section => {

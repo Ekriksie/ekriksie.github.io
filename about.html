@@ -13,18 +13,18 @@
 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ékriksie - About</title>
+    <title>Ékriksie</title>
     
     <!-- Link Global Theme Configuration -->
     <link rel="stylesheet" href="theme.css">
 
-    <script src="data/beats-data.js"></script>
+    <script src="../data/beats-data.js"></script>
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
 
     <style type="text/css">
-        .nav_about {
+        .nav_about{
             color: var(--int_nav_active) !important;
         }
 
@@ -35,13 +35,31 @@
             pointer-events: auto !important;
         }
 
+
         .mini_nav_about { display: flex !important; }
+
+
+
+
     </style>
 
+
+
+
+
     <style>
+
+
+
+
+
+
+
+
+
         /* ==========================================
             GLOBAL RESETS & VIEWPORT LOCK
-           ========================================== */
+            ========================================== */
         *, *::before, *::after {
             box-sizing: border-box;
             margin: 0;
@@ -74,23 +92,15 @@
 
         /* ==========================================
             SNAP CONTAINER & SECTIONS
-           ========================================== */
-        .about_page_container {
+            ========================================== */
+        .index_page_container {
             width: 100%;
             height: 100%;
             display: flex;
             flex-direction: column;
         }
 
-        /* Navbar container takes its natural flow height, snap container takes the rest */
-        #nav_container {
-            width: 100%;
-            flex-shrink: 0;
-        }
-
         .snap_container {
-            width: 100%;
-            flex-grow: 1;
             overflow-y: scroll;
             overflow-x: hidden;
             scroll-snap-type: y mandatory;
@@ -98,22 +108,23 @@
             -webkit-overflow-scrolling: touch;
         }
 
-        .about_section {
-            width: 100%;
-            height: 100%;
+        /* Strict height + overflow hidden forces exact section bounds for the scrollbar */
+        .section {
             scroll-snap-align: start;
             scroll-snap-stop: always;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: center; /* Centers sections 1, 2, and 3 */
             align-items: center;
             position: relative;
             overflow: hidden;
         }
 
-        .about_footer {
-            width: 100%;
-            height: 100%;
+        /* Footer section: strict height, pushed to bottom */
+        .footer {
+            height: 100vh;
+            height: 100dvh;
+            width: 100vw;
             scroll-snap-align: start;
             scroll-snap-stop: always;
             display: flex;
@@ -125,29 +136,29 @@
     </style>
 </head>
 
-<body class="body_player page_about" data-page="about">
-    <div class="about_page_container">
+<body class="body_player page_home" data-page="home">
+    <div class="index_page_container">
         <!-- NAVIGATION BAR CONTAINER -->
         <div id="nav_container"></div>
 
-        <!-- SNAP SECTIONS FOR ABOUT PAGE -->
+        <!-- SNAP SECTIONS FOR HOMEPAGES -->
         <div class="snap_container" id="snapContainer">
-            <div class="about_section" id="about_section_1"></div>
-            <div class="about_section" id="about_section_2"></div>
-            <div class="about_section" id="about_section_3"></div>
-            <div class="about_footer" id="about_footer"></div>
+            <div class="nav_link section" id="section_1"></div>
+            <div class="nav_link section" id="section_2"></div>
+            <div class="nav_link section" id="section_3"></div>
+            <div class="footer" id="footer"></div>
         </div>
     </div>
 
     <!-- ==========================================
-         SCRIPT 1: ABOUT PAGE CONTENT LOADER
+         SCRIPT 1: HOMEPAGE CONTENT LOADER
          ========================================== -->
     <script>
         const pagesToLoad = [
-            { file: 'about/aboutpage1.html', targetId: 'about_section_1' },
-            { file: 'about/aboutpage2.html', targetId: 'about_section_2' },
-            { file: 'about/aboutpage3.html', targetId: 'about_section_3' }
-            
+            { file: 'about/aboutpage1.html', targetId: 'section_1' },
+            { file: 'about/aboutpage2.html', targetId: 'section_2' },
+            { file: 'about/aboutpage3.html', targetId: 'section_3' },
+            { file: 'home/homepage4.html', targetId: 'footer' }
         ];
 
         async function loadWebsite() {
@@ -163,16 +174,14 @@
                     let doc = parser.parseFromString(htmlText, 'text/html');
 
                     doc.querySelectorAll('style').forEach(style => {
-                        let newStyle = document.createElement('style');
-                        newStyle.textContent = style.textContent;
-                        document.head.appendChild(newStyle);
+                        document.head.appendChild(style);
                     });
 
                     sectionDiv.innerHTML = doc.body.innerHTML;
 
                     doc.querySelectorAll('script').forEach(oldScript => {
                         let newScript = document.createElement('script');
-                        newScript.textContent = oldScript.textContent;
+                        newScript.text = oldScript.text;
                         document.body.appendChild(newScript);
                     });
 
@@ -185,123 +194,146 @@
         loadWebsite();
     </script>
 
-    <!-- ==========================================
-         NAVBAR FETCH, MOBILE MENU & SCROLL SPY SCRIPT
-         ========================================== -->
-    <script>
-        async function loadNavbar() {
-            try {
-                let navRes = await fetch('nav.html');
-                let navText = await navRes.text();
-                document.getElementById('nav_container').innerHTML = navText;
 
-                initMobileMenu();
-                initNavbarInteractions();
-                initScrollSpy();
-            } catch (err) {
-                console.error('Error loading navigation:', err);
-            }
+<!-- ==========================================
+     NAVBAR FETCH, MOBILE MENU & SCROLL SPY SCRIPT
+     ========================================== -->
+<script>
+    async function loadNavbar() {
+        try {
+            let navRes = await fetch('nav.html');
+            let navText = await navRes.text();
+            document.getElementById('nav_container').innerHTML = navText;
+
+            // 1. Bind mobile hamburger toggle after nav is injected
+            initMobileMenu();
+
+            // 2. Bind desktop scroll-expansion interactions
+            initNavbarInteractions();
+
+            // 3. Bind scroll spy to highlight active sections/sub-items
+            initScrollSpy();
+        } catch (err) {
+            console.error('Error loading navigation:', err);
+        }
+    }
+
+    // Handles mobile hamburger menu opening/closing
+    function initMobileMenu() {
+        const mobileToggleBtn = document.getElementById('mobileToggle');
+        const mobileMenuOverlay = document.getElementById('mobileMenu');
+
+        if (mobileToggleBtn && mobileMenuOverlay) {
+            mobileToggleBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                mobileMenuOverlay.classList.toggle('open');
+                
+                const icon = mobileToggleBtn.querySelector('i');
+                if (icon) {
+                    icon.classList.toggle('fa-bars');
+                    icon.classList.toggle('fa-xmark');
+                }
+            });
+        }
+    }
+
+    function initNavbarInteractions() {
+        const snapContainerElement = document.getElementById('snapContainer');
+        const activeGroup = document.querySelector('.nav_expandable_group:not([style*="display: none"])');
+        const expandBtn = activeGroup ? activeGroup.querySelector('.expand_trigger') : null;
+
+        if (snapContainerElement && activeGroup) {
+            snapContainerElement.addEventListener('scroll', function() {
+                if (snapContainerElement.scrollTop > 50) {
+                    activeGroup.classList.add('scrolled_expand');
+                } else {
+                    activeGroup.classList.remove('scrolled_expand');
+                }
+            });
         }
 
-        function initMobileMenu() {
-            const mobileToggleBtn = document.getElementById('mobileToggle');
-            const mobileMenuOverlay = document.getElementById('mobileMenu');
-
-            if (mobileToggleBtn && mobileMenuOverlay) {
-                mobileToggleBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    mobileMenuOverlay.classList.toggle('open');
-                    
-                    const icon = mobileToggleBtn.querySelector('i');
-                    if (icon) {
-                        icon.classList.toggle('fa-bars');
-                        icon.classList.toggle('fa-xmark');
-                    }
-                });
-            }
+        if (expandBtn && activeGroup) {
+            expandBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                activeGroup.classList.toggle('scrolled_expand');
+            });
         }
+    }
 
-        function initNavbarInteractions() {
-            const snapContainerElement = document.getElementById('snapContainer');
-            const activeGroup = document.querySelector('.nav_expandable_group:not([style*="display: none"])');
-            const expandBtn = activeGroup ? activeGroup.querySelector('.expand_trigger') : null;
-
-            if (snapContainerElement && activeGroup) {
-                snapContainerElement.addEventListener('scroll', function() {
-                    if (snapContainerElement.scrollTop > 50) {
-                        activeGroup.classList.add('scrolled_expand');
-                    } else {
-                        activeGroup.classList.remove('scrolled_expand');
-                    }
-                });
-            }
-
-            if (expandBtn && activeGroup) {
-                expandBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    activeGroup.classList.toggle('scrolled_expand');
-                });
-            }
-        }
-
-        function initScrollSpy() {
-            const snapContainer = document.getElementById('snapContainer');
-            const sections = snapContainer.querySelectorAll('.about_section, .about_footer');
-
-            function updateActiveLinks() {
-                let current = 'about_section_1';
-                const scrollPos = snapContainer.scrollTop;
-
-                sections.forEach(section => {
-                    const sectionTop = section.offsetTop - 150;
-                    const sectionHeight = section.clientHeight;
-                    if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
-                        current = section.getAttribute('id');
-                    }
-                });
-
-                const links = document.querySelectorAll('.nav_link, .sub_item, .sub_nav_link');
-                links.forEach(link => {
-                    link.classList.remove('active');
-                    const href = link.getAttribute('href') || '';
-                    if (href === '#' + current) {
-                        link.classList.add('active');
-                    }
-                });
-            }
-
-            updateActiveLinks();
-            snapContainer.addEventListener('scroll', updateActiveLinks);
-        }
-
-        loadNavbar();
-    </script>
-
-    <!-- ==========================================
-         SCRIPT 3: MOUSE WHEEL SNAP-SCROLLING CONTROLLER
-         ========================================== -->
-    <script>
+    function initScrollSpy() {
         const snapContainer = document.getElementById('snapContainer');
-        let isAutoScrolling = false;
+        const sections = snapContainer.querySelectorAll('.section');
 
-        snapContainer.addEventListener('wheel', (e) => {
-            e.preventDefault();
-            
-            if (isAutoScrolling) return;
-            isAutoScrolling = true;
+        function updateActiveLinks() {
+            let current = 'section_1'; // Default to first section on load
+            const scrollPos = snapContainer.scrollTop;
 
-            const direction = e.deltaY > 0 ? 1 : -1;
-            const sectionHeight = snapContainer.clientHeight;
-
-            snapContainer.scrollBy({
-                top: direction * sectionHeight,
-                behavior: 'smooth'
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 150;
+                const sectionHeight = section.clientHeight;
+                if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
+                    current = section.getAttribute('id');
+                }
             });
 
-            setTimeout(() => {
-                isAutoScrolling = false;
-            }, 600);
-        }, { passive: false });
+            // Target main nav, fetched mini-nav sub_items, and mobile menu links
+            const links = document.querySelectorAll('.nav_link, .sub_item, .sub_nav_link');
+            links.forEach(link => {
+                link.classList.remove('active');
+                const href = link.getAttribute('href') || '';
+                if (href === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        // Run immediately on page load so Section 1 starts active
+        updateActiveLinks();
+
+        // Run on every scroll event inside the container
+        snapContainer.addEventListener('scroll', updateActiveLinks);
+    }
+
+    loadNavbar();
+</script>
+
+
+
+
+        <!-- PAGE SECTIONS -->
+    <section id="section_1" class="section"></section>
+    <section id="section_2" class="section"></section>
+    <section id="section_3" class="section"></section>
+
+
+
+        <!-- SCRIPT TO AUTOMATICALLY UPDATE NAV COLOR ON SCROLL -->
+    <script>
+        const sections = document.querySelectorAll('.section');
+        const navLinks = document.querySelectorAll('.nav_link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.scrollY >= (sectionTop - sectionHeight / 3)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+        });
     </script>
+
+
+
+
 </body>
 </html>

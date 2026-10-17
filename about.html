@@ -13,12 +13,12 @@
 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ékriksie</title>
+    <title>Ékriksie - About</title>
     
     <!-- Link Global Theme Configuration -->
     <link rel="stylesheet" href="theme.css">
 
-    <script src="../data/beats-data.js"></script>
+    <script src="data/beats-data.js"></script>
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
@@ -88,6 +88,7 @@
             scroll-snap-type: y mandatory;
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
+            height: calc(100vh - 70px); /* Adjust based on navbar height if needed */
         }
 
         .section {
@@ -99,6 +100,7 @@
             align-items: center;
             position: relative;
             overflow: hidden;
+            height: 100vh;
         }
 
         .footer {
@@ -116,12 +118,12 @@
     </style>
 </head>
 
-<body>
+<body class="body_player page_about" data-page="about">
     <div class="about_page_container">
         <!-- NAVIGATION BAR CONTAINER -->
         <div id="nav_container"></div>
 
-        <!-- SNAP SECTIONS FOR HOMEPAGES -->
+        <!-- SNAP SECTIONS FOR ABOUT PAGE -->
         <div class="snap_container" id="snapContainer">
             <div class="section" id="section_1"></div>
             <div class="section" id="section_2"></div>
@@ -130,59 +132,55 @@
         </div>
     </div>
 
-    <!-- SCRIPT 1: CONTENT LOADER -->
-<script>
-    const pagesToLoad = [
-        { file: 'about/aboutpage1.html', targetId: 'section_1' },
-        { file: 'about/aboutpage2.html', targetId: 'section_2' },
-        { file: 'about/aboutpage3.html', targetId: 'section_3' },
-        { file: 'about/aboutpage4.html', targetId: 'footer' }
-    ];
+    <!-- ==========================================
+         SCRIPT 1: ABOUT PAGE CONTENT LOADER
+         ========================================== -->
+    <script>
+        const pagesToLoad = [
+            { file: 'about/aboutpage1.html', targetId: 'section_1' },
+            { file: 'about/aboutpage2.html', targetId: 'section_2' },
+            { file: 'about/aboutpage3.html', targetId: 'section_3' },
+            { file: 'about/aboutpage4.html', targetId: 'footer' }
+        ];
 
-    async function loadWebsite() {
-        for (let page of pagesToLoad) {
-            let sectionDiv = document.getElementById(page.targetId);
-            if (!sectionDiv) continue;
+        async function loadWebsite() {
+            for (let page of pagesToLoad) {
+                let sectionDiv = document.getElementById(page.targetId);
+                if (!sectionDiv) continue;
 
-            try {
-                let response = await fetch(page.file);
-                let htmlText = await response.text();
+                try {
+                    let response = await fetch(page.file);
+                    let htmlText = await response.text();
 
-                let parser = new DOMParser();
-                let doc = parser.parseFromString(htmlText, 'text/html');
+                    let parser = new DOMParser();
+                    let doc = parser.parseFromString(htmlText, 'text/html');
 
-                // Extract and inject embedded styles without duplication
-                doc.querySelectorAll('style').forEach(style => {
-                    let newStyle = document.createElement('style');
-                    newStyle.textContent = style.textContent;
-                    document.head.appendChild(newStyle);
-                });
+                    doc.querySelectorAll('style').forEach(style => {
+                        let newStyle = document.createElement('style');
+                        newStyle.textContent = style.textContent;
+                        document.head.appendChild(newStyle);
+                    });
 
-                // Remove any accidental duplicate nav elements from fetched subpages before injecting
-                let duplicateNav = doc.body.querySelector('nav, #nav_container, .navbar');
-                if (duplicateNav) {
-                    duplicateNav.remove();
+                    sectionDiv.innerHTML = doc.body.innerHTML;
+
+                    doc.querySelectorAll('script').forEach(oldScript => {
+                        let newScript = document.createElement('script');
+                        newScript.textContent = oldScript.textContent;
+                        document.body.appendChild(newScript);
+                    });
+
+                } catch (error) {
+                    console.error('Error loading page:', page.file, error);
                 }
-
-                sectionDiv.innerHTML = doc.body.innerHTML;
-
-                // Re-execute scripts inside fetched pages
-                doc.querySelectorAll('script').forEach(oldScript => {
-                    let newScript = document.createElement('script');
-                    newScript.textContent = oldScript.textContent;
-                    document.body.appendChild(newScript);
-                });
-
-            } catch (error) {
-                console.error('Error loading page:', page.file, error);
             }
         }
-    }
 
-    loadWebsite();
-</script>
+        loadWebsite();
+    </script>
 
-    <!-- SCRIPT 2: NAVBAR & SCROLL SPY -->
+    <!-- ==========================================
+         NAVBAR FETCH, MOBILE MENU & SCROLL SPY SCRIPT
+         ========================================== -->
     <script>
         async function loadNavbar() {
             try {
@@ -241,7 +239,7 @@
 
         function initScrollSpy() {
             const snapContainer = document.getElementById('snapContainer');
-            const sections = snapContainer.querySelectorAll('.section');
+            const sections = snapContainer.querySelectorAll('.section, .footer');
 
             function updateActiveLinks() {
                 let current = 'section_1';
@@ -270,6 +268,33 @@
         }
 
         loadNavbar();
+    </script>
+
+    <!-- ==========================================
+         SCRIPT 3: MOUSE WHEEL SNAP-SCROLLING CONTROLLER
+         ========================================== -->
+    <script>
+        const snapContainer = document.getElementById('snapContainer');
+        let isAutoScrolling = false;
+
+        snapContainer.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            
+            if (isAutoScrolling) return;
+            isAutoScrolling = true;
+
+            const direction = e.deltaY > 0 ? 1 : -1;
+            const sectionHeight = snapContainer.clientHeight;
+
+            snapContainer.scrollBy({
+                top: direction * sectionHeight,
+                behavior: 'smooth'
+            });
+
+            setTimeout(() => {
+                isAutoScrolling = false;
+            }, 600);
+        }, { passive: false });
     </script>
 </body>
 </html>

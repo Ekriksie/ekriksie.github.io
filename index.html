@@ -18,7 +18,7 @@
     <!-- Link Global Theme Configuration -->
     <link rel="stylesheet" href="theme.css">
 
-    <script src="data/beats-data.js"></script>
+    <script src="../data/beats-data.js"></script>
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
@@ -130,10 +130,10 @@
 
         <!-- SNAP SECTIONS FOR HOMEPAGES -->
         <div class="snap_container" id="snapContainer">
-            <div class="nav_link section" id="section_1"></div>
-            <div class="nav_link section" id="section_2"></div>
-            <div class="nav_link section" id="section_3"></div>
-            <div class="footer" id="footer"></div>
+            <div class="nav_link section" id="1"></div>
+            <div class="nav_link section" id="2"></div>
+            <div class="nav_link section" id="3"></div>
+            <div class="footer" id="4"></div>
         </div>
     </div>
 
@@ -142,10 +142,10 @@
          ========================================== -->
     <script>
         const pagesToLoad = [
-            { file: 'home/homepage1.html', targetId: 'section_1' },
-            { file: 'home/homepage2.html', targetId: 'section_2' },
-            { file: 'home/homepage3.html', targetId: 'section_3' },
-            { file: 'home/homepage4.html', targetId: 'footer' }
+            { file: 'home/homepage1.html', targetId: '1' },
+            { file: 'home/homepage2.html', targetId: '2' },
+            { file: 'home/homepage3.html', targetId: '3' },
+            { file: 'home/homepage4.html', targetId: '4' }
         ];
 
         async function loadWebsite() {
@@ -252,7 +252,7 @@
         const sections = snapContainer.querySelectorAll('.section');
 
         function updateActiveLinks() {
-            let current = 'section_1'; // Default to first section on load
+            let current = '1'; // Default to first section on load
             const scrollPos = snapContainer.scrollTop;
 
             sections.forEach(section => {
@@ -316,9 +316,9 @@
 
 
         <!-- PAGE SECTIONS -->
-    <section id="section_1" class="section"></section>
-    <section id="section_2" class="section"></section>
-    <section id="section_3" class="section"></section>
+    <section id="1" class="section"></section>
+    <section id="2" class="section"></section>
+    <section id="3" class="section"></section>
 
 
 

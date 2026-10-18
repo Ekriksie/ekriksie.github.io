@@ -43,7 +43,6 @@
             position: relative;
         }
 
-
         /* ==========================================================================
            2. LEFT SIDE MASTER GROUP (Logo + Mini-Nav)
            ========================================================================== */
@@ -59,7 +58,7 @@
         }
 
         .nav_brand_logo {
-            display: flex;
+            display: none; /* Hidden by default */
             align-items: center;
             text-decoration: none;
         }
@@ -87,13 +86,22 @@
             margin-left: 10px;
         }
 
-
         /* ==========================================================================
            3. DESKTOP MINI-NAV CAPSULES
            ========================================================================== */
         .mini_nav {
             display: flex;
             align-items: center;
+        }
+
+        .nav_expandable_group {
+            display: none; /* Hidden by default */
+            align-items: center;
+            background: var(--bg_surface, rgba(255, 255, 255, 0.08));
+            font-weight: 600;
+            border-radius: 20px;
+            padding: 6px 16px;
+            gap: 20px;
         }
 
         .nav_left_logos .mini_nav_home,
@@ -106,16 +114,6 @@
         .mini_nav .mini_nav_about {
             display: none;
         }
-        .nav_expandable_group {
-            display: flex;
-            align-items: center;
-            background: var(--bg_surface, rgba(255, 255, 255, 0.08));
-            font-weight: 600;
-            border-radius: 20px;
-            padding: 6px 16px;
-            gap: 20px;
-        }
-
 
         /* ==========================================================================
            4. SUB-ITEMS & ACTIVE HIGHLIGHT STATES
@@ -130,7 +128,8 @@
         }
 
         .sub_item:hover {
-            color: var(--text_accent, #3b82f6);
+            color: #3b82f6 !important;
+            opacity: 1 !important;
         }
 
         .nav_expandable_group .sub_item.active,
@@ -145,7 +144,6 @@
             font-size: 0.85rem;
             user-select: none;
         }
-
 
         /* ==========================================================================
            5. RIGHT SIDE: GLOBAL MAIN NAVIGATION LINKS
@@ -185,7 +183,6 @@
         .nav_right a:hover::after {
             width: 100%;
         }
-
 
         /* ==========================================================================
            6. MOBILE RESPONSIVE HAMBURGER MENU (< 768px)
@@ -244,19 +241,24 @@
             color: rgba(255, 255, 255, 0.7);
             font-size: 0.95rem;
             text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .mobile_sub_links a:hover {
+            color: #3b82f6;
         }
 
         @media (max-width: 768px) {
             .mini_nav {
-                display: none !important; /* Hide pill capsule on phones */
+                display: none !important;
             }
 
             .nav_right {
-                display: none; /* Hide horizontal links on phones */
+                display: none;
             }
 
             .mobile_toggle_btn {
-                display: block; /* Show hamburger button */
+                display: block;
             }
 
             .nav_container_inner {
@@ -272,30 +274,41 @@
         <div class="nav_container">
             <div class="nav_container_inner">
                 
-                <!-- LEFT SIDE: LOGO + DESKTOP MINI-NAV -->
+                <!-- ==========================================
+                     LEFT SIDE: LOGOS & DESKTOP MINI-NAV
+                     ========================================== -->
                 <div class="nav_left">
+                    
+                    <!-- BRAND LOGO GROUPS -->
                     <div class="nav_left_logos">
-                        <!-- Home Logo Group -->
+                        <!-- Home Logo -->
                         <a href="/index.html" class="nav_brand_logo mini_nav_home">
-                            <img src="/Images/e.jpg" alt="Home Logo">
+                            <img src="/images/e.jpg" alt="Home Logo">
                             <span class="brand_name">Ékriksie</span>
                         </a>
-                        <!-- Music Logo Group -->
+
+                        <!-- Music Logo -->
                         <a href="/gallery/freebeats.html" class="nav_brand_logo mini_nav_music">
-                            <img src="/Images/em.jpg" alt="Music Logo">
+                            <img src="/images/em.jpg" alt="Music Logo">
                             <span class="brand_name">Ekriksie Music</span>
                         </a>
-                        <!-- Art Logo Group -->
-                        <a href="/gallery/freebeats.html" class="nav_brand_logo mini_nav_art">
-                            <img src="/Images/ea.jpg" alt="Art Logo">
+
+                        <!-- Art Logo -->
+                        <a href="/gallery/freearts.html" class="nav_brand_logo mini_nav_art">
+                            <img src="/images/ea.jpg" alt="Art Logo">
                             <span class="brand_name">Ekriksie Art</span>
                         </a>
 
-
-                                                <!-- Art Logo Group -->
-                        <a href="/gallery/freebeats.html" class="nav_brand_logo mini_nav_about">
-                            <img src="/Images/em.jpg" alt="about Logo">
+                        <!-- About Logo -->
+                        <a href="/about.html" class="nav_brand_logo mini_nav_about">
+                            <img src="/images/em.jpg" alt="About Logo">
                             <span class="brand_name">Ekriksie Music</span>
+                        </a>
+
+                         <!-- About Logo -->
+                        <a href="/about.html" class="nav_brand_logo mini_nav_contact">
+                            <img src="/images/e.jpg" alt="About Logo">
+                            <span class="brand_name">Ekriksie</span>
                         </a>
 
 
@@ -304,48 +317,44 @@
 
                     </div>
 
-                    <!-- DESKTOP MINI-NAV CAPSULE -->
-                    <div    class="mini_nav">
-                        <!-- Home Capsule Group -->
+                    <!-- DESKTOP MINI-NAV CAPSULES -->
+                    <div class="mini_nav">
+                        <!-- Home Capsule -->
                         <div class="nav_expandable_group mini_nav_home">
-                            <a href="#section_1" class="nav_link sub_item sub_nav_link">Home</a>
-                            <a href="#section_2" class="nav_link sub_item sub_nav_link">Music</a>
-                            <a href="#section_3" class="nav_link sub_item sub_nav_link">Art</a>
+                            <a href="#1" class="sub_item sub_nav_link">Home</a>
+                            <a href="#2" class="sub_item sub_nav_link">Music</a>
+                            <a href="#3" class="sub_item sub_nav_link">Art</a>
                         </div>
 
-                        <!-- Music Capsule Group -->
+                        <!-- Music Capsule -->
                         <div class="nav_expandable_group mini_nav_music">
-                            <a href="gallery/freebeats.html" class="sub_item">Free Beats</a>
-                            <a href="#beats" class="sub_item">Beats</a>
-                            <a href="#custom" class="sub_item">Custom Beat</a>
+                            <a href="/gallery/freebeats.html"  class="sub_item nav_music">Free Beats</a>
+
+
                         </div>
 
-                        <!-- Art Capsule Group -->
+                        <!-- Art Capsule -->
                         <div class="nav_expandable_group mini_nav_art">
-                            <a href="gallery/freebeats.html" class="sub_item">Free Art</a>
-                            <a href="#beats" class="sub_item">Vector</a>
-                            <a href="#custom" class="sub_item">Custom Art</a>
+                            <a href="/gallery/freearts.html" class="sub_item nav_art">Free Art</a>
                         </div>
 
-                        <!-- about Capsule Group -->
+                         <!-- about Capsule -->
                         <div class="nav_expandable_group mini_nav_about">
-                            <a href="#section_1" class="nav_link sub_item sub_nav_link">Home</a>
-                            <a href="#section_2" class="nav_link sub_item sub_nav_link">About</a>
-                            <a href="#section_3" class="nav_link sub_item sub_nav_link">Contact</a>
+                            <a href="#1" class="sub_item sub_nav_link">Home</a>
+                            <a href="#2" class="sub_item sub_nav_link">Music</a>
+                            <a href="#3" class="sub_item sub_nav_link">Art</a>
                         </div>
-
-
-
-
-
                     </div>
+
                 </div>
 
-                <!-- RIGHT SIDE: DESKTOP GLOBAL MAIN LINKS -->
+                <!-- ==========================================
+                     RIGHT SIDE: GLOBAL MAIN LINKS (DESKTOP)
+                     ========================================== -->
                 <ul class="nav_right">
                     <li><a class="nav_home" href="/index.html">Home</a></li>
                     <li><a class="nav_music" href="/gallery/freebeats.html">Music</a></li>
-                    <li><a class="nave_art" href="/gallery/freearts.html">Art</a></li>
+                    <li><a class="nav_art" href="/gallery/freearts.html">Art</a></li>
                     <li><a class="nav_about" href="/about.html">About</a></li>
                     <li><a class="nav_contact" href="/contact.html">Contact</a></li>
                 </ul>
@@ -355,43 +364,43 @@
                     <i class="fa-solid fa-bars"></i>
                 </button>
 
-                <!-- SLIDE-DOWN OVERLAY MENU (MOBILE ONLY) -->
+                <!-- ==========================================
+                     MOBILE SLIDE-DOWN OVERLAY MENU
+                     ========================================== -->
                 <div class="mobile_menu_overlay" id="mobileMenu">
                     
-                    <!-- HOME SECTION & SUB-LINKS -->
+                    <!-- Mobile Item: Home -->
                     <div class="mobile_nav_item">
                         <a class="mobile_main_link" href="/index.html">Home</a>
                         <div class="mobile_sub_links">
-                            <a href="#section_1" class="sub_nav_link">Home</a>
-                            <a href="#section_2" class="sub_nav_link">Music Section</a>
-                            <a href="#section_3" class="sub_nav_link">Art Section</a>
+                            <a href="/index.html#1" class="sub_nav_link">Home</a>
+                            <a href="/index.html#2" class="sub_nav_link">Music</a>
+                            <a href="/index.html#3" class="sub_nav_link">Art</a>
                         </div>
                     </div>
 
-                    <!-- MUSIC SECTION & SUB-LINKS -->
+                    <!-- Mobile Item: Music -->
                     <div class="mobile_nav_item">
                         <a class="mobile_main_link" href="/gallery/freebeats.html">Music</a>
                         <div class="mobile_sub_links">
-                            <a href="gallery/freebeats.html">Free Beats</a>
-                            <a href="#beats">Beats Catalog</a>
-                            <a href="#custom">Custom Beat</a>
+                            <a href="/gallery/freebeats.html">Free Beats</a>
                         </div>
                     </div>
 
-                    <!-- ART SECTION & SUB-LINKS -->
+                    <!-- Mobile Item: Art -->
                     <div class="mobile_nav_item">
                         <a class="mobile_main_link" href="/gallery/freearts.html">Art</a>
                         <div class="mobile_sub_links">
-                            <a href="gallery/freebeats.html">Free Art</a>
-                            <a href="#beats">Vector Art</a>
-                            <a href="#custom">Custom Art</a>
+                            <a href="/gallery/freearts.html">Free Art</a>
                         </div>
                     </div>
 
-                    <!-- ABOUT & CONTACT -->
+                    <!-- Mobile Item: About -->
                     <div class="mobile_nav_item">
                         <a class="mobile_main_link" href="/about.html">About</a>
                     </div>
+
+                    <!-- Mobile Item: Contact -->
                     <div class="mobile_nav_item">
                         <a class="mobile_main_link" href="/contact.html">Contact</a>
                     </div>
@@ -402,9 +411,8 @@
         </div>
     </div>
 
-    <!-- HAMBURGER TOGGLE & ACTIVE STATE SCRIPT -->
+    <!-- HAMBURGER TOGGLE SCRIPT -->
     <script type="text/javascript">
-        // Mobile menu toggle
         const mobileToggleBtn = document.getElementById('mobileToggle');
         const mobileMenuOverlay = document.getElementById('mobileMenu');
 
@@ -415,18 +423,6 @@
                 if (icon) {
                     icon.classList.toggle('fa-bars');
                     icon.classList.toggle('fa-xmark');
-                }
-            });
-        }
-
-        // Active state sync
-        function updateActiveSubNav(currentSectionId) {
-            const subNavLinks = document.querySelectorAll('.sub_nav_link');
-
-            subNavLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === '#' + currentSectionId) {
-                    link.classList.add('active');
                 }
             });
         }

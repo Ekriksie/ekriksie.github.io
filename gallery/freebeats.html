@@ -1197,7 +1197,30 @@ function updateCardButtons() {
 </script>
 
 
+<script>
+    // Direct fallback initializer for single pages
+    window.addEventListener('load', function() {
+        const checkNav = setInterval(() => {
+            const mobileToggleBtn = document.getElementById('mobileToggle');
+            const mobileMenuOverlay = document.getElementById('mobileMenu');
 
+            if (mobileToggleBtn && mobileMenuOverlay) {
+                clearInterval(checkNav); // Stop checking once found
+                
+                mobileToggleBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    mobileMenuOverlay.classList.toggle('open');
+                    
+                    const icon = mobileToggleBtn.querySelector('i');
+                    if (icon) {
+                        icon.classList.toggle('fa-bars');
+                        icon.classList.toggle('fa-xmark');
+                    }
+                });
+            }
+        }, 100); // Polls every 100ms until nav.html finishes injecting
+    });
+</script>
 
 
 </body>

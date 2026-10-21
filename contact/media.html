@@ -18,13 +18,45 @@
     <link rel="stylesheet" href="../theme.css">
 
     <!-- JavaScript to fetch and insert the navigation -->
-    <script>
-        fetch('../nav.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('nav_placeholder').innerHTML = data;
-            });
-    </script>
+<script>
+    fetch('../nav.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('nav_placeholder').innerHTML = data;
+
+            // --- ATTACH MOBILE TOGGLE LISTENER AFTER FETCH ---
+            const mobileToggleBtn = document.getElementById('mobileToggle');
+            const mobileMenuOverlay = document.getElementById('mobileMenu');
+
+            if (mobileToggleBtn && mobileMenuOverlay) {
+                mobileToggleBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    mobileMenuOverlay.classList.toggle('open');
+                    const icon = mobileToggleBtn.querySelector('i');
+                    if (icon) {
+                        icon.classList.toggle('fa-bars');
+                        icon.classList.toggle('fa-xmark');
+                    }
+                });
+            }
+        });
+</script>
+
+
+
+
+        <style type="text/css">
+
+       .nav_contact{
+            color: var(--int_nav_active) !important;}     
+        .mini_nav_media {
+            color: var(--int_nav_active) !important;
+        }
+
+        .mini_nav_contact { 
+            display: flex !important; 
+        }
+    </style>
 
     <style>
         * {

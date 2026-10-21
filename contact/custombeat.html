@@ -2,52 +2,164 @@
 <html>
 <head>
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-Y0D4WSLZGN"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y0D4WSLZGN"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
 
-  gtag('config', 'G-Y0D4WSLZGN');
-</script>
-
-
+      gtag('config', 'G-Y0D4WSLZGN');
+    </script>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ÉKRIKSIE | Custom Beat Request</title>
 
-        <script>
-        fetch('../nav.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('nav-placeholder').innerHTML = data;
-            });
-    </script>
+<script>
+    fetch('../nav.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('nav-placeholder').innerHTML = data;
+
+            // --- ATTACH MOBILE TOGGLE LISTENER AFTER FETCH ---
+            const mobileToggleBtn = document.getElementById('mobileToggle');
+            const mobileMenuOverlay = document.getElementById('mobileMenu');
+
+            if (mobileToggleBtn && mobileMenuOverlay) {
+                mobileToggleBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    mobileMenuOverlay.classList.toggle('open');
+                    const icon = mobileToggleBtn.querySelector('i');
+                    if (icon) {
+                        icon.classList.toggle('fa-bars');
+                        icon.classList.toggle('fa-xmark');
+                    }
+                });
+            }
+        });
+</script>
+
+        <style type="text/css">
+
+        .nav_contact{
+            color: var(--int_nav_active) !important;
+        }        
+        .mini_nav_custom {
+            color: var(--int_nav_active) !important;
+        }
+
+        .mini_nav_contact { 
+            display: flex !important; 
+        }
+    </style>
 
     <style>
         /* ==========================================
-            COLOR CONFIGURATION (Matches your site theme)
-            ========================================== */
+           THEME CONFIGURATION
+           ========================================== */
         :root {
-            --bg-page: #F5F5F5;
-            --bg-section: #F5F5F5;
-            --bg-card: #FFFFFF;
+            /* --- Logo Gradients --- */
+            --color_1: #8b5cf6;     /* First color */
+            --color_2: #c084fc;     /* Second color */
+            --gradient: linear-gradient(135deg, var(--color_1) 0%, var(--color_2) 100%);
+
+            /* --- Accent Hierarchy --- */
+            --accent_primary: #8b5cf6;
+            --accent_medium: #c084fc;
+            --accent_lite: #C54B8C;
+
+            /* Canvas Variations for 4 Pages */
+            --bg_canvas_home:   #212121;
+            --bg_canvas_music:  #0b0b0e;
+            --bg_canvas_art:    #212121;
+            --bg_canvas_footer: #0f0f11;
+
+            /* Default active canvas */
+            --bg_canvas: #0f0f11;
+
+            /* --- Background Layers & Components --- */
+            --bg_nav: #161619;
+            --bg_container: #161619;    /* Sections, wrappers, major layout blocks */
+            --bg_surface: #1e1e24;      /* Cards, interactive surfaces */
+            --bg_badge: #282830;
+            --bg_popup: #282830;
+
+            --int_default: #8b5cf6;
+            --int_hover: #8b5cfd;
+            --int_active: #c084fc;
+            --int_nav_active: #8b5cf6;
             
-            --text-main: #14121c;
-            --section-title-color: #14121c;
-            --text-muted: #555555;
-            --text-tag: #40826D;
+            --int_download: #42d142;
+            --int_download_hover: #32b532;
+
+            --icon_muted: #a1a1aa;
+            --icon_main: #f4f4f5;
+
+            /* --- Text Hierarchy --- */
+            --text_main: #f4f4f5;
+            --text_sup: #C9C9CF;
+            --text_muted: #a1a1aa;
+            --text_faint: #a1a1aa;
+            --text_accent: #c084fc;
+            --text_hover: #8b5cf6;
+
+            /* --- Borders & Dividers --- */
+            --border_subtle: #27272a;
+            --border_strong: #3f3f46;
+            --border_btn_download: #42d142;
+            --border_accent: #c084fc;
+            --border_accent_faint: #582871;
+
+            /* --- Functional & Utility --- */
+            --slider_empty: #17171C;
+            --slider_fill: #c084fc;
+            --slider_hover: #d8b4fe;
             
-            --view-link-btn: #40826D;
-            --view-link-btn-hover: #50C878;
-            --view-link-text: #ffffff;
-            
-            --platform-btn-bg: #40826D;
-            --platform-btn-text: #F0FFF0;
-            --platform-btn-text-hover: #ffffff;
+            --transition_speed: 0.25s ease;
+
+            --red: #ff0000;
+
+            --shadow_subtle: #0f0f11;
+            --shadow_card: #C54B8C;
+            --shadow_glow: #ffffff;
         }
 
+        /* --- SCROLLBAR CONFIGURATION --- */
+        html {
+            scrollbar-color: #241f47 #0a0914 !important;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px !important;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0a0914 !important;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #241f47 !important;
+            border-radius: 3px;
+        }
+
+        .home-page {
+            scrollbar-width: auto !important;
+        }
+
+        .home-page::-webkit-scrollbar {
+            width: 14px !important;
+        }
+
+        .home-page::-webkit-scrollbar-track {
+            background: #0a0914 !important;
+        }
+
+        .home-page::-webkit-scrollbar-thumb {
+            background: #241f47 !important;
+            border-radius: 0px !important;
+        }
+
+        /* --- GLOBAL & LAYOUT --- */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -58,10 +170,11 @@
             width: 100%;
             height: 100%;
             overflow-x: hidden;
-            font-family: Arial, sans-serif;
-            background-color: var(--bg-page);
-            color: var(--text-main);
-            font-size: 20px;
+            font-family: Arial, Helvetica, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            background-color: var(--bg_canvas);
+            color: var(--text_main);
+            font-size: 18px;
         }
 
         .page-wrapper {
@@ -81,7 +194,7 @@
 
         .custom-section {
             width: 100%;
-            background-color: var(--bg-section);
+            background-color: var(--bg_canvas);
             padding: 40px 5% 80px 5%;
             min-height: 100vh;
             display: flex;
@@ -98,18 +211,18 @@
         .section-title {
             font-size: 2.5rem;
             font-weight: 900;
-            letter-spacing: -1px;
+            letter-spacing: -0.5px;
             margin-bottom: 12px;
-            color: var(--section-title-color);
+            color: var(--text_main);
         }
 
         .section-subtitle {
-            color: var(--text-muted);
-            font-size: 1.25rem;
+            color: var(--text_muted);
+            font-size: 1.15rem;
             line-height: 1.6;
         }
 
-        /* Navigation / Back link */
+        /* --- NAVIGATION / BACK BUTTON --- */
         .platform-nav {
             display: flex;
             justify-content: center;
@@ -123,25 +236,26 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            background: var(--platform-btn-bg);
-            border: 1px solid var(--platform-btn-bg);
-            color: var(--platform-btn-text);
+            background: var(--bg_surface);
+            border: 1px solid var(--border_subtle);
+            color: var(--text_main);
             padding: 12px 28px;
             border-radius: 8px;
             text-decoration: none;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
-            letter-spacing: 1px;
-            transition: background-color 0.3s ease, transform 0.2s ease, color 0.3s ease;
+            letter-spacing: 0.5px;
+            transition: all var(--transition_speed);
         }
 
         .platform-btn:hover {
-            color: var(--platform-btn-text-hover);
+            color: #ffffff;
             transform: translateY(-2px);
-            background-color: var(--view-link-btn-hover);
+            background-color: var(--int_default);
+            border-color: var(--int_default);
         }
 
-        /* Info / Process Box */
+        /* --- INFO / PROCESS STEPS --- */
         .info-container {
             width: 100%;
             max-width: 900px;
@@ -152,40 +266,45 @@
         }
 
         .info-step {
-            background: #ffffff;
+            background: var(--bg_surface);
+            border: 1px solid var(--border_subtle);
             padding: 24px;
             border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
             text-align: center;
+            transition: border-color var(--transition_speed);
+        }
+
+        .info-step:hover {
+            border-color: var(--border_accent_faint);
         }
 
         .info-step h4 {
             font-size: 1.2rem;
-            color: var(--view-link-btn);
+            color: var(--text_accent);
             margin-bottom: 8px;
         }
 
         .info-step p {
-            font-size: 1.05rem;
-            color: var(--text-muted);
+            font-size: 1rem;
+            color: var(--text_muted);
             line-height: 1.5;
         }
 
-        /* Pricing Options Banner */
+        /* --- PRICING BOX --- */
         .pricing-box {
             width: 100%;
             max-width: 900px;
-            background: #ffffff;
-            border-left: 6px solid var(--view-link-btn);
+            background: var(--bg_container);
+            border: 1px solid var(--border_subtle);
+            border-left: 6px solid var(--accent_primary);
             padding: 30px;
             border-radius: 0 10px 10px 0;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
             margin-bottom: 30px;
         }
 
         .pricing-box h3 {
             font-size: 1.4rem;
-            color: var(--section-title-color);
+            color: var(--text_main);
             margin-bottom: 12px;
             display: flex;
             align-items: center;
@@ -201,67 +320,71 @@
         }
 
         .pricing-option {
-            background: #fcfcfc;
+            background: var(--bg_surface);
             padding: 20px;
             border-radius: 8px;
-            border: 1px solid #eee;
+            border: 1px solid var(--border_subtle);
         }
 
         .pricing-option h5 {
-            color: var(--view-link-btn);
+            color: var(--text_accent);
             font-size: 1.15rem;
             margin-bottom: 8px;
         }
 
         .pricing-option p {
-            font-size: 1.05rem;
-            color: var(--text-muted);
+            font-size: 1rem;
+            color: var(--text_muted);
             line-height: 1.5;
         }
 
-        /* Direct Link Button to Contact Page */
+        .pricing-option strong {
+            color: var(--text_main);
+        }
+
+        /* --- CONTACT LINK BUTTON --- */
         .contact-link-btn {
             display: inline-block;
-            background-color: var(--view-link-btn);
-            color: var(--view-link-text);
+            background: var(--gradient);
+            color: #ffffff;
             padding: 16px 28px;
             border-radius: 8px;
             text-decoration: none;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: bold;
             letter-spacing: 0.5px;
             text-align: center;
             width: 100%;
-            transition: background-color 0.2s, transform 0.2s;
-            box-shadow: 0 4px 12px rgba(64, 130, 109, 0.2);
+            transition: transform var(--transition_speed), opacity var(--transition_speed);
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.25);
         }
 
         .contact-link-btn:hover {
-            background-color: var(--view-link-btn-hover);
+            opacity: 0.92;
             transform: translateY(-2px);
         }
 
-        /* FAQ Section */
+        /* --- FAQ SECTION --- */
         .faq-box {
             width: 100%;
             max-width: 900px;
-            background: #ffffff;
+            background: var(--bg_container);
+            border: 1px solid var(--border_subtle);
             padding: 30px;
             border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
             margin-bottom: 35px;
         }
 
         .faq-box h3 {
             font-size: 1.4rem;
-            color: var(--section-title-color);
+            color: var(--text_main);
             margin-bottom: 20px;
         }
 
         .faq-item {
             margin-bottom: 20px;
             padding-bottom: 20px;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid var(--border_subtle);
         }
 
         .faq-item:last-child {
@@ -271,19 +394,19 @@
         }
 
         .faq-question {
-            font-size: 1.2rem;
+            font-size: 1.15rem;
             font-weight: bold;
-            color: var(--view-link-btn);
+            color: var(--text_accent);
             margin-bottom: 8px;
         }
 
         .faq-answer {
-            font-size: 1.05rem;
-            color: var(--text-muted);
+            font-size: 1rem;
+            color: var(--text_muted);
             line-height: 1.6;
         }
 
-        /* Genre Pills */
+        /* --- GENRE PILLS --- */
         .genre-tags {
             display: flex;
             justify-content: center;
@@ -293,16 +416,22 @@
         }
 
         .genre-tag {
-            background: #e8f0ec;
-            color: var(--view-link-btn);
+            background: var(--bg_badge);
+            color: var(--text_accent);
+            border: 1px solid var(--border_subtle);
             padding: 8px 18px;
             border-radius: 20px;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: bold;
             letter-spacing: 0.5px;
+            transition: border-color var(--transition_speed);
         }
 
-        /* RESPONSIVE */
+        .genre-tag:hover {
+            border-color: var(--border_accent);
+        }
+
+        /* --- RESPONSIVE --- */
         @media (max-width: 768px) {
             .info-container, .pricing-grid {
                 grid-template-columns: 1fr;
@@ -347,21 +476,21 @@
             <!-- Pricing & Terms Details Box with Link to Contact Page -->
             <div class="pricing-box">
                 <h3>🎵 Flexible Ownership & Membership Plan:</h3>
-                <div style="font-size: 1.05rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 15px;">
+                <div style="font-size: 1.05rem; color: var(--text_muted); line-height: 1.6; margin-bottom: 15px;">
                     Get your custom exclusive beat produced to your exact specifications. Choose how you want to handle your investment:
                 </div>
                 <div class="pricing-grid">
                     <div class="pricing-option">
                         <h5>Option 1: Outright Purchase</h5>
-                        <p>Get full, permanent exclusive ownership right away for a total of <strong>$300</strong>.</p>
+                        <p>Get full, permanent exclusive ownership right away for a total of <strong>$240</strong>.</p>
                     </div>
                     <div class="pricing-option">
                         <h5>Option 2: Rent-to-Own Plan</h5>
                         <p>Pay just <strong>$30/month</strong>. The beat is instantly held and locked for you. Keep your monthly spot active to complete ownership ($300 total) or roll right into future custom projects!</p>
                     </div>
                 </div>
-                <!-- Direct Link to your main contact page -->
-                <a href="../contact/contact.html" class="contact-link-btn">👉 Request Custom Beat (Go to Contact Page)</a>
+                <!-- Direct Link to main contact page -->
+                <a href="../contact.html" class="contact-link-btn">👉 Request Custom Beat (Go to Contact Page)</a>
             </div>
 
             <!-- FAQ Section -->

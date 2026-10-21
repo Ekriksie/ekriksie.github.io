@@ -31,13 +31,6 @@
         .mini_nav_about { 
             display: flex !important; 
         }
-
-        .nav_expandable_group.scrolled_expand .sub_item, 
-        .nav_expandable_group.scrolled_expand .sub_divider {
-            max-width: 150px !important;
-            opacity: 0.85 !important;
-            pointer-events: auto !important;
-        }
     </style>
 
     <style>
@@ -92,7 +85,6 @@
             -webkit-overflow-scrolling: touch;
         }
 
-        /* Strict height + overflow hidden forces exact section bounds for the scrollbar */
         .section {
             scroll-snap-align: start;
             scroll-snap-stop: always;
@@ -104,7 +96,17 @@
             overflow: hidden;
         }
 
-        /* Footer section: strict height, pushed to bottom */
+        /* Make Page 3 use normal scrolling (removes snap restriction and fixed height overflow) */
+        .section#3 {
+            scroll-snap-align: none !important;
+            scroll-snap-stop: normal !important;
+            height: auto !important;
+            min-height: 100vh;
+            min-height: 100dvh;
+            overflow-y: visible !important;
+            justify-content: flex-start;
+        }
+
         .footer {
             height: 100vh;
             height: 100dvh;
@@ -116,6 +118,20 @@
             align-items: center;
             position: relative;
             overflow: hidden;
+        }
+
+        /* ==========================================
+            FORM DISABLED / "DISHILITED" STATE STYLING
+            ========================================== */
+        .form_control:disabled {
+            background-color: #121418 !important;
+            color: #555c68 !important;
+            border-color: #1f232b !important;
+            cursor: not-allowed;
+        }
+
+        .form_group.faded_group .form_label {
+            color: #555c68 !important;
         }
     </style>
 </head>
@@ -135,7 +151,7 @@
     </div>
 
     <!-- ==========================================
-         SCRIPT 1: ABOUT CONTENT LOADER
+         SCRIPT 1: ABOUT CONTENT LOADER & FORM OBSERVER
          ========================================== -->
     <script>
         const pagesToLoad = [
@@ -173,13 +189,99 @@
                     console.error('Error loading page:', page.file, error);
                 }
             }
+
+            initVocalFormToggle();
         }
 
         loadWebsite();
     </script>
 
     <!-- ==========================================
-         NAVBAR FETCH, MOBILE MENU & SCROLL SPY SCRIPT
+         SCRIPT 2: INQUIRY TYPE FORM TOGGLE LOGIC
+         ========================================== -->
+    <script>
+        function initVocalFormToggle() {
+            const inquirySelect = document.getElementById('inquiry_type');
+            if (!inquirySelect) return;
+            
+            const genreGroup = document.getElementById('genre_group');
+            const genreSelect = document.getElementById('genre_select');
+            const genreLabel = document.getElementById('genre_label');
+            
+            const musicDetailsRow = document.getElementById('music_details_row');
+            const bpmInput = document.getElementById('bpm_input');
+            const refInput = document.getElementById('ref_input');
+            
+            const linkGroup = document.getElementById('link_group');
+            const linkInput = document.getElementById('link_input');
+            const linkLabel = document.getElementById('link_label');
+
+            function updateFormFields() {
+                const selected = inquirySelect.value;
+
+                if (selected === 'Vocal Submission') {
+                    setActive(genreGroup, genreSelect, true);
+                    if (genreLabel) genreLabel.innerHTML = 'Preferred Genre / Vibe *';
+
+                    if (musicDetailsRow) musicDetailsRow.style.opacity = '1';
+                    if (bpmInput) bpmInput.disabled = false;
+                    if (refInput) refInput.disabled = false;
+
+                    setActive(linkGroup, linkInput, true);
+                    if (linkInput) linkInput.required = true;
+                    if (linkLabel) linkLabel.innerHTML = 'Direct Audio Link (Google Drive, Dropbox, WeTransfer, SoundCloud) *';
+
+                } else if (selected === 'Collaboration') {
+                    setActive(genreGroup, genreSelect, false);
+                    if (genreLabel) genreLabel.innerHTML = 'Preferred Genre / Vibe <span class="optional_text">(Optional)</span>';
+
+                    if (musicDetailsRow) musicDetailsRow.style.opacity = '1';
+                    if (bpmInput) bpmInput.disabled = false;
+                    if (refInput) refInput.disabled = false;
+
+                    setActive(linkGroup, linkInput, false);
+                    if (linkInput) linkInput.required = false;
+                    if (linkLabel) linkLabel.innerHTML = 'Direct Audio Link <span class="optional_text">(Optional)</span>';
+
+                } else {
+                    setDisabled(genreGroup, genreSelect);
+                    if (genreLabel) genreLabel.innerHTML = 'Preferred Genre / Vibe <span class="optional_text">(Disabled)</span>';
+
+                    if (musicDetailsRow) musicDetailsRow.style.opacity = '0.35';
+                    if (bpmInput) { bpmInput.disabled = true; bpmInput.value = ''; }
+                    if (refInput) { refInput.disabled = true; refInput.value = ''; }
+
+                    setDisabled(linkGroup, linkInput);
+                    if (linkInput) linkInput.required = false;
+                    if (linkLabel) linkLabel.innerHTML = 'Direct Audio Link <span class="optional_text">(Disabled)</span>';
+                }
+            }
+
+            function setActive(group, input, isRequired) {
+                if (!group || !input) return;
+                group.classList.remove('faded_group');
+                group.style.opacity = '1';
+                input.disabled = false;
+                input.required = isRequired;
+            }
+
+            function setDisabled(group, input) {
+                if (!group || !input) return;
+                group.classList.add('faded_group');
+                group.style.opacity = '0.4';
+                input.disabled = true;
+                input.value = ''; 
+                input.required = false;
+            }
+
+            inquirySelect.removeEventListener('change', updateFormFields);
+            inquirySelect.addEventListener('change', updateFormFields);
+            updateFormFields();
+        }
+    </script>
+
+    <!-- ==========================================
+         SCRIPT 3: NAVBAR FETCH, MOBILE MENU & SCROLL SPY SCRIPT
          ========================================== -->
     <script>
         async function loadNavbar() {
@@ -236,58 +338,63 @@
                 });
             }
         }
-function initScrollSpy() {
-        const snapContainer = document.getElementById('snapContainer');
-        const sections = snapContainer.querySelectorAll('.section');
 
-        function updateActiveLinks() {
-            let current = '1'; // Default to section 1 immediately
-            const scrollPos = snapContainer.scrollTop;
+        function initScrollSpy() {
+            const snapContainer = document.getElementById('snapContainer');
+            const sections = snapContainer.querySelectorAll('.section');
 
-            // If we are near the top, force section '1' right away
-            if (scrollPos > 10) {
-                sections.forEach(section => {
-                    const sectionTop = section.offsetTop - 150;
-                    const sectionHeight = section.clientHeight;
-                    if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
-                        current = section.getAttribute('id');
+            function updateActiveLinks() {
+                let current = '1'; 
+                const scrollPos = snapContainer.scrollTop;
+
+                if (scrollPos > 10) {
+                    sections.forEach(section => {
+                        const sectionTop = section.offsetTop - 150;
+                        const sectionHeight = section.clientHeight;
+                        if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
+                            current = section.getAttribute('id');
+                        }
+                    });
+                }
+
+                const links = document.querySelectorAll('.nav_link, .sub_item, .sub_nav_link');
+                links.forEach(link => {
+                    link.classList.remove('active');
+                    const href = link.getAttribute('href') || '';
+                    if (href === '#' + current) {
+                        link.classList.add('active');
                     }
                 });
             }
 
-            // Apply active class to matching sub-items
-            const links = document.querySelectorAll('.nav_link, .sub_item, .sub_nav_link');
-            links.forEach(link => {
-                link.classList.remove('active');
-                const href = link.getAttribute('href') || '';
-                if (href === '#' + current) {
-                    link.classList.add('active');
-                }
-            });
+            updateActiveLinks();
+            setTimeout(updateActiveLinks, 100);
+            setTimeout(updateActiveLinks, 300);
+
+            snapContainer.addEventListener('scroll', updateActiveLinks);
         }
-
-        // Force execution immediately on load
-        updateActiveLinks();
-        
-        // Run again after content fetch finishes rendering
-        setTimeout(updateActiveLinks, 100);
-        setTimeout(updateActiveLinks, 300);
-
-        // Run on every scroll event inside the container
-        snapContainer.addEventListener('scroll', updateActiveLinks);
-    }
 
         loadNavbar();
     </script>
 
     <!-- ==========================================
-         SCRIPT 3: MOUSE WHEEL SNAP-SCROLLING CONTROLLER
+         SCRIPT 4: MOUSE WHEEL SNAP-SCROLLING CONTROLLER (BYPASSES PAGE 3)
          ========================================== -->
     <script>
         const snapContainer = document.getElementById('snapContainer');
         let isAutoScrolling = false;
 
         snapContainer.addEventListener('wheel', (e) => {
+            // Check if the user is currently looking at section 3
+            const section3 = document.getElementById('3');
+            if (section3) {
+                const rect = section3.getBoundingClientRect();
+                // If section 3 is currently visible on screen, let normal scroll take over completely
+                if (rect.top <= 10 && rect.bottom >= window.innerHeight - 10) {
+                    return; // Do NOT preventDefault, allowing normal scroll on page 3!
+                }
+            }
+
             e.preventDefault();
             
             if (isAutoScrolling) return;

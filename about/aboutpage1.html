@@ -6,16 +6,11 @@
     <title>Producer Studio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="theme.css">
-    
-
 
     <style>
-
-
         .body_about1 {
             margin: 0;
-            background-color: #0a0914;
-            color: #f3f4f6;
+            background-color: var(--bg_container, #0f172a);
             font-family: sans-serif;
             display: flex;
             flex-direction: column;
@@ -23,71 +18,160 @@
         }
 
         /* Hero Banner Component */
-        .hero {
-            position: relative;
-            width: 100%;
-            height: 600px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            overflow: hidden;
-        }
+.hero {
+    position: relative;
+    width: 100%;
+    min-height: 80vh; /* Takes up 80% of any screen height automatically */
+    max-height: 850px; /* Prevents it from getting absurdly tall on giant monitors */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    box-sizing: border-box;
+    padding: 4rem 1rem; /* Adds breathing room so content never touches the edges */
+}
 
-        .hero img {
+        /* Layer 1: Background Image */
+        .hero img.hero-bg {
             position: absolute;
             inset: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
+            z-index: 1;
         }
 
-        .hero::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-        }
-
+        /* Layer 2: Main Headline Card (Centered) */
         .hero-content {
             position: relative;
             z-index: 10;
-            padding: 0 1rem;
-            max-width: 600px;
-        }
-
-        .hero span {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #a78bfa;
-            display: block;
-            margin-bottom: 0.5rem;
+            padding: 2rem 2rem;
+            max-width: 800px;
+            width: 90%;
+            background-color: rgba(0, 0, 0, 0.75);
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-sizing: border-box;
+            margin-bottom: 1.5rem;
         }
 
         .hero h1 {
-            font-size: 2.25rem;
+            font-size: 2rem;
             font-weight: 800;
-            margin: 0 0 1rem 0;
-            color: #fff;
+            margin: 0;
+            color: var(--text_main, #ffffff);
             line-height: 1.2;
         }
 
-        .hero a {
+        .hero .helping {
+            display: block;
+            font-size: 3.2rem;
+            font-weight: bold;
+            color: var(--text_accent, #a855f7);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Button outside the transparent box */
+        .hero-btn {
+            position: relative;
+            z-index: 10;
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            padding: 0.75rem 1.5rem;
+            padding: 0.85rem 1.75rem;
             background-color: #7c3aed;
-            color: #fff;
+            color: #ffffff;
             text-decoration: none;
             border-radius: 9999px;
             font-weight: bold;
-            font-size: 0.875rem;
-            transition: background 0.2s;
+            font-size: 1rem;
+            transition: background 0.2s, transform 0.2s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            margin-bottom: 4rem; /* Leave room for the 60px bottom strip */
         }
 
-        .hero a:hover {
+        .hero-btn:hover {
             background-color: #6d28d9;
+            transform: translateY(-2px);
+        }
+
+        /* Layer 3: 60px Strip Anchored at the Bottom of the Image */
+        .hero-bottom-strip {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            z-index: 10;
+            background-color: var(--bg_canvas);
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 0 1rem;
+            box-sizing: border-box;
+            backdrop-filter: blur(4px);
+        }
+
+        .strip-item {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            color: #ffffff;
+            text-align: left;
+        }
+
+        .strip-item i {
+            font-size: 1.2rem;
+            color: #a855f7;
+        }
+
+        .strip-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.1;
+        }
+
+        .strip-text .title {
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .strip-text .desc {
+            font-size: 0.75rem;
+            color: #cbd5e1;
+            margin-top: 2px;
+        }
+
+        /* Responsive adjustments for smaller screens */
+        @media (max-width: 650px) {
+            .hero {
+                height: 680px;
+            }
+            .hero .helping {
+                font-size: 2.2rem;
+            }
+            .hero h1 {
+                font-size: 1.4rem;
+            }
+            .hero-bottom-strip {
+                height: auto;
+                padding: 0.6rem 0.5rem;
+                gap: 0.5rem;
+            }
+            .strip-text .title {
+                font-size: 0.75rem;
+            }
+            .strip-text .desc {
+                font-size: 0.65rem;
+            }
         }
     </style>
 </head>
@@ -95,11 +179,41 @@
 
     <!-- HERO BANNER PAGE MODULE -->
     <section class="hero">
-        <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1920&auto=format&fit=crop" alt="Studio">
+        <!-- Background Image -->
+<img class="hero-bg" src="images/bg/about.jpg" alt="Studio">        
+        <!-- Main Headline Box -->
         <div class="hero-content">
-            <span>Zero-Risk Vocal Demo Process</span>
-            <h1>Helping singers start their first song or release their next one</h1>
-            <a href="#send-vocal">Test Your Vocal For Free <i class="fa-solid fa-arrow-right"></i></a>
+            <h1><span class="helping">Helping singers</span> Get custom beats and finish their songs</h1>
+        </div>
+
+        <!-- Button outside the box -->
+        <a href="#3" class="hero-btn">Test Your Vocal For Free <i class="fa-solid fa-arrow-right"></i></a>
+
+        <!-- 60px Height Bottom Strip -->
+        <div class="hero-bottom-strip">
+            <div class="strip-item">
+                <i class="fa-solid fa-robot"></i>
+                <div class="strip-text">
+                    <span class="title">NO AI</span>
+                    <span class="desc">No AI generated music</span>
+                </div>
+            </div>
+
+            <div class="strip-item">
+                <i class="fa-solid fa-sliders"></i>
+                <div class="strip-text">
+                    <span class="title">NO MIDI PACKS</span>
+                    <span class="desc">Not using generic MIDI</span>
+                </div>
+            </div>
+
+            <div class="strip-item">
+                <i class="fa-solid fa-compact-disc"></i>
+                <div class="strip-text">
+                    <span class="title">NO SAMPLE PACKS</span>
+                    <span class="desc">Original sound production</span>
+                </div>
+            </div>
         </div>
     </section>
 

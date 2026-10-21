@@ -26,7 +26,7 @@
 
         .nav_container {
             width: 100%;
-            background-color: rgba(15, 17, 23, 0.95);
+            background-color: var(--bg_nav);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -80,7 +80,7 @@
             align-items: center;
             gap: 10px;
             text-decoration: none;
-            color: var(--text_main, #ffffff);
+            color: var(--text_main);
             font-size: 20px;
             font-weight: 800;
             margin-left: 10px;
@@ -97,7 +97,7 @@
         .nav_expandable_group {
             display: none; /* Hidden by default */
             align-items: center;
-            background: var(--bg_surface, rgba(255, 255, 255, 0.08));
+            background: var(--bg_surface);
             font-weight: 600;
             border-radius: 20px;
             padding: 6px 16px;
@@ -108,10 +108,12 @@
         .nav_left_logos .mini_nav_music,
         .nav_left_logos .mini_nav_art,
         .nav_left_logos .mini_nav_about,
+        .nav_left_logos .mini_nav_contact,
         .mini_nav .mini_nav_home,
         .mini_nav .mini_nav_music,
         .mini_nav .mini_nav_art,
-        .mini_nav .mini_nav_about {
+        .mini_nav .mini_nav_about,
+        .mini_nav .mini_nav_contact {
             display: none;
         }
 
@@ -120,7 +122,7 @@
            ========================================================================== */
         .sub_item {
             font-size: 0.95rem;
-            color: #ffffff;
+            color: var(--text_sup);
             text-decoration: none;
             opacity: 0.85;
             white-space: nowrap;
@@ -128,21 +130,15 @@
         }
 
         .sub_item:hover {
-            color: #3b82f6 !important;
+            color: var(--text_hover);
             opacity: 1 !important;
         }
 
         .nav_expandable_group .sub_item.active,
         .mobile_sub_links a.active {
-            color: var(--text_accent, #ff3333) !important;
+            color: var(--int_nav_active) !important;
             opacity: 1 !important;
             font-weight: 700 !important;
-        }
-
-        .sub_divider {
-            color: rgba(255, 255, 255, 0.3);
-            font-size: 0.85rem;
-            user-select: none;
         }
 
         /* ==========================================================================
@@ -156,7 +152,7 @@
         }
 
         .nav_right a {
-            color: #ffffff;
+            color: var(--text_main);
             text-decoration: none;
             font-size: 1.05rem;
             font-weight: 500;
@@ -172,12 +168,12 @@
             left: 0;
             width: 0;
             height: 2px;
-            background: linear-gradient(90deg, #3b82f6, #9333ea);
+            background: var(--gradient);
             transition: width 0.3s ease;
         }
 
         .nav_right a:hover {
-            color: #3b82f6;
+            color: var(--text_hover);
         }
 
         .nav_right a:hover::after {
@@ -191,7 +187,7 @@
             display: none;
             background: none;
             border: none;
-            color: #ffffff;
+            color: var(--text_main);
             font-size: 1.5rem;
             cursor: pointer;
             padding: 5px;
@@ -203,13 +199,13 @@
             top: 70px;
             left: 0;
             width: 100%;
-            background: rgba(15, 17, 23, 0.98);
+            background: var(--bg_container);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(16px);
             padding: 20px 30px;
             flex-direction: column;
             gap: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: var(--shadow_subtle);
         }
 
         .mobile_menu_overlay.open {
@@ -223,7 +219,7 @@
         }
 
         .mobile_main_link {
-            color: #ffffff;
+            color: var(--text_main);
             font-size: 1.2rem;
             font-weight: 700;
             text-decoration: none;
@@ -238,14 +234,14 @@
         }
 
         .mobile_sub_links a {
-            color: rgba(255, 255, 255, 0.7);
+            color: var(--text_sup);
             font-size: 0.95rem;
             text-decoration: none;
             transition: color 0.3s ease;
         }
 
         .mobile_sub_links a:hover {
-            color: #3b82f6;
+            color: var(--text_hover);
         }
 
         @media (max-width: 768px) {
@@ -305,32 +301,25 @@
                             <span class="brand_name">Ekriksie Music</span>
                         </a>
 
-                         <!-- About Logo -->
-                        <a href="/about.html" class="nav_brand_logo mini_nav_contact">
-                            <img src="/images/e.jpg" alt="About Logo">
+                        <!-- Contact Logo -->
+                        <a href="/contact.html" class="nav_brand_logo mini_nav_contact">
+                            <img src="/images/e.jpg" alt="Contact Logo">
                             <span class="brand_name">Ekriksie</span>
                         </a>
-
-
-
-
-
                     </div>
 
-                    <!-- DESKTOP MINI-NAV CAPSULES -->
+                    <!-- MINI-NAV CAPSULES -->
                     <div class="mini_nav">
                         <!-- Home Capsule -->
                         <div class="nav_expandable_group mini_nav_home">
-                            <a href="#1" class="sub_item sub_nav_link">Home</a>
-                            <a href="#2" class="sub_item sub_nav_link">Music</a>
-                            <a href="#3" class="sub_item sub_nav_link">Art</a>
+                            <a href="#1" class="sub_item sub_nav_link">Ekrksie</a>
+                            <a href="#2" class="sub_item sub_nav_link">Latest Track</a>
+                            <a href="#3" class="sub_item sub_nav_link">All Arts</a>
                         </div>
 
                         <!-- Music Capsule -->
                         <div class="nav_expandable_group mini_nav_music">
-                            <a href="/gallery/freebeats.html"  class="sub_item nav_music">Free Beats</a>
-
-
+                            <a href="/gallery/freebeats.html" class="sub_item nav_music">Free Beats</a>
                         </div>
 
                         <!-- Art Capsule -->
@@ -338,11 +327,18 @@
                             <a href="/gallery/freearts.html" class="sub_item nav_art">Free Art</a>
                         </div>
 
-                         <!-- about Capsule -->
+                        <!-- About Capsule -->
                         <div class="nav_expandable_group mini_nav_about">
-                            <a href="#1" class="sub_item sub_nav_link">Home</a>
-                            <a href="#2" class="sub_item sub_nav_link">Music</a>
-                            <a href="#3" class="sub_item sub_nav_link">Art</a>
+                            <a href="#1" class="sub_item sub_nav_link">Singers</a>
+                            <a href="#2" class="sub_item sub_nav_link">Vocal</a>
+                            <a href="#3" class="sub_item sub_nav_link">Send Your Vocal</a>
+                        </div>
+
+                        <!-- Contact Capsule -->
+                        <div class="nav_expandable_group mini_nav_contact">
+                            <a href="/contact.html" class="sub_item mini_nav_contact">Get In Touch</a>
+                            <a href="/contact/custombeat.html" class="sub_item mini_nav_custom">Custom Beat</a>
+                            <a href="/contact/media.html" class="sub_item mini_nav_media">Social media</a>
                         </div>
                     </div>
 
@@ -373,9 +369,9 @@
                     <div class="mobile_nav_item">
                         <a class="mobile_main_link" href="/index.html">Home</a>
                         <div class="mobile_sub_links">
-                            <a href="/index.html#1" class="sub_nav_link">Home</a>
-                            <a href="/index.html#2" class="sub_nav_link">Music</a>
-                            <a href="/index.html#3" class="sub_nav_link">Art</a>
+                            <a href="/index.html#1" class="sub_nav_link">Ekrksie</a>
+                            <a href="/index.html#2" class="sub_nav_link">Latest Track</a>
+                            <a href="/index.html#3" class="sub_nav_link">All Arts</a>
                         </div>
                     </div>
 
@@ -398,11 +394,21 @@
                     <!-- Mobile Item: About -->
                     <div class="mobile_nav_item">
                         <a class="mobile_main_link" href="/about.html">About</a>
+                        <div class="mobile_sub_links">
+                            <a href="/about.html#1">Singers</a>
+                            <a href="/about.html#2">Vocal</a>
+                            <a href="/about.html#3">Send Your Vocal</a>
+                        </div>
                     </div>
 
                     <!-- Mobile Item: Contact -->
                     <div class="mobile_nav_item">
                         <a class="mobile_main_link" href="/contact.html">Contact</a>
+                        <div class="mobile_sub_links">
+                            <a href="/contact.html">Get In Touch</a>
+                            <a href="/contact/custombeat.html">Custom Beat</a>
+                            <a href="/contact/media.html">Social media</a>
+                        </div>
                     </div>
 
                 </div>

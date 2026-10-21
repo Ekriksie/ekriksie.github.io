@@ -8,7 +8,8 @@
     
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <link rel="stylesheet" href="../theme.css">
+
     <script>
         fetch('nav.html')
             .then(response => response.text())
@@ -55,7 +56,7 @@
 
         .badge {
             display: inline-block;
-            background-color: rgba(139, 92, 246, 0.15);
+            background-color: var(--bg_badge);
             color: var(--text_accent);
             border: 1px solid var(--border_subtle);
             padding: 6px 16px;
@@ -89,7 +90,7 @@
             border-radius: 16px;
             padding: 25px;
             margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 10px 30px var(--shadow_subtle);
         }
 
         .guidelines_title {
@@ -128,7 +129,6 @@
             border: 1px solid var(--border_subtle);
             border-radius: 20px;
             padding: 40px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
             display: flex;
             flex-direction: column;
             gap: 20px;
@@ -144,6 +144,7 @@
             display: flex;
             flex-direction: column;
             gap: 8px;
+            transition: all 0.3s ease;
         }
 
         .form_label {
@@ -151,6 +152,13 @@
             font-weight: 600;
             color: var(--text_muted);
             letter-spacing: 0.5px;
+            transition: color 0.3s ease;
+        }
+
+        .optional_text {
+            font-weight: normal;
+            font-size: 0.78rem;
+            color: var(--text_muted);
         }
 
         .form_control {
@@ -163,11 +171,23 @@
             font-size: 0.95rem;
             font-family: inherit;
             outline: none;
-            transition: border-color var(--transition_speed);
+            transition: all 0.3s ease;
         }
 
         .form_control:focus {
             border-color: var(--accent_primary);
+        }
+
+        /* Explicit Disabled / Greyed-Out Styling (Dishilited) */
+        .form_control:disabled {
+            background-color: #121418 !important;
+            color: #555c68 !important;
+            border-color: #1f232b !important;
+            cursor: not-allowed;
+        }
+
+        .form_group.faded_group .form_label {
+            color: #555c68 !important;
         }
 
         textarea.form_control {
@@ -177,7 +197,7 @@
 
         .submit_btn {
             background: var(--gradient);
-            color: #ffffff;
+            color: var(--text_main);
             border: none;
             border-radius: 10px;
             padding: 14px 24px;
@@ -186,12 +206,12 @@
             cursor: pointer;
             width: 100%;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
-            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+            box-shadow: 0 4px 15px var(--shadow_subtle);
         }
 
         .submit_btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.7);
+            box-shadow: 0 6px 20px var(--shadow_subtle);
         }
 
         .privacy_note {
@@ -273,7 +293,7 @@
             <form action="https://formsubmit.co/ekriksie@gmail.com" method="POST" class="form_card">
                 
                 <!-- FormSubmit Configuration Hidden Fields -->
-                <input type="hidden" name="_subject" value="New Vocal Demo Submission from Website!">
+                <input type="hidden" name="_subject" value="New Vocal Demo Submission / Website Contact">
                 <input type="hidden" name="_captcha" value="false">
                 <input type="hidden" name="_next" value="contact/thankyou.html">
 
@@ -290,8 +310,17 @@
 
                 <div class="form_row">
                     <div class="form_group">
-                        <label class="form_label">Preferred Genre / Vibe *</label>
-                        <select name="Genre" required class="form_control">
+                        <label class="form_label">Inquiry Type *</label>
+                        <select id="inquiry_type" name="Inquiry_Type" required class="form_control">
+                            <option value="Vocal Submission" selected>Vocal Submission / Free Demo</option>
+                            <option value="General Message">General Message / Inquiry</option>
+                            <option value="Collaboration">Music Collaboration</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div id="genre_group" class="form_group">
+                        <label id="genre_label" class="form_label">Preferred Genre / Vibe *</label>
+                        <select id="genre_select" name="Genre" required class="form_control">
                             <option value="">Select a Genre</option>
                             <option value="hip-hop">Hip-Hop / Rap</option>
                             <option value="edm">EDM / Melodic</option>
@@ -301,34 +330,36 @@
                             <option value="other">Other Style</option>
                         </select>
                     </div>
-                    <div class="form_group">
-                        <label class="form_label">BPM & Key (Optional)</label>
-                        <input type="text" name="BPM_Key" placeholder="e.g. 128 BPM, F minor" class="form_control">
+                </div>
+
+                <div id="music_details_row" class="form_row">
+                    <div class="form_group" id="bpm_group">
+                        <label class="form_label" id="bpm_label">BPM & Key <span class="optional_text">(Optional)</span></label>
+                        <input type="text" name="BPM_Key" placeholder="e.g. 128 BPM, F minor" class="form_control" id="bpm_input">
+                    </div>
+                    <div class="form_group" id="ref_group">
+                        <label class="form_label" id="ref_label">Reference Songs or Artists <span class="optional_text">(Optional)</span></label>
+                        <input type="text" name="References" placeholder="e.g. The Weeknd, Charlotte de Witte, Drake" class="form_control" id="ref_input">
                     </div>
                 </div>
 
-                <div class="form_group">
-                    <label class="form_label">Reference Songs or Artists</label>
-                    <input type="text" name="References" placeholder="e.g. The Weeknd, Charlotte de Witte, Drake" class="form_control">
-                </div>
-
-                <div class="form_group">
-                    <label class="form_label">Direct Audio Link (Google Drive, Dropbox, WeTransfer, SoundCloud) *</label>
-                    <input type="url" name="Audio_Link" required placeholder="Paste your file link here..." class="form_control">
+                <div id="link_group" class="form_group">
+                    <label id="link_label" class="form_label">Direct Audio Link (Google Drive, Dropbox, WeTransfer, SoundCloud) *</label>
+                    <input type="url" id="link_input" name="Audio_Link" required placeholder="Paste your file link here..." class="form_control">
                 </div>
 
                 <div class="form_group">
                     <label class="form_label">Additional Notes or Ideas</label>
-                    <textarea name="Notes" rows="3" placeholder="Tell me a bit about your vision for this track..." class="form_control"></textarea>
+                    <textarea name="Notes" rows="3" placeholder="Tell me a bit about your vision or message..." class="form_control"></textarea>
                 </div>
 
                 <button type="submit" class="submit_btn">
-                    <i class="fa-solid fa-paper-plane" style="margin-right: 8px;"></i> Submit Your Vocal For Free
+                    <i class="fa-solid fa-paper-plane" style="margin-right: 8px;"></i> Submit Your Message / Vocal
                 </button>
             </form>
 
             <p class="privacy_note">
-                <i class="fa-solid fa-lock"></i> Your audio links remain 100% private and confidential. No AI generators used.
+                <i class="fa-solid fa-lock"></i> Your audio links and message remain 100% private and confidential. No AI generators used.
             </p>
 
         </main>
@@ -338,8 +369,88 @@
         </footer>
     </div>
 
-    <!-- Script: Navbar Loader -->
+    <!-- Script: Working Disable & Dishilited Logic -->
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const inquirySelect = document.getElementById('inquiry_type');
+            
+            const genreGroup = document.getElementById('genre_group');
+            const genreSelect = document.getElementById('genre_select');
+            const genreLabel = document.getElementById('genre_label');
+            
+            const musicDetailsRow = document.getElementById('music_details_row');
+            const bpmInput = document.getElementById('bpm_input');
+            const refInput = document.getElementById('ref_input');
+            
+            const linkGroup = document.getElementById('link_group');
+            const linkInput = document.getElementById('link_input');
+            const linkLabel = document.getElementById('link_label');
+
+            function updateFormFields() {
+                const selected = inquirySelect.value;
+
+                if (selected === 'Vocal Submission') {
+                    // Fully active & bright
+                    setActive(genreGroup, genreSelect, true);
+                    genreLabel.innerHTML = 'Preferred Genre / Vibe *';
+
+                    musicDetailsRow.style.opacity = '1';
+                    bpmInput.disabled = false;
+                    refInput.disabled = false;
+
+                    setActive(linkGroup, linkInput, true);
+                    linkInput.required = true;
+                    linkLabel.innerHTML = 'Direct Audio Link (Google Drive, Dropbox, WeTransfer, SoundCloud) *';
+
+                } else if (selected === 'Collaboration') {
+                    // Active but optional
+                    setActive(genreGroup, genreSelect, false);
+                    genreLabel.innerHTML = 'Preferred Genre / Vibe <span class="optional_text">(Optional)</span>';
+
+                    musicDetailsRow.style.opacity = '1';
+                    bpmInput.disabled = false;
+                    refInput.disabled = false;
+
+                    setActive(linkGroup, linkInput, false);
+                    linkInput.required = false;
+                    linkLabel.innerHTML = 'Direct Audio Link <span class="optional_text">(Optional)</span>';
+
+                } else {
+                    // General Message / Other: Fully greyed out (dishilited) & disabled from typing
+                    setDisabled(genreGroup, genreSelect);
+                    genreLabel.innerHTML = 'Preferred Genre / Vibe <span class="optional_text">(Disabled)</span>';
+
+                    musicDetailsRow.style.opacity = '0.35';
+                    bpmInput.disabled = true;
+                    bpmInput.value = '';
+                    refInput.disabled = true;
+                    refInput.value = '';
+
+                    setDisabled(linkGroup, linkInput);
+                    linkInput.required = false;
+                    linkLabel.innerHTML = 'Direct Audio Link <span class="optional_text">(Disabled)</span>';
+                }
+            }
+
+            function setActive(group, input, isRequired) {
+                group.classList.remove('faded_group');
+                group.style.opacity = '1';
+                input.disabled = false;
+                input.required = isRequired;
+            }
+
+            function setDisabled(group, input) {
+                group.classList.add('faded_group');
+                group.style.opacity = '0.4';
+                input.disabled = true;
+                input.value = ''; // Clears text so nothing gets accidentally submitted
+                input.required = false;
+            }
+
+            inquirySelect.addEventListener('change', updateFormFields);
+            updateFormFields();
+        });
+
         async function loadNavbar() {
             try {
                 let navRes = await fetch('nav.html');

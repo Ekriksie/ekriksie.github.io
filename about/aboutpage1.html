@@ -8,10 +8,6 @@
     <link rel="stylesheet" href="theme.css">
      
     <style>
-        html { 
-            background-color: var(--bg_container);  
-        }
-
         .body_about1 {
             margin: 0;
             background-color: var(--bg_container);
@@ -21,7 +17,7 @@
             min-height: 100vh;
         }
 
-        /* Hero Banner Component with instant dark fallback */
+        /* Hero Banner Component (Background image handled in CSS just like your home page) */
         .hero {
             position: relative;
             width: 100%;
@@ -36,7 +32,7 @@
             box-sizing: border-box;
             padding: 4rem 1rem;
             
-            /* CSS background combined with image prevents the white flash */
+            /* Background Image in CSS with dark color fallback */
             background-color: var(--bg_container);
             background-image: url('images/bg/about.jpg');
             background-repeat: no-repeat;
@@ -85,14 +81,14 @@
             gap: 0.5rem;
             padding: 0.85rem 1.75rem;
             background-color: #7c3aed;
-            color: var(--text_main, #ffffff);
+            color: var(--text_main);
             text-decoration: none;
             border-radius: 9999px;
             font-weight: bold;
             font-size: 1rem;
             transition: background 0.2s, transform 0.2s;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-            margin-bottom: 4rem; /* Leave room for the 60px bottom strip */
+            margin-bottom: 4rem;
         }
 
         .hero-btn:hover {

@@ -18,9 +18,7 @@
             color: var(--int_nav_active) !important;
         }
         .mini_nav_contact { display: flex !important; }
-
     </style>
-
 
     <style>
         * {
@@ -37,11 +35,6 @@
             color: var(--text_main);
             -webkit-font-smoothing: antialiased;
         }
-
-        
-
-
-
 
         .page_wrapper {
             display: flex;
@@ -141,6 +134,7 @@
             display: flex;
             flex-direction: column;
             gap: 20px;
+            position: relative;
         }
 
         .form_row {
@@ -179,7 +173,7 @@
             font-size: 0.95rem;
             font-family: inherit;
             outline: none;
-            transition: border-color var(--transition_speed), opacity 0.3s ease;
+            transition: border-color var(--transition_speed), opacity 0.3s ease, background-color 0.3s ease;
         }
 
         .form_control:focus {
@@ -189,6 +183,17 @@
         textarea.form_control {
             min-height: 120px;
             resize: vertical;
+        }
+
+        /* Fully blocked and disabled inputs state */
+        .faded_group {
+            opacity: 0.35;
+            pointer-events: none;
+        }
+
+        .faded_group .form_control {
+            cursor: not-allowed;
+            background-color: rgba(0, 0, 0, 0.15);
         }
 
         .submit_btn {
@@ -201,13 +206,36 @@
             font-weight: 700;
             cursor: pointer;
             width: 100%;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
             box-shadow: 0 4px 15px var(--shadow_subtle);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
-        .submit_btn:hover {
+        .submit_btn:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px var(--shadow_subtle);
+        }
+
+        .submit_btn:disabled {
+            opacity: 0.7;
+            cursor: wait;
+        }
+
+        /* Error Banner notification */
+        .error_banner {
+            display: none;
+            background-color: rgba(255, 51, 85, 0.15);
+            border: 1px solid #ff3355;
+            color: #ff6680;
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            text-align: center;
+            margin-bottom: 5px;
+            line-height: 1.4;
         }
 
         .privacy_note {
@@ -231,11 +259,6 @@
             text-align: center;
             font-size: 0.85rem;
             color: var(--text_muted);
-        }
-
-        /* Faded state for optional music input fields */
-        .faded_group {
-            opacity: 0.45;
         }
 
         @media (max-width: 768px) {
@@ -291,11 +314,15 @@
             </div>
 
             <!-- FormSubmit Form -->
-            <form action="https://formsubmit.co/ekriksie@gmail.com" method="POST" class="form_card">
+            <form id="contact_form" action="https://formsubmit.co/ekriksie@gmail.com" method="POST" class="form_card">
                 
                 <input type="hidden" name="_subject" value="New Website Contact / Inquiry">
                 <input type="hidden" name="_captcha" value="false">
-                <input type="hidden" name="_next" value="https://ekriksie.com/contact/thankyou.html">
+
+                <!-- Error Notice Box -->
+                <div id="error_banner" class="error_banner">
+                    <i class="fa-solid fa-circle-exclamation"></i> <strong>Message Failed:</strong> Something went wrong while sending your message. Please check your connection and try again.
+                </div>
 
                 <div class="form_row">
                     <div class="form_group">
@@ -321,7 +348,7 @@
                     
                     <div id="genre_group" class="form_group faded_group">
                         <label id="genre_label" class="form_label">Preferred Genre / Vibe <span class="optional_text">(Optional)</span></label>
-                        <select id="genre_select" name="Genre" class="form_control">
+                        <select id="genre_select" name="Genre" class="form_control" disabled>
                             <option value="">Select a Genre (Optional)</option>
                             <option value="hip-hop">Hip-Hop / Rap</option>
                             <option value="edm">EDM / Melodic</option>
@@ -336,17 +363,17 @@
                 <div id="music_details_row" class="form_row faded_group">
                     <div class="form_group">
                         <label class="form_label">BPM & Key <span class="optional_text">(Optional)</span></label>
-                        <input type="text" name="BPM_Key" placeholder="e.g. 128 BPM, F minor" class="form_control">
+                        <input type="text" id="bpm_input" name="BPM_Key" placeholder="e.g. 128 BPM, F minor" class="form_control" disabled>
                     </div>
                     <div class="form_group">
                         <label class="form_label">Reference Songs or Artists <span class="optional_text">(Optional)</span></label>
-                        <input type="text" name="References" placeholder="e.g. The Weeknd, Charlotte de Witte, Drake" class="form_control">
+                        <input type="text" id="ref_input" name="References" placeholder="e.g. The Weeknd, Charlotte de Witte, Drake" class="form_control" disabled>
                     </div>
                 </div>
 
                 <div id="link_group" class="form_group faded_group">
                     <label id="link_label" class="form_label">Direct Audio Link <span class="optional_text">(Optional - Drive, SoundCloud, etc.)</span></label>
-                    <input type="url" id="link_input" name="Audio_Link" placeholder="Paste your audio file link here..." class="form_control">
+                    <input type="url" id="link_input" name="Audio_Link" placeholder="Paste your audio file link here..." class="form_control" disabled>
                 </div>
 
                 <div class="form_group">
@@ -354,8 +381,8 @@
                     <textarea name="Message" rows="4" required placeholder="Write your message, question, or project details here..." class="form_control"></textarea>
                 </div>
 
-                <button type="submit" class="submit_btn">
-                    <i class="fa-solid fa-paper-plane" style="margin-right: 8px;"></i> Send Message
+                <button type="submit" id="submit_btn" class="submit_btn">
+                    <i class="fa-solid fa-paper-plane" id="submit_icon" style="margin-right: 8px;"></i> <span id="submit_text">Send Message</span>
                 </button>
             </form>
 
@@ -370,26 +397,42 @@
         </footer>
     </div>
 
-    <!-- Script: Faded Toggle for Form Fields & Navbar Loader -->
+    <!-- Script: Faded Toggle, Disabled Blockers & AJAX Form Submission Loader -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const inquirySelect = document.getElementById('inquiry_type');
+            
             const genreGroup = document.getElementById('genre_group');
             const genreSelect = document.getElementById('genre_select');
             const genreLabel = document.getElementById('genre_label');
+            
             const musicDetailsRow = document.getElementById('music_details_row');
+            const bpmInput = document.getElementById('bpm_input');
+            const refInput = document.getElementById('ref_input');
+            
             const linkGroup = document.getElementById('link_group');
             const linkInput = document.getElementById('link_input');
             const linkLabel = document.getElementById('link_label');
+
+            const contactForm = document.getElementById('contact_form');
+            const submitBtn = document.getElementById('submit_btn');
+            const submitIcon = document.getElementById('submit_icon');
+            const submitText = document.getElementById('submit_text');
+            const errorBanner = document.getElementById('error_banner');
 
             function updateFormFields() {
                 const selected = inquirySelect.value;
 
                 if (selected === 'Vocal Submission') {
-                    // Brighten input fields & set mandatory requirements
+                    // Unlock fields & set required rules
                     genreGroup.classList.remove('faded_group');
                     musicDetailsRow.classList.remove('faded_group');
                     linkGroup.classList.remove('faded_group');
+
+                    genreSelect.disabled = false;
+                    bpmInput.disabled = false;
+                    refInput.disabled = false;
+                    linkInput.disabled = false;
 
                     genreSelect.required = true;
                     genreLabel.innerHTML = 'Preferred Genre / Vibe *';
@@ -398,9 +441,15 @@
                     linkLabel.innerHTML = 'Direct Audio Link * (Google Drive, Dropbox, SoundCloud, etc.)';
 
                 } else if (selected === 'Collaboration') {
+                    // Unlock fields as optional
                     genreGroup.classList.remove('faded_group');
                     musicDetailsRow.classList.remove('faded_group');
                     linkGroup.classList.remove('faded_group');
+
+                    genreSelect.disabled = false;
+                    bpmInput.disabled = false;
+                    refInput.disabled = false;
+                    linkInput.disabled = false;
 
                     genreSelect.required = false;
                     genreLabel.innerHTML = 'Preferred Genre / Vibe <span class="optional_text">(Optional)</span>';
@@ -409,10 +458,20 @@
                     linkLabel.innerHTML = 'Direct Audio Link <span class="optional_text">(Optional)</span>';
 
                 } else {
-                    // General Message / Other: Fade optional music fields and remove required flags
+                    // General Message / Other: Fully lock, fade, clear values, and remove required flags
                     genreGroup.classList.add('faded_group');
                     musicDetailsRow.classList.add('faded_group');
                     linkGroup.classList.add('faded_group');
+
+                    genreSelect.disabled = true;
+                    bpmInput.disabled = true;
+                    refInput.disabled = true;
+                    linkInput.disabled = true;
+
+                    genreSelect.value = "";
+                    bpmInput.value = "";
+                    refInput.value = "";
+                    linkInput.value = "";
 
                     genreSelect.required = false;
                     genreLabel.innerHTML = 'Preferred Genre / Vibe <span class="optional_text">(Optional)</span>';
@@ -424,6 +483,48 @@
 
             inquirySelect.addEventListener('change', updateFormFields);
             updateFormFields();
+
+            // Handle AJAX Form Submission with Louder Loading Spinner & Thank You Redirection
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault(); // Stop default browser refresh
+
+                // Hide old errors
+                errorBanner.style.display = 'none';
+
+                // Activate louder loading state on button
+                submitBtn.disabled = true;
+                submitIcon.className = 'fa-solid fa-spinner fa-spin';
+                submitIcon.style.marginRight = '8px';
+                submitText.innerText = 'Sending Message...';
+
+                const formData = new FormData(contactForm);
+
+                fetch(contactForm.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // Success: Redirect smoothly to your thank you page
+                        window.location.href = 'https://ekriksie.com/contact/thankyou.html';
+                    } else {
+                        throw new Error('Server response failed.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Submission error:', error);
+                    // Show error message on page so user knows it failed
+                    errorBanner.style.display = 'block';
+
+                    // Reset button back to normal
+                    submitBtn.disabled = false;
+                    submitIcon.className = 'fa-solid fa-paper-plane';
+                    submitText.innerText = 'Send Message';
+                });
+            });
         });
 
         async function loadNavbar() {

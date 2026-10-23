@@ -23,11 +23,6 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
 
-
-
-
-
-
     <style type="text/css">
         .nav_about {
             color: var(--int_nav_active) !important;
@@ -385,40 +380,7 @@
     <!-- ==========================================
          SCRIPT 4: MOUSE WHEEL SNAP-SCROLLING CONTROLLER (BYPASSES PAGE 3)
          ========================================== -->
-    <script>
-        const snapContainer = document.getElementById('snapContainer');
-        let isAutoScrolling = false;
-
-        snapContainer.addEventListener('wheel', (e) => {
-            // Check if the user is currently looking at section 3
-            const section3 = document.getElementById('3');
-            if (section3) {
-                const rect = section3.getBoundingClientRect();
-                // If section 3 is currently visible on screen, let normal scroll take over completely
-                if (rect.top <= 10 && rect.bottom >= window.innerHeight - 10) {
-                    return; // Do NOT preventDefault, allowing normal scroll on page 3!
-                }
-            }
-
-            e.preventDefault();
-            
-            if (isAutoScrolling) return;
-            isAutoScrolling = true;
-
-            const direction = e.deltaY > 0 ? 1 : -1;
-            const sectionHeight = snapContainer.clientHeight;
-
-            snapContainer.scrollBy({
-                top: direction * sectionHeight,
-                behavior: 'smooth'
-            });
-
-            setTimeout(() => {
-                isAutoScrolling = false;
-            }, 600);
-        }, { passive: false });
-    </script>
-
+   
 
     <script>
     // Stop Chrome from trying to restore old scroll positions

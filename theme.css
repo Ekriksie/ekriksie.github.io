@@ -30,10 +30,9 @@
 
 
     --int_default: #8b5cf6;       /* Default state for buttons, inputs, tabs */
-    --int_hover: #8b5cfd;      /* Hover state across all interactive elements */
+    --int_hover: #c084fc;      /* Hover state across all interactive elements */
     --int_active: #c084fc;     /* Pressed or selected state */
     --int_nav_active:#8b5cf6;
-    
     --int_download:#42d142;
     --int_download_hover:;
 

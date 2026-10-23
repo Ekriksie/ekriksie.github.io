@@ -326,27 +326,28 @@
         }
 
         .filter_btn {
-            background: var(--bg_surface);;
-            border: 1px solid var(--accent_primary);
+            background-color: var(--bg_surface);
+            color: var(--text_sup);
+            border: 1px solid var(--border_subtle);
             color: var(--text_main);
-            padding: 8px 18px;
-            border-radius: 20px;
+            padding: 10px 20px;
+            border-radius: 6px;
             font-size: 0.9rem;
-            font-weight: 600;
+            font-weight: 500;
             cursor: pointer;
             transition: all var(--transition_speed) ease;
         }
 
         .filter_btn:hover {
-            color: var(--text_main);
-            background: var(--int_hover);
-            border-color: var(--border_strong);
+            color: var(--text_hover);
+            border-color: var(--border_suptle);
         }
 
         .filter_btn.active {
+            background-color: var(--accent_primary);
             color: var(--text_main);
-            background: var(--int_active);
-            border-color: var(--accent_primary);
+            border-color: var(--border_subtle);
+            
             
         }
 

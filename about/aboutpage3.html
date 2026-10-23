@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -286,7 +284,7 @@
                 </div>
             </div>
 
-            <!-- FormSubmit Form -->
+            <!-- FormSubmit Native Form -->
             <form id="contact_form" action="https://formsubmit.co/ekriksie@gmail.com" method="POST" class="form_card">
                 
                 <input type="hidden" name="_subject" value="New Vocal Demo Submission / Website Contact">
@@ -349,9 +347,10 @@
                     <textarea name="Notes" rows="3" placeholder="Tell me a bit about your vision or message..." class="form_control"></textarea>
                 </div>
 
-                <button type="submit" id="submit_btn" class="submit_btn">
-                    <i class="fa-solid fa-paper-plane" id="submit_icon" style="margin-right: 8px;"></i> <span id="submit_text">Submit Your Message / Vocal</span>
-                </button>
+                <!-- Instant Click Visual Feedback Handler -->
+                <button type="submit" id="submit_btn" class="submit_btn" onclick="if(document.getElementById('contact_form').checkValidity()) { this.style.background='#111'; this.style.color='#fff'; this.innerHTML='<i class=\'fa-solid fa-spinner fa-spin\' style=\'margin-right: 8px;\'></i> Sending Message... Please Wait'; }">
+                     <i class="fa-solid fa-paper-plane" id="submit_icon" style="margin-right: 8px;"></i> <span id="submit_text">Submit Your Message / Vocal</span>
+              </button>
             </form>
 
             <p class="privacy_note">
@@ -365,8 +364,111 @@
         </footer>
     </div>
 
-   
+    <!-- Script: Navbar Loader & Dynamic Field Blocker -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const inquirySelect = document.getElementById('inquiry_type');
+            
+            const genreGroup = document.getElementById('genre_group');
+            const genreSelect = document.getElementById('genre_select');
+            const genreLabel = document.getElementById('genre_label');
+            
+            const musicDetailsRow = document.getElementById('music_details_row');
+            const bpmInput = document.getElementById('bpm_input');
+            const refInput = document.getElementById('ref_input');
+            
+            const linkGroup = document.getElementById('link_group');
+            const linkInput = document.getElementById('link_input');
+            const linkLabel = document.getElementById('link_label');
 
+            function updateFormFields() {
+                const selected = inquirySelect.value;
 
+                if (selected === 'Vocal Submission') {
+                    genreGroup.classList.remove('faded_group');
+                    musicDetailsRow.classList.remove('faded_group');
+                    linkGroup.classList.remove('faded_group');
+
+                    genreSelect.disabled = false;
+                    bpmInput.disabled = false;
+                    refInput.disabled = false;
+                    linkInput.disabled = false;
+
+                    genreSelect.required = true;
+                    genreLabel.innerHTML = 'Preferred Genre / Vibe *';
+
+                    linkInput.required = true;
+                    linkLabel.innerHTML = 'Direct Audio Link (Google Drive, Dropbox, WeTransfer, SoundCloud) *';
+
+                } else if (selected === 'Collaboration') {
+                    genreGroup.classList.remove('faded_group');
+                    musicDetailsRow.classList.remove('faded_group');
+                    linkGroup.classList.remove('faded_group');
+
+                    genreSelect.disabled = false;
+                    bpmInput.disabled = false;
+                    refInput.disabled = false;
+                    linkInput.disabled = false;
+
+                    genreSelect.required = false;
+                    genreLabel.innerHTML = 'Preferred Genre / Vibe <span class="optional_text">(Optional)</span>';
+
+                    linkInput.required = false;
+                    linkLabel.innerHTML = 'Direct Audio Link <span class="optional_text">(Optional)</span>';
+
+                } else {
+                    genreGroup.classList.add('faded_group');
+                    musicDetailsRow.classList.add('faded_group');
+                    linkGroup.classList.add('faded_group');
+
+                    genreSelect.disabled = true;
+                    bpmInput.disabled = true;
+                    refInput.disabled = true;
+                    linkInput.disabled = true;
+
+                    genreSelect.value = "";
+                    bpmInput.value = "";
+                    refInput.value = "";
+                    linkInput.value = "";
+
+                    genreSelect.required = false;
+                    genreLabel.innerHTML = 'Preferred Genre / Vibe <span class="optional_text">(Optional)</span>';
+
+                    linkInput.required = false;
+                    linkLabel.innerHTML = 'Direct Audio Link <span class="optional_text">(Optional)</span>';
+                }
+            }
+
+            inquirySelect.addEventListener('change', updateFormFields);
+            updateFormFields();
+        });
+
+        async function loadNavbar() {
+            try {
+                let navRes = await fetch('nav.html');
+                let navText = await navRes.text();
+                document.getElementById('nav_container').innerHTML = navText;
+
+                const mobileToggleBtn = document.getElementById('mobileToggle');
+                const mobileMenuOverlay = document.getElementById('mobileMenu');
+
+                if (mobileToggleBtn && mobileMenuOverlay) {
+                    mobileToggleBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        mobileMenuOverlay.classList.toggle('open');
+                        const icon = mobileToggleBtn.querySelector('i');
+                        if (icon) {
+                            icon.classList.toggle('fa-bars');
+                            icon.classList.toggle('fa-xmark');
+                        }
+                    });
+                }
+            } catch (err) {
+                console.error('Error loading navigation:', err);
+            }
+        }
+
+        loadNavbar();
+    </script>
 </body>
 </html>

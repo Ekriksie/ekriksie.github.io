@@ -8,7 +8,10 @@
     <link rel="stylesheet" href="theme.css">
      
     <style>
-        html{ background-color:var(--bg_container);  }
+        html { 
+            background-color: var(--bg_container);  
+        }
+
         .body_about1 {
             margin: 0;
             background-color: var(--bg_container);
@@ -18,31 +21,27 @@
             min-height: 100vh;
         }
 
-        /* Hero Banner Component */
-.hero {
-    position: relative;
-    width: 100%;
-    min-height: 80vh; /* Takes up 80% of any screen height automatically */
-    max-height: 850px; /* Prevents it from getting absurdly tall on giant monitors */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    overflow: hidden;
-    box-sizing: border-box;
-    padding: 4rem 1rem; /* Adds breathing room so content never touches the edges */
-}
-
-        /* Layer 1: Background Image */
-        .hero img.hero-bg {
-            position: absolute;
-            background-color: var(--bg_container);
-            inset: 0;
+        /* Hero Banner Component with instant dark fallback */
+        .hero {
+            position: relative;
             width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: 1;
+            min-height: 80vh;
+            max-height: 850px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+            box-sizing: border-box;
+            padding: 4rem 1rem;
+            
+            /* CSS background combined with image prevents the white flash */
+            background-color: var(--bg_container);
+            background-image: url('images/bg/about.jpg');
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
         }
 
         /* Layer 2: Main Headline Card (Centered) */
@@ -86,7 +85,7 @@
             gap: 0.5rem;
             padding: 0.85rem 1.75rem;
             background-color: #7c3aed;
-            color: var(--tect_main);
+            color: var(--text_main, #ffffff);
             text-decoration: none;
             border-radius: 9999px;
             font-weight: bold;
@@ -101,7 +100,7 @@
             transform: translateY(-2px);
         }
 
-        /* Layer 3: 60px Strip Anchored at the Bottom of the Image */
+        /* Layer 3: 60px Strip Anchored at the Bottom */
         .hero-bottom-strip {
             position: absolute;
             bottom: 0;
@@ -123,7 +122,7 @@
             display: flex;
             align-items: center;
             gap: 0.6rem;
-            color: var(text_main);
+            color: var(--text_main);
             text-align: left;
         }
 
@@ -141,7 +140,7 @@
         .strip-text .title {
             font-weight: 700;
             font-size: 0.85rem;
-            color: var(text_main);
+            color: var(--text_main);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
@@ -155,7 +154,7 @@
         /* Responsive adjustments for smaller screens */
         @media (max-width: 650px) {
             .hero {
-                height: 680px;
+                min-height: 680px;
             }
             .hero .helping {
                 font-size: 2.2rem;
@@ -181,8 +180,7 @@
 
     <!-- HERO BANNER PAGE MODULE -->
     <section class="hero">
-        <!-- Background Image -->
-<img class="hero-bg" src="images/bg/about.jpg" alt="Studio">        
+
         <!-- Main Headline Box -->
         <div class="hero-content">
             <h1><span class="helping">Helping singers</span> Get custom beats and finish their songs</h1>

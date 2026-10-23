@@ -24,16 +24,6 @@
     <meta http-equiv="Expires" content="0">
 
 
-    <script type="text/javascript">
-
-        if ('scrollRestoration' in history) {
-    history.scrollRestoration = 'manual';
-}
-
-// Ensure the page always starts at the top
-window.scrollTo(0, 0);
-        
-    </script>
 
 
 
@@ -428,6 +418,25 @@ window.scrollTo(0, 0);
             }, 600);
         }, { passive: false });
     </script>
+
+
+    <script>
+    // Stop Chrome from trying to restore old scroll positions
+    if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+    }
+
+    // Force the window back to the top immediately, and once more after fetch finishes
+    window.scrollTo(0, 0);
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            window.scrollTo(0, 0);
+        }, 50); // Small 50ms delay lets your fetch content settle first
+    });
+</script>
+
+
+
 
 </body>
 </html>

@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beat Prompter Studio</title>
+  <style>
+    :root {
+      --bg-dark: #0b0e17;
+      --card-bg: #131725;
+      --panel-bg: #181d2e;
+      --accent-color: #6366f1;
+      --accent-hover: #4f46e5;
+      --text-main: #f3f4f6;
+      --text-muted: #8c93a8;
+      --border-color: #232a3f;
+      --needle-color: #f59e0b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* TOP NAV HEADER */
+    header {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border-color);
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      height: 60px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .brand-badge {
+      background: rgba(245, 158, 11, 0.2);
+      color: #f59e0b;
+      font-size: 0.65rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid rgba(245, 158, 11, 0.4);
+    }
+
+    .song-title-bar {
+      background: #090c14;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 2px 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .song-title-bar input {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #f59e0b;
+      font-weight: 700;
+      font-size: 0.85rem;
+      width: 140px;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .input-bar {
+      display: flex;
+      align-items: center;
+      background: #090c14;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 2px 6px;
+      width: 280px;
+    }
+
+    .input-bar input {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #fff;
+      padding: 6px 8px;
+      font-size: 0.8rem;
+      width: 100%;
+    }
+
+    .btn {
+      background: #20263a;
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.8rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .btn:hover {
+      background: #2a324d;
+      border-color: #3b466b;
+    }
+
+    .btn-red {
+      background: #ef4444;
+      border-color: #ef4444;
+      color: #fff;
+    }
+
+    .btn-red:hover { background: #dc2626; }
+
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.15);
+      border-color: rgba(239, 68, 68, 0.3);
+      color: #f87171;
+    }
+
+    .btn-danger:hover {
+      background: rgba(239, 68, 68, 0.3);
+    }
+
+    /* MAIN SPLIT WORKSPACE */
+    .app-workspace {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    @media (max-width: 960px) {
+      .app-workspace {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr;
+      }
+    }
+
+    /* LEFT TELEPROMPTER PANEL */
+    .prompter-panel {
+      background: #070911;
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .prompter-topbar {
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .prompter-badge {
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .prompter-display {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px;
+      overflow-y: auto;
+    }
+
+    .prompter-text {
+      font-size: 2.2rem;
+      font-weight: 700;
+      line-height: 1.5;
+      color: #ffffff;
+      white-space: pre-wrap;
+      max-width: 750px;
+    }
+
+    /* RIGHT ARRANGER & EDITOR PANEL */
+    .arranger-panel {
+      background: var(--card-bg);
+      display: flex;
+      flex-direction: column;
+      padding: 16px;
+      gap: 16px;
+      overflow-y: auto;
+    }
+
+    /* Section Add Bar */
+    .section-bar {
+      background: var(--panel-bg);
+      border: 1px solid var(--border-color);
+      padding: 10px 14px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .section-buttons {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .btn-sec {
+      padding: 6px 12px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border-radius: 4px;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    /* Section Colors */
+    .color-intro  { background-color: #3b82f6; }
+    .color-verse  { background-color: #10b981; }
+    .color-hook   { background-color: #f59e0b; }
+    .color-bridge { background-color: #8b5cf6; }
+    .color-break  { background-color: #14b8a6; }
+    .color-outro  { background-color: #ec4899; }
+
+    /* Timeline Section */
+    .timeline-card {
+      background: var(--panel-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .timeline-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .timeline-tracks {
+      position: relative;
+      background: #0a0d16;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .scrub-ruler {
+      height: 28px;
+      background: #101422;
+      border-bottom: 1px solid var(--border-color);
+      position: relative;
+      cursor: pointer;
+    }
+
+    .time-mark {
+      position: absolute;
+      top: 4px;
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      transform: translateX(-50%);
+      font-family: monospace;
+    }
+
+    .blocks-track {
+      height: 70px;
+      position: relative;
+    }
+
+    .playhead-line {
+      position: absolute;
+      top: 0;
+      left: 0%;
+      width: 2px;
+      height: 100%;
+      background: var(--needle-color);
+      z-index: 50;
+      pointer-events: none;
+    }
+
+    .playhead-top {
+      position: absolute;
+      top: 0;
+      left: -5px;
+      width: 12px;
+      height: 12px;
+      background: var(--needle-color);
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+    }
+
+    .block {
+      position: absolute;
+      top: 8px;
+      height: 54px;
+      border-radius: 4px;
+      padding: 6px;
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: bold;
+      cursor: grab;
+      border: 2px solid transparent;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .block.active {
+      border-color: #ffffff;
+      box-shadow: 0 0 10px rgba(255,255,255,0.4);
+    }
+
+    .handle {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 6px;
+      cursor: ew-resize;
+      background: rgba(255,255,255,0.25);
+    }
+
+    .handle.left { left: 0; }
+    .handle.right { right: 0; }
+
+    /* Timing Inputs & Lyrics */
+    .editor-card {
+      background: var(--panel-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .time-inputs {
+      display: flex;
+      gap: 12px;
+    }
+
+    .time-field {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .time-field label {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .time-field input {
+      background: #0c0f1a;
+      border: 1px solid var(--border-color);
+      color: #fff;
+      padding: 6px 10px;
+      border-radius: 4px;
+      outline: none;
+      font-size: 0.85rem;
+    }
+
+    textarea {
+      flex: 1;
+      width: 100%;
+      min-height: 140px;
+      background: #0c0f1a;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      color: #fff;
+      padding: 12px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      resize: none;
+      outline: none;
+    }
+
+    /* BOTTOM DOCK TRANSPORT BAR */
+    .bottom-dock {
+      background: var(--card-bg);
+      border-top: 1px solid var(--border-color);
+      height: 64px;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .play-circle {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--needle-color);
+      color: #000;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    .play-circle:hover { transform: scale(1.05); }
+
+    .time-readout {
+      font-family: monospace;
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    /* FULLSCREEN VOCAL BOOTH MODAL */
+    .booth-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #000;
+      z-index: 1000;
+      padding: 30px;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .booth-modal.active { display: flex; }
+
+    .booth-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .booth-footer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .booth-timer {
+      font-family: monospace;
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--needle-color);
+    }
+
+    .booth-bar {
+      width: 100%;
+      height: 8px;
+      background: #1e2235;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .booth-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--needle-color);
+    }
+
+    #yt-holder { display: none; }
+  </style>
+</head>
+<body>
+
+  <!-- TOP HEADER -->
+  <header>
+    <div class="brand">
+      <div class="brand-title">🎙️ Vocal Cue<span class="brand-badge">Beta</span></div>
+      <div class="song-title-bar">
+        <span style="font-size:0.7rem; color:var(--text-muted);">🎵 SONG:</span>
+        <input type="text" id="song-title-input" value="My New Song" onchange="updateSongTitle(this.value)" placeholder="Song Name...">
+      </div>
+    </div>
+
+    <div class="nav-actions">
+      <div class="input-bar">
+        <input type="text" id="yt-url" placeholder="Paste YouTube Link or Video ID...">
+        <button class="btn btn-red" onclick="loadYT()">Load Beat</button>
+      </div>
+
+      <span style="color:var(--text-muted); font-size:0.75rem;">OR</span>
+
+      <label class="btn">
+        📁 Upload MP3
+        <input type="file" id="local-audio" accept="audio/*" onchange="loadAudioFile(event)" style="display:none">
+      </label>
+
+      <div style="width: 1px; height: 24px; background: var(--border-color); margin: 0 4px;"></div>
+
+      <button class="btn" onclick="exportProject()">💾 Export</button>
+      <label class="btn">
+        📂 Load
+        <input type="file" accept=".json" onchange="importProject(event)" style="display:none">
+      </label>
+      <button class="btn btn-danger" onclick="resetProject()">✨ New</button>
+    </div>
+  </header>
+
+  <!-- MAIN SPLIT WORKSPACE -->
+  <main class="app-workspace">
+    
+    <!-- LEFT TELEPROMPTER VIEW -->
+    <section class="prompter-panel">
+      <div class="prompter-topbar">
+        <div class="prompter-badge color-verse" id="prompter-badge">READY</div>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span style="font-size:0.75rem; color:var(--text-muted);">Text Scale</span>
+          <input type="range" id="prompter-scale" min="20" max="70" value="36" oninput="setFontScale(this.value)">
+          <button class="btn" onclick="openBooth()">⛶ Full Screen</button>
+        </div>
+      </div>
+
+      <div class="prompter-display">
+        <div class="prompter-text" id="prompter-text">Scrub to a section block or add a new section on the right timeline to start!</div>
+      </div>
+    </section>
+
+    <!-- RIGHT ARRANGER PANEL -->
+    <section class="arranger-panel">
+      
+      <!-- ADD SECTION BAR -->
+      <div class="section-bar">
+        <span style="font-size: 0.75rem; font-weight:700; color:var(--text-muted);">+ ADD AT NEEDLE:</span>
+        <div class="section-buttons">
+          <button class="btn-sec color-verse" onclick="addSec('Verse')">+ Verse</button>
+          <button class="btn-sec color-hook" onclick="addSec('Hook')">+ Hook</button>
+          <button class="btn-sec color-bridge" onclick="addSec('Bridge')">+ Bridge</button>
+          <button class="btn-sec color-break" onclick="addSec('Break')">+ Break</button>
+          <button class="btn-sec color-intro" onclick="addSec('Intro')">+ Intro</button>
+          <button class="btn-sec color-outro" onclick="addSec('Outro')">+ Outro</button>
+        </div>
+      </div>
+
+      <!-- TIMELINE TRACK -->
+      <div class="timeline-card">
+        <div class="timeline-header">
+          <span>SONG STRUCTURE TIMELINE</span>
+          <span style="color:var(--needle-color);">❖ Top ruler moves needle [Space = Play/Pause]</span>
+        </div>
+
+        <div class="timeline-tracks">
+          <div class="playhead-line" id="playhead">
+            <div class="playhead-top"></div>
+          </div>
+          <div class="scrub-ruler" id="scrub-ruler">
+            <div id="scrub-ticks"></div>
+          </div>
+          <div class="blocks-track" id="blocks-track"></div>
+        </div>
+      </div>
+
+      <!-- EDITOR & TIMESTAMPS -->
+      <div class="editor-card">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <h4 id="editor-heading" style="font-size:0.85rem;">Editing Section</h4>
+          <button class="btn btn-danger" onclick="deleteActiveSec()" id="del-btn" style="display:none; padding:4px 8px; font-size:0.75rem;">🗑 Delete Section</button>
+        </div>
+
+        <div class="time-inputs">
+          <div class="time-field">
+            <label>Start Time (sec)</label>
+            <input type="number" id="start-time-input" onchange="manualTimeChange()">
+          </div>
+          <div class="time-field">
+            <label>End Time (sec)</label>
+            <input type="number" id="end-time-input" onchange="manualTimeChange()">
+          </div>
+        </div>
+
+        <textarea id="lyric-input" placeholder="Type or paste section lyrics here..." oninput="updateLyrics(this.value)"></textarea>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- BOTTOM TRANSPORT DOCK -->
+  <footer class="bottom-dock">
+    <button class="btn" onclick="resetNeedle()" title="Reset 0:00">|◄ 0:00</button>
+    <button class="play-circle" id="play-btn" onclick="togglePlay()">▶</button>
+    <div class="time-readout" id="time-readout">00:00 / 03:00</div>
+    <span style="font-size:0.75rem; color:var(--text-muted);" id="source-name">Source: Local Workspace</span>
+
+    <div style="margin-left:auto; display:flex; align-items:center; gap:8px;">
+      <span style="font-size:0.75rem; color:var(--text-muted);">🔊</span>
+      <input type="range" min="0" max="1" step="0.05" value="1" oninput="setVol(this.value)">
+    </div>
+  </footer>
+
+  <!-- FULLSCREEN VOCAL BOOTH -->
+  <div class="booth-modal" id="booth-modal">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div class="prompter-badge color-hook" id="booth-badge">HOOK</div>
+      
+      <div class="booth-header-actions">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:0.8rem; color:var(--text-muted);">Text Scale</span>
+          <input type="range" id="booth-scale" min="24" max="90" value="48" oninput="setBoothFontScale(this.value)">
+        </div>
+        <button class="btn btn-danger" onclick="closeBooth()">Exit Booth (ESC)</button>
+      </div>
+    </div>
+
+    <div style="flex:1; display:flex; align-items:center; justify-content:center; text-align:center;">
+      <div style="font-size:3rem; font-weight:800; color:#fff;" id="booth-lyrics">...</div>
+    </div>
+
+    <div class="booth-footer">
+      <div class="booth-timer" id="booth-timer">00:00 / 03:00</div>
+      <div class="booth-bar"><div class="booth-fill" id="booth-fill"></div></div>
+    </div>
+  </div>
+
+  <audio id="audio-el" style="display:none"></audio>
+  <div id="yt-holder"><div id="yt-player"></div></div>
+
+  <script src="https://www.youtube.com/iframe_api"></script>
+
+  <script>
+    let app = {
+      songTitle: 'My New Song',
+      sections: [
+        { id: 'sec-1', name: 'Intro', type: 'intro', start: 0, end: 15, lyrics: 'Intro instrumental beat...' },
+        { id: 'sec-2', name: 'Verse 1', type: 'verse', start: 15, end: 45, lyrics: 'Verse 1 lyrics starting right here...\nSteady flow on the beat!' },
+        { id: 'sec-3', name: 'Hook', type: 'hook', start: 45, end: 75, lyrics: 'This is the main Hook!\nHit the notes clean!' }
+      ],
+      selectedId: 'sec-1',
+      duration: 180,
+      currentTime: 0,
+      source: 'local',
+      youtubeUrl: ''
+    };
+
+    let isPlaying = false;
+    let ytPlayer = null;
+    let audioEl = document.getElementById('audio-el');
+    let timer = null;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadStorage();
+      renderAll();
+      setupScrubbing();
+      setupKeyboardHotkeys();
+    });
+
+    function saveStorage() {
+      localStorage.setItem('beat_prompter_data', JSON.stringify(app));
+    }
+
+    function loadStorage() {
+      const data = localStorage.getItem('beat_prompter_data');
+      if (data) {
+        try { app = JSON.parse(data); } catch(e){}
+      }
+    }
+
+    function setupKeyboardHotkeys() {
+      window.addEventListener('keydown', (e) => {
+        // Toggle Play/Pause on Spacebar unless user is typing in a text field
+        if (e.code === 'Space') {
+          const activeEl = document.activeElement;
+          const isTyping = activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA');
+          if (!isTyping) {
+            e.preventDefault();
+            togglePlay();
+          }
+        }
+        if (e.key === 'Escape') closeBooth();
+      });
+    }
+
+    function updateSongTitle(val) {
+      app.songTitle = val || 'Untitled Song';
+      saveStorage();
+    }
+
+    function onYouTubeIframeAPIReady() {
+      ytPlayer = new YT.Player('yt-player', {
+        height: '0', width: '0',
+        events: { 'onStateChange': (e) => { if(e.data === YT.PlayerState.ENDED) pause(); } }
+      });
+      if (app.source === 'yt' && app.youtubeUrl) {
+        document.getElementById('yt-url').value = app.youtubeUrl;
+      }
+    }
+
+    function togglePlay() {
+      if (isPlaying) pause(); else play();
+    }
+
+    function play() {
+      isPlaying = true;
+      document.getElementById('play-btn').innerText = '⏸';
+      if (app.source === 'file') audioEl.play();
+      else if (app.source === 'yt' && ytPlayer) ytPlayer.playVideo();
+      timer = setInterval(sync, 100);
+    }
+
+    function pause() {
+      isPlaying = false;
+      document.getElementById('play-btn').innerText = '▶';
+      if (app.source === 'file') audioEl.pause();
+      else if (app.source === 'yt' && ytPlayer) ytPlayer.pauseVideo();
+      clearInterval(timer);
+    }
+
+    function resetNeedle() { seekTo(0); }
+
+    function seekTo(sec) {
+      app.currentTime = Math.max(0, Math.min(sec, app.duration));
+      if (app.source === 'file') audioEl.currentTime = app.currentTime;
+      else if (app.source === 'yt' && ytPlayer) ytPlayer.seekTo(app.currentTime, true);
+      updateNeedle();
+      renderPrompter();
+    }
+
+    function setVol(v) {
+      audioEl.volume = v;
+      if (ytPlayer && ytPlayer.setVolume) ytPlayer.setVolume(v * 100);
+    }
+
+    function sync() {
+      if (app.source === 'file') {
+        app.currentTime = audioEl.currentTime;
+        if (audioEl.duration) app.duration = audioEl.duration;
+      } else if (app.source === 'yt' && ytPlayer && ytPlayer.getCurrentTime) {
+        app.currentTime = ytPlayer.getCurrentTime();
+        if (ytPlayer.getDuration()) app.duration = ytPlayer.getDuration();
+      } else {
+        app.currentTime += 0.1;
+      }
+      updateNeedle();
+      renderPrompter();
+    }
+
+    function loadAudioFile(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      audioEl.src = URL.createObjectURL(file);
+      app.source = 'file';
+      document.getElementById('source-name').innerText = `Source: ${file.name}`;
+      audioEl.onloadedmetadata = () => { app.duration = audioEl.duration; renderAll(); };
+      play();
+    }
+
+    function loadYT() {
+      const url = document.getElementById('yt-url').value;
+      const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+      const id = m ? m[1] : url;
+      if (id && ytPlayer) {
+        ytPlayer.loadVideoById(id);
+        app.source = 'yt';
+        app.youtubeUrl = url;
+        saveStorage();
+        document.getElementById('source-name').innerText = `Source: YouTube (${id})`;
+        setTimeout(() => { if(ytPlayer.getDuration) app.duration = ytPlayer.getDuration() || 180; renderAll(); }, 1000);
+      }
+    }
+
+    function addSec(type) {
+      const start = Math.floor(app.currentTime);
+      const end = Math.min(start + 20, Math.floor(app.duration));
+      const newS = {
+        id: 'sec-' + Date.now(),
+        name: type + ' ' + (app.sections.filter(s => s.type === type.toLowerCase()).length + 1),
+        type: type.toLowerCase(),
+        start: start,
+        end: end,
+        lyrics: `${type} lyrics go here...`
+      };
+      app.sections.push(newS);
+      app.selectedId = newS.id;
+      saveStorage();
+      renderAll();
+    }
+
+    function deleteActiveSec() {
+      if (!app.selectedId) return;
+      app.sections = app.sections.filter(s => s.id !== app.selectedId);
+      app.selectedId = null;
+      saveStorage();
+      renderAll();
+    }
+
+    function manualTimeChange() {
+      const sec = app.sections.find(s => s.id === app.selectedId);
+      if (sec) {
+        sec.start = Number(document.getElementById('start-time-input').value);
+        sec.end = Number(document.getElementById('end-time-input').value);
+        saveStorage();
+        renderBlocks();
+      }
+    }
+
+    function updateLyrics(val) {
+      const sec = app.sections.find(s => s.id === app.selectedId);
+      if (sec) {
+        sec.lyrics = val;
+        saveStorage();
+        renderPrompter();
+      }
+    }
+
+    function setupScrubbing() {
+      const ruler = document.getElementById('scrub-ruler');
+      let isScrub = false;
+      const doScrub = (e) => {
+        const r = ruler.getBoundingClientRect();
+        const pct = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width));
+        seekTo(pct * app.duration);
+      };
+      ruler.addEventListener('mousedown', (e) => { isScrub = true; doScrub(e); });
+      window.addEventListener('mousemove', (e) => { if (isScrub) doScrub(e); });
+      window.addEventListener('mouseup', () => { isScrub = false; });
+    }
+
+    function renderAll() {
+      document.getElementById('song-title-input').value = app.songTitle || 'My New Song';
+      renderScrubTicks();
+      renderBlocks();
+      updateNeedle();
+      renderEditor();
+      renderPrompter();
+    }
+
+    function renderScrubTicks() {
+      const c = document.getElementById('scrub-ticks');
+      c.innerHTML = '';
+      const step = Math.max(10, Math.floor(app.duration / 8));
+      for (let t = 0; t <= app.duration; t += step) {
+        const pct = (t / app.duration) * 100;
+        const tick = document.createElement('div');
+        tick.className = 'time-mark';
+        tick.style.left = pct + '%';
+        tick.innerText = fmtTime(t);
+        c.appendChild(tick);
+      }
+    }
+
+    function renderBlocks() {
+      const track = document.getElementById('blocks-track');
+      track.innerHTML = '';
+
+      app.sections.forEach(s => {
+        const left = (s.start / app.duration) * 100;
+        const width = ((s.end - s.start) / app.duration) * 100;
+
+        const b = document.createElement('div');
+        b.className = `block color-${s.type} ${s.id === app.selectedId ? 'active' : ''}`;
+        b.style.left = left + '%';
+        b.style.width = width + '%';
+
+        b.innerHTML = `
+          <div class="handle left"></div>
+          <div>${s.name}</div>
+          <div style="font-size:0.65rem; opacity:0.8;">${fmtTime(s.start)} - ${fmtTime(s.end)}</div>
+          <div class="handle right"></div>
+        `;
+
+        b.addEventListener('click', (e) => {
+          e.stopPropagation();
+          app.selectedId = s.id;
+          renderAll();
+        });
+
+        setupDragResize(b, s);
+        track.appendChild(b);
+      });
+
+      document.getElementById('del-btn').style.display = app.selectedId ? 'inline-block' : 'none';
+    }
+
+    function setupDragResize(el, sec) {
+      let isDrag = false, isL = false, isR = false, startX = 0, origS = 0, origE = 0;
+
+      el.addEventListener('mousedown', (e) => {
+        startX = e.clientX;
+        origS = sec.start;
+        origE = sec.end;
+        if (e.target.classList.contains('left')) isL = true;
+        else if (e.target.classList.contains('right')) isR = true;
+        else isDrag = true;
+        e.stopPropagation();
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        if (!isDrag && !isL && !isR) return;
+        const w = document.getElementById('blocks-track').offsetWidth;
+        const delta = ((e.clientX - startX) / w) * app.duration;
+
+        if (isDrag) {
+          const len = origE - origS;
+          sec.start = Math.max(0, Math.min(app.duration - len, origS + delta));
+          sec.end = sec.start + len;
+        } else if (isL) {
+          sec.start = Math.max(0, Math.min(sec.end - 2, origS + delta));
+        } else if (isR) {
+          sec.end = Math.max(sec.start + 2, Math.min(app.duration, origE + delta));
+        }
+
+        saveStorage();
+        renderBlocks();
+        renderEditor();
+      });
+
+      window.addEventListener('mouseup', () => { isDrag = isL = isR = false; });
+    }
+
+    function updateNeedle() {
+      const pct = (app.currentTime / app.duration) * 100;
+      document.getElementById('playhead').style.left = pct + '%';
+      
+      const txt = `${fmtTime(app.currentTime)} / ${fmtTime(app.duration)}`;
+      document.getElementById('time-readout').innerText = txt;
+      document.getElementById('booth-timer').innerText = txt;
+      document.getElementById('booth-fill').style.width = pct + '%';
+    }
+
+    function renderEditor() {
+      const s = app.sections.find(sec => sec.id === app.selectedId);
+      if (s) {
+        document.getElementById('editor-heading').innerText = `Editing: ${s.name}`;
+        document.getElementById('start-time-input').value = Math.floor(s.start);
+        document.getElementById('end-time-input').value = Math.floor(s.end);
+        document.getElementById('lyric-input').value = s.lyrics;
+        document.getElementById('lyric-input').disabled = false;
+      } else {
+        document.getElementById('editor-heading').innerText = 'Select a Section to Edit';
+        document.getElementById('start-time-input').value = 0;
+        document.getElementById('end-time-input').value = 0;
+        document.getElementById('lyric-input').value = '';
+        document.getElementById('lyric-input').disabled = true;
+      }
+    }
+
+    function renderPrompter() {
+      const s = app.sections.find(sec => app.currentTime >= sec.start && app.currentTime < sec.end);
+      
+      const badge = document.getElementById('prompter-badge');
+      const txt = document.getElementById('prompter-text');
+      const bBadge = document.getElementById('booth-badge');
+      const bTxt = document.getElementById('booth-lyrics');
+
+      if (s) {
+        badge.innerText = s.name;
+        badge.className = `prompter-badge color-${s.type}`;
+        txt.innerText = s.lyrics;
+
+        bBadge.innerText = s.name;
+        bBadge.className = `prompter-badge color-${s.type}`;
+        bTxt.innerText = s.lyrics;
+      } else {
+        badge.innerText = 'INSTRUMENTAL';
+        badge.className = 'prompter-badge';
+        txt.innerText = 'Instrumental / Empty Space';
+
+        bBadge.innerText = 'OFF-BEAT';
+        bTxt.innerText = '...';
+      }
+    }
+
+    function setFontScale(v) {
+      document.getElementById('prompter-text').style.fontSize = v + 'px';
+    }
+
+    function setBoothFontScale(v) {
+      document.getElementById('booth-lyrics').style.fontSize = v + 'px';
+    }
+
+    function openBooth() { document.getElementById('booth-modal').classList.add('active'); }
+    function closeBooth() { document.getElementById('booth-modal').classList.remove('active'); }
+
+    function exportProject() {
+      const safeName = (app.songTitle || 'song').replace(/[^a-z0-9]/gi, '_').toLowerCase();
+      const str = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(app, null, 2));
+      const a = document.createElement('a');
+      a.href = str;
+      a.download = `${safeName}_project.json`;
+      a.click();
+    }
+
+    function importProject(e) {
+      const f = e.target.files[0];
+      if (!f) return;
+      const r = new FileReader();
+      r.onload = (evt) => {
+        try {
+          app = JSON.parse(evt.target.result);
+          saveStorage();
+          renderAll();
+          if (app.source === 'yt' && app.youtubeUrl) {
+            document.getElementById('yt-url').value = app.youtubeUrl;
+            loadYT();
+          }
+        } catch(err) { alert('Invalid song project JSON'); }
+      };
+      r.readAsText(f);
+    }
+
+    function resetProject() {
+      if (confirm('Start a new song? Current arrangement will be cleared.')) {
+        app.songTitle = 'New Song';
+        app.sections = [];
+        app.selectedId = null;
+        app.currentTime = 0;
+        saveStorage();
+        renderAll();
+      }
+    }
+
+    function fmtTime(s) {
+      const m = Math.floor(s / 60);
+      const sec = Math.floor(s % 60);
+      return `${m < 10 ? '0' : ''}${m}:${sec < 10 ? '0' : ''}${sec}`;
+    }
+  </script>
+</body>
+</html>

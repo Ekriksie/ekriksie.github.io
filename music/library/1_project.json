@@ -1,0 +1,35 @@
+{
+  "songTitle": "1",
+  "sections": [
+    {
+      "id": "sec-1",
+      "name": "Intro",
+      "type": "intro",
+      "start": 0,
+      "end": 15,
+      "lyrics": "Intro instrumental beat..."
+    },
+    {
+      "id": "sec-2",
+      "name": "Verse 1",
+      "type": "verse",
+      "start": 15,
+      "end": 45,
+      "lyrics": "Verse 1 lyrics starting right here...\nSteady flow on the beat!"
+    },
+    {
+      "id": "sec-3",
+      "name": "Hook",
+      "type": "hook",
+      "start": 45,
+      "end": 75,
+      "lyrics": "This is the main Hook!\nHit the notes clean!"
+    }
+  ],
+  "selectedId": "sec-1",
+  "duration": 180,
+  "currentTime": 0,
+  "source": "local",
+  "audioName": "",
+  "youtubeUrl": ""
+}

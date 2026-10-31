@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LyricGrid Beta</title>
+  <title>LyricGrid Beta - Beat Prompter</title>
   <style>
     :root {
       --bg-dark: #0b0e17;
@@ -90,7 +90,7 @@
       width: 130px;
     }
 
-    /* LIBRARY DROPDOWN BUTTON */
+    /* LIBRARY DROPDOWN MENU */
     .library-dropdown-container {
       position: relative;
     }
@@ -105,7 +105,7 @@
       border: 1px solid var(--border-color);
       border-radius: 8px;
       width: 240px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.6);
       z-index: 100;
       max-height: 250px;
       overflow-y: auto;
@@ -565,19 +565,19 @@
 
     <div class="nav-actions">
 
-      <!-- BEAT LIBRARY DROPDOWN BUTTON (PLACED BETWEEN SONG NAME & YOUTUBE BAR) -->
+      <!-- BEAT LIBRARY DROPDOWN BUTTON -->
       <div class="library-dropdown-container">
         <button class="btn" onclick="toggleLibraryMenu(event)">📁 Beat Library ▾</button>
         <div class="library-menu" id="library-menu">
           <div style="font-size: 0.7rem; color: var(--text-muted); padding: 4px 8px; border-bottom: 1px solid var(--border-color); margin-bottom: 4px;">Saved Beat Projects:</div>
           <div id="library-list-container">
-            <!-- Dynamically populated from library/beats.json or folder -->
+            <!-- Dynamically populated -->
           </div>
         </div>
       </div>
 
       <div class="input-bar">
-        <input type="text" id="yt-url" placeholder="Paste YouTube Link or Video ID...">
+        <input type="text" id="yt-url" placeholder="Paste YouTube Link or Video ID..." onchange="updateYoutubeUrl(this.value)">
         <button class="btn btn-red" onclick="loadYT()">Load Beat</button>
       </div>
 
@@ -590,9 +590,9 @@
 
       <div style="width: 1px; height: 24px; background: var(--border-color); margin: 0 4px;"></div>
 
-      <button class="btn" onclick="exportProject()">💾 Export</button>
+      <button class="btn" onclick="exportProject()">💾 Save Song Project</button>
       <label class="btn">
-        📂 Load
+        📂 Open Project
         <input type="file" accept=".json" onchange="importProject(event)" style="display:none">
       </label>
       <button class="btn btn-danger" onclick="resetProject()">✨ New</button>
@@ -731,6 +731,7 @@
       duration: 180,
       currentTime: 0,
       source: 'local',
+      audioName: '',
       youtubeUrl: ''
     };
 
@@ -746,7 +747,6 @@
       setupKeyboardHotkeys();
       loadBeatLibrary();
       
-      // Close dropdown when clicking outside
       window.addEventListener('click', (e) => {
         if (!e.target.closest('.library-dropdown-container')) {
           document.getElementById('library-menu').classList.remove('active');
@@ -771,36 +771,38 @@
       menu.classList.toggle('active');
     }
 
-    // Fetches your saved beat files from a folder / index file on your server
     async function loadBeatLibrary() {
       const container = document.getElementById('library-list-container');
-      container.innerHTML = '<div style="padding: 8px; font-size: 0.75rem; color: var(--text-muted);">Loading beats...</div>';
+      container.innerHTML = '<div style="padding: 8px; font-size: 0.75rem; color: var(--text-muted);">Loading library...</div>';
 
       try {
-        // You can create a simple file named 'library/beats.json' containing an array of filenames: ["beat1.json", "dark_trap.json"]
         let response = await fetch('library/beats.json');
         let beatFiles = await response.json();
 
         container.innerHTML = '';
         if (beatFiles.length === 0) {
-          container.innerHTML = '<div style="padding: 8px; font-size: 0.75rem; color: var(--text-muted);">No beats found in folder.</div>';
+          container.innerHTML = '<div style="padding: 8px; font-size: 0.75rem; color: var(--text-muted);">No beats found in library folder.</div>';
           return;
         }
 
         beatFiles.forEach(filename => {
           let item = document.createElement('div');
           item.className = 'library-item';
-          item.innerHTML = `🎵 ${filename.replace('.json', '').replace(/_/g, ' ')}`;
-          item.onclick = () => loadBeatProject(`library/${filename}`);
+          let displayName = filename.replace('.json', '').replace(/[_]/g, ' ').toUpperCase();
+          item.innerHTML = `🎵 ${displayName}`;
+          item.onclick = () => loadLibraryProject(`library/${filename}`);
           container.appendChild(item);
         });
       } catch (err) {
-        // Fallback display if beats.json is not created yet
-        container.innerHTML = '<div style="padding: 8px; font-size: 0.75rem; color: var(--text-muted);">Create a beats.json file in a /library folder to list beats here.</div>';
+        // Fallback mockup list so the menu is never empty if beats.json isn't uploaded yet!
+        container.innerHTML = `
+          <div style="padding: 4px 8px; font-size: 0.7rem; color: var(--text-muted); border-bottom: 1px solid var(--border-color); margin-bottom: 4px;">Sample Beats (Add beats.json to customize):</div>
+          <div class="library-item" onclick="loadLibraryProject('library/dark_trap.json')">🎵 Dark Trap Beat</div>
+        `;
       }
     }
 
-    async function loadBeatProject(path) {
+    async function loadLibraryProject(path) {
       try {
         let res = await fetch(path);
         let projectData = await res.json();
@@ -813,7 +815,7 @@
         }
         document.getElementById('library-menu').classList.remove('active');
       } catch (e) {
-        alert('Could not load project file from ' + path);
+        alert('Library file not found at ' + path + '. Make sure the JSON file exists in your /library folder!');
       }
     }
 
@@ -836,6 +838,11 @@
       saveStorage();
     }
 
+    function updateYoutubeUrl(val) {
+      app.youtubeUrl = val;
+      saveStorage();
+    }
+
     function onYouTubeIframeAPIReady() {
       ytPlayer = new YT.Player('yt-player', {
         height: '0', width: '0',
@@ -843,6 +850,8 @@
       });
       if (app.source === 'yt' && app.youtubeUrl) {
         document.getElementById('yt-url').value = app.youtubeUrl;
+        // Auto-load YouTube player if URL exists on startup
+        setTimeout(() => loadYT(), 800);
       }
     }
 
@@ -853,7 +862,7 @@
     function play() {
       isPlaying = true;
       document.getElementById('play-btn').innerText = '⏸';
-      if (app.source === 'file') audioEl.play();
+      if (app.source === 'file' && audioEl.src) audioEl.play();
       else if (app.source === 'yt' && ytPlayer) ytPlayer.playVideo();
       timer = setInterval(sync, 100);
     }
@@ -870,7 +879,7 @@
 
     function seekTo(sec) {
       app.currentTime = Math.max(0, Math.min(sec, app.duration));
-      if (app.source === 'file') audioEl.currentTime = app.currentTime;
+      if (app.source === 'file' && audioEl.src) audioEl.currentTime = app.currentTime;
       else if (app.source === 'yt' && ytPlayer) ytPlayer.seekTo(app.currentTime, true);
       updateNeedle();
       renderPrompter();
@@ -883,7 +892,7 @@
 
     function sync() {
       if (app.source === 'file') {
-        app.currentTime = audioEl.currentTime;
+        if (audioEl.currentTime) app.currentTime = audioEl.currentTime;
         if (audioEl.duration) app.duration = audioEl.duration;
       } else if (app.source === 'yt' && ytPlayer && ytPlayer.getCurrentTime) {
         app.currentTime = ytPlayer.getCurrentTime();
@@ -900,7 +909,9 @@
       if (!file) return;
       audioEl.src = URL.createObjectURL(file);
       app.source = 'file';
-      document.getElementById('source-name').innerText = `Source: ${file.name}`;
+      app.audioName = file.name;
+      saveStorage();
+      document.getElementById('source-name').innerText = `Source MP3: ${file.name}`;
       audioEl.onloadedmetadata = () => { app.duration = audioEl.duration; renderAll(); };
       play();
     }
@@ -913,6 +924,7 @@
         ytPlayer.loadVideoById(id);
         app.source = 'yt';
         app.youtubeUrl = url;
+        app.audioName = `YouTube (${id})`;
         saveStorage();
         document.getElementById('source-name').innerText = `Source: YouTube (${id})`;
         setTimeout(() => { if(ytPlayer.getDuration) app.duration = ytPlayer.getDuration() || 180; renderAll(); }, 1000);
@@ -978,6 +990,16 @@
 
     function renderAll() {
       document.getElementById('song-title-input').value = app.songTitle || 'My New Song';
+      if (app.youtubeUrl) {
+        document.getElementById('yt-url').value = app.youtubeUrl;
+      }
+      
+      if (app.source === 'file' && app.audioName) {
+        document.getElementById('source-name').innerText = `Source MP3: ${app.audioName}`;
+      } else if (app.source === 'yt' && app.youtubeUrl) {
+        document.getElementById('source-name').innerText = `Source: YouTube (${app.youtubeUrl})`;
+      }
+
       renderScrubTicks();
       renderBlocks();
       updateNeedle();
@@ -1133,6 +1155,10 @@
     function closeBooth() { document.getElementById('booth-modal').classList.remove('active'); }
 
     function exportProject() {
+      // Ensure current YouTube URL is captured right before export
+      app.youtubeUrl = document.getElementById('yt-url').value;
+      saveStorage();
+
       const safeName = (app.songTitle || 'song').replace(/[^a-z0-9]/gi, '_').toLowerCase();
       const str = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(app, null, 2));
       const a = document.createElement('a');
@@ -1165,6 +1191,10 @@
         app.sections = [];
         app.selectedId = null;
         app.currentTime = 0;
+        app.source = 'local';
+        app.audioName = '';
+        app.youtubeUrl = '';
+        document.getElementById('yt-url').value = '';
         saveStorage();
         renderAll();
       }

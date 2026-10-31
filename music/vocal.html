@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Beat Prompter Studio</title>
+  <title>LyricGrid Beta</title>
   <style>
     :root {
       --bg-dark: #0b0e17;
@@ -87,7 +87,49 @@
       color: #f59e0b;
       font-weight: 700;
       font-size: 0.85rem;
-      width: 140px;
+      width: 130px;
+    }
+
+    /* LIBRARY DROPDOWN BUTTON */
+    .library-dropdown-container {
+      position: relative;
+    }
+
+    .library-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      margin-top: 6px;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      width: 240px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      z-index: 100;
+      max-height: 250px;
+      overflow-y: auto;
+      padding: 6px;
+    }
+
+    .library-menu.active {
+      display: block;
+    }
+
+    .library-item {
+      padding: 8px 12px;
+      font-size: 0.8rem;
+      color: var(--text-main);
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .library-item:hover {
+      background: var(--panel-bg);
+      color: #f59e0b;
     }
 
     .nav-actions {
@@ -103,7 +145,7 @@
       border: 1px solid var(--border-color);
       border-radius: 6px;
       padding: 2px 6px;
-      width: 280px;
+      width: 260px;
     }
 
     .input-bar input {
@@ -514,7 +556,7 @@
   <!-- TOP HEADER -->
   <header>
     <div class="brand">
-      <div class="brand-title">🎙️ Vocal Cue<span class="brand-badge">Beta</span></div>
+      <div class="brand-title">🎙️ LYRICGRID <span class="brand-badge">BETA</span></div>
       <div class="song-title-bar">
         <span style="font-size:0.7rem; color:var(--text-muted);">🎵 SONG:</span>
         <input type="text" id="song-title-input" value="My New Song" onchange="updateSongTitle(this.value)" placeholder="Song Name...">
@@ -522,6 +564,18 @@
     </div>
 
     <div class="nav-actions">
+
+      <!-- BEAT LIBRARY DROPDOWN BUTTON (PLACED BETWEEN SONG NAME & YOUTUBE BAR) -->
+      <div class="library-dropdown-container">
+        <button class="btn" onclick="toggleLibraryMenu(event)">📁 Beat Library ▾</button>
+        <div class="library-menu" id="library-menu">
+          <div style="font-size: 0.7rem; color: var(--text-muted); padding: 4px 8px; border-bottom: 1px solid var(--border-color); margin-bottom: 4px;">Saved Beat Projects:</div>
+          <div id="library-list-container">
+            <!-- Dynamically populated from library/beats.json or folder -->
+          </div>
+        </div>
+      </div>
+
       <div class="input-bar">
         <input type="text" id="yt-url" placeholder="Paste YouTube Link or Video ID...">
         <button class="btn btn-red" onclick="loadYT()">Load Beat</button>
@@ -690,22 +744,81 @@
       renderAll();
       setupScrubbing();
       setupKeyboardHotkeys();
+      loadBeatLibrary();
+      
+      // Close dropdown when clicking outside
+      window.addEventListener('click', (e) => {
+        if (!e.target.closest('.library-dropdown-container')) {
+          document.getElementById('library-menu').classList.remove('active');
+        }
+      });
     });
 
     function saveStorage() {
-      localStorage.setItem('beat_prompter_data', JSON.stringify(app));
+      localStorage.setItem('lyricgrid_beta_data', JSON.stringify(app));
     }
 
     function loadStorage() {
-      const data = localStorage.getItem('beat_prompter_data');
+      const data = localStorage.getItem('lyricgrid_beta_data');
       if (data) {
         try { app = JSON.parse(data); } catch(e){}
       }
     }
 
+    function toggleLibraryMenu(e) {
+      e.stopPropagation();
+      const menu = document.getElementById('library-menu');
+      menu.classList.toggle('active');
+    }
+
+    // Fetches your saved beat files from a folder / index file on your server
+    async function loadBeatLibrary() {
+      const container = document.getElementById('library-list-container');
+      container.innerHTML = '<div style="padding: 8px; font-size: 0.75rem; color: var(--text-muted);">Loading beats...</div>';
+
+      try {
+        // You can create a simple file named 'library/beats.json' containing an array of filenames: ["beat1.json", "dark_trap.json"]
+        let response = await fetch('library/beats.json');
+        let beatFiles = await response.json();
+
+        container.innerHTML = '';
+        if (beatFiles.length === 0) {
+          container.innerHTML = '<div style="padding: 8px; font-size: 0.75rem; color: var(--text-muted);">No beats found in folder.</div>';
+          return;
+        }
+
+        beatFiles.forEach(filename => {
+          let item = document.createElement('div');
+          item.className = 'library-item';
+          item.innerHTML = `🎵 ${filename.replace('.json', '').replace(/_/g, ' ')}`;
+          item.onclick = () => loadBeatProject(`library/${filename}`);
+          container.appendChild(item);
+        });
+      } catch (err) {
+        // Fallback display if beats.json is not created yet
+        container.innerHTML = '<div style="padding: 8px; font-size: 0.75rem; color: var(--text-muted);">Create a beats.json file in a /library folder to list beats here.</div>';
+      }
+    }
+
+    async function loadBeatProject(path) {
+      try {
+        let res = await fetch(path);
+        let projectData = await res.json();
+        app = projectData;
+        saveStorage();
+        renderAll();
+        if (app.source === 'yt' && app.youtubeUrl) {
+          document.getElementById('yt-url').value = app.youtubeUrl;
+          loadYT();
+        }
+        document.getElementById('library-menu').classList.remove('active');
+      } catch (e) {
+        alert('Could not load project file from ' + path);
+      }
+    }
+
     function setupKeyboardHotkeys() {
       window.addEventListener('keydown', (e) => {
-        // Toggle Play/Pause on Spacebar unless user is typing in a text field
         if (e.code === 'Space') {
           const activeEl = document.activeElement;
           const isTyping = activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA');
